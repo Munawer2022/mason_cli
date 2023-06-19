@@ -1,0 +1,3 @@
+class {{class_name}}InitialParams {
+const {{class_name}}InitialParams();
+}
