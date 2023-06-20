@@ -15,6 +15,7 @@ void run(HookContext context) {
   final baseApiServiceFileName = "${stem.snakeCase}_base_api_service.dart";
   final mockModelFileName = "mock_${stem.snakeCase}_model.dart";
   final modelFileName = "${stem.snakeCase}_model.dart";
+  final folderName = "${stem.snakeCase}";
 
   context.vars = {
     ...context.vars,
@@ -30,5 +31,6 @@ void run(HookContext context) {
     "base_api_service_file_name": baseApiServiceFileName,
     "mock_model_file_name": mockModelFileName,
     "model_file_name": modelFileName,
+    "folder_name": folderName,
   };
 }

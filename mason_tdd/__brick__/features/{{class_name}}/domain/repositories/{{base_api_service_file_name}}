@@ -1,6 +1,0 @@
-import 'package:dartz/dartz.dart';
-
-
-abstract class {{class_name}}BaseApiService {
-  // Future<Either<UsersListFailure, List<User>>> getUsers();
-}
