@@ -1,0 +1,17 @@
+class {{class_name}}Repository implements {{class_name}}BaseApiService {
+  final NetworkRepository _networkRepository;
+
+  {{class_name}}Repository(this._networkRepository);
+
+  // @override
+  // Future<Either<UsersListFailure, List<User>>> getUsers() =>
+  //     _networkRepository.get('https://jsonplaceholder.typicode.com/users').then(
+  //           (value) => value.fold(
+  //             (l) => left(UsersListFailure(error: l.error)),
+  //             (r) {
+  //               var list = r as List;
+  //               return right(list.map((e) => UserJson.fromJson(e).toDomain()).toList());
+  //             },
+  //           ),
+  //         );
+}
