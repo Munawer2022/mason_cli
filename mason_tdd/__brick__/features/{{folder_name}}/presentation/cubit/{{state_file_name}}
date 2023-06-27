@@ -1,14 +1,15 @@
 class {{class_name}}State {
-  final List<MockUsersModel> users;
+  final List<Mock{{class_name}}Model> users;
   final bool isloading;
   final String? error;
 
   {{class_name}}State({required this.users, required this.isloading, this.error});
   factory {{class_name}}State.initial() => {{class_name}}State(users: [], isloading: false);
   {{class_name}}State copyWith(
-          {List<MockUsersModel>? users, bool? isloading, String? error}) =>
+          {List<Mock{{class_name}}Model>? users, bool? isloading, String? error}) =>
       {{class_name}}State(
           users: users ?? this.users,
           isloading: isloading ?? this.isloading,
           error: error ?? this.error);
 }
+
