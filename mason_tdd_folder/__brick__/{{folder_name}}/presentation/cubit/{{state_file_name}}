@@ -12,3 +12,4 @@ class {{class_name}}State {
           isloading: isloading ?? this.isloading,
           error: error ?? this.error);
 }
+

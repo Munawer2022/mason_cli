@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class {{class_name}}Page extends StatefulWidget {
-final {{class_name}}InitialParams initialParams;
+final {{class_name}}Cubit cubit;
 
 const {{class_name}}Page({
 Key? key,
-required this.initialParams,
+required this.cubit,
 }) : super(key: key);
 
 @override
@@ -16,20 +16,43 @@ State<{{class_name}}Page> createState() => _{{class_name}}State();
 
 class _{{class_name}}State extends State<{{class_name}}Page> {
 
-late {{class_name}}Cubit cubit;
+{{class_name}}Cubit get cubit => widget.cubit;
 
-@override
-void initState() {
-super.initState();
-cubit = BlocProvider.of<{{class_name}}Cubit>(context);
-cubit.onInit(widget.initialParams);
-}
+  @override
+  void initState() {
+    super.initState();
+    // TODO: Improve this
+    cubit.navigator.context = context;
+  }
 
 @override
 Widget build(BuildContext context) {
 return Scaffold(
-appBar: AppBar(),
-body: const SizedBox(),
-);
+      appBar: AppBar(),
+      body: Center(
+        child: BlocBuilder(
+          bloc: cubit,
+          builder: (context, state) {
+            final userState = state as UsersListState;
+            if (userState.error != null) {
+              return Center(child: Text(userState.error!));
+            }
+            return userState.isLoading
+                ? const CircularProgressIndicator()
+                : ListView(
+                    children: userState.users
+                        .map(
+                          (user) => UserCard(
+                            user: user,
+                            onTap: () => cubit.onTapUser(user),
+                          ),
+                        )
+                        .toList(),
+                  );
+          },
+        ),
+      ),
+    );
+
 }
 }
