@@ -9,6 +9,7 @@ void run(HookContext context) {
   final cubitFileName = "${stem.snakeCase}_cubit.dart";
   final stateFileName = "${stem.snakeCase}_state.dart";
   final initialParamsFileName = "${stem.snakeCase}_initial_params.dart";
+  //
   final widgetFileName = "${stem.snakeCase}_widget.dart";
   final mockRepoFileName = "Mock_${stem.snakeCase}_repository.dart";
   final repoFileName = "${stem.snakeCase}_repository.dart";
@@ -16,6 +17,9 @@ void run(HookContext context) {
   final mockModelFileName = "mock_${stem.snakeCase}_model.dart";
   final modelFileName = "${stem.snakeCase}_model.dart";
   final folderName = "${stem.snakeCase}";
+  final failureName = "${stem.snakeCase}_failure.dart";
+  final useCasesName = "${stem.snakeCase}_use_cases.dart";
+  final dataSourcesName = "${stem.snakeCase}_data_sources.dart";
 
   context.vars = {
     ...context.vars,
@@ -32,5 +36,8 @@ void run(HookContext context) {
     "mock_model_file_name": mockModelFileName,
     "model_file_name": modelFileName,
     "folder_name": folderName,
+    "failure_name": failureName,
+    "use_cases_name": useCasesName,
+    "data_sources_name": dataSourcesName,
   };
 }

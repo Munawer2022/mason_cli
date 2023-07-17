@@ -1,0 +1,4 @@
+
+abstract class {{class_name}}BaseApiService {
+  // Future<Either<{{class_name}}Failure, List<User>>> getUsers();
+}
