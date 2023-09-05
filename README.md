@@ -1,6 +1,7 @@
 mason add --global my_brick --path ./path/to/my_brick
 
 //like that
+
 // ./path/to/my_brick
 
 // C:\Users\amazo\Downloads\mason_tdd\mason_tdd
