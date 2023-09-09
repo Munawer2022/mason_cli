@@ -39,8 +39,6 @@ mason add --global my_brick --path ./path/to/my_brick
 
 mason list --global
 
-mason new sqlite --hooks
-
 mason remove -g <BRICK_NAME>
 
 mason upgrade --global
