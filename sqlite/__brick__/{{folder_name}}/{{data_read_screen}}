@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+import '{{db_file_name}}';
+import '{{model_file_name}}';
+
+class {{class_name}}DataReadScreen extends StatefulWidget {
+  const {{class_name}}DataReadScreen({super.key});
+
+  @override
+  State<{{class_name}}DataReadScreen> createState() => _{{class_name}}DataReadScreenState();
+}
+
+class _{{class_name}}DataReadScreenState extends State<{{class_name}}DataReadScreen> {
+   {{class_name}}DB ? instance;
+  Future<List<{{class_name}}Model>>? model;
+  @override
+  void initState() {
+    super.initState();
+    instance =  {{class_name}}DB ();
+    loadData();
+  }
+
+  loadData() async {
+    model = instance!.read();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          FutureBuilder(
+              future: model,
+              builder: (context, AsyncSnapshot<List<{{class_name}}Model>> snapshot) {
+                return snapshot.connectionState == ConnectionState.waiting
+                    ? const Center(child: Text('loading...'))
+                    : SizedBox(
+                        height: 300,
+                        width: double.infinity,
+                        child: ListView.builder(
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, index) => snapshot.data ==
+                                    null
+                                ? null
+                                : Text(snapshot.data![index].name.toString())),
+                      );
+              })
+        ],
+      ),
+    );
+  }
+}
