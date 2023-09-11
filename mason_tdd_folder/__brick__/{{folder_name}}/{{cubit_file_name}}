@@ -1,8 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
+  final {{class_name}}BaseApiService baseApiServices;
+  final {{class_name}}Navigator navigator;
 final {{class_name}}InitialParams initialParams;
-{{class_name}}Cubit(this.initialParams) : super({{class_name}}State.initial(initialParams: initialParams));
+{{class_name}}Cubit(this.initialParams,this.baseApiServices,this.navigator) : super({{class_name}}State.initial(initialParams: initialParams));
+
+Future<void> fetch{{class_name}}() async {
+    emit(state.copyWith(isloading: true, error: null));
+    final {{class_name}} = await baseApiServices.get{{class_name}}();
+    users.fold((l) {
+      emit(state.copyWith(error: l.error));
+    }, ((r) {
+      emit(state.copyWith(users: r, isloading: false));
+    }));
+  }
 
 void onInit({{class_name}}InitialParams initialParams) {}
 }
