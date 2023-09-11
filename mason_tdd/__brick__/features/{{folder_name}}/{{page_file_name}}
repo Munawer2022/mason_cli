@@ -33,14 +33,14 @@ return Scaffold(
         child: BlocBuilder(
           bloc: cubit,
           builder: (context, state) {
-            final userState = state as {{class_name}}State;
-            if (userState.error != null) {
-              return Center(child: Text(userState.error!));
+            state as {{class_name}}State;
+            if (state.error != null) {
+              return Center(child: Text(state.error!));
             }
-            return userState.isLoading
+            return state.isLoading
                 ? const CircularProgressIndicator()
                 : ListView(
-                    children: userState.users
+                    children: state.users
                         .map(
                           (user) => UserCard(
                             user: user,
