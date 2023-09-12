@@ -1,3 +1,7 @@
+//for complex model 
+//  factory {{class_name}}Model.fromJson(Map<String, dynamic> json) => {{class_name}}Model(
+// id: json['id'] as int? ?? 0,
+// name: json['name'] as String? ?? '',);
 class {{class_name}}Model {
   // final int id;
   // final String name;
