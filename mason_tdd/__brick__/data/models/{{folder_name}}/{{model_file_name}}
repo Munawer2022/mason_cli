@@ -1,3 +1,23 @@
-class {{class_name}}Model{
+class {{class_name}}Model {
+  // final int id;
+  // final String name;
+  
+
+  // {{class_name}}Model({
+  //   required this.id,
+  //   required this.name,
     
+  // });
+
+  // factory {{class_name}}Model.fromJson(Map<String, dynamic> json) => {{class_name}}Model(
+  //       id: json['id'],
+  //       name: json['name'],
+        
+  //     );
+
+  // Mock{{class_name}}Model toDomain() => Mock{{class_name}}Model(
+  //       id: id,
+  //       name: name,
+        
+  //     );
 }
