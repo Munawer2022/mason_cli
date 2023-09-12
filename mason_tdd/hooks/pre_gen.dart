@@ -20,6 +20,7 @@ void run(HookContext context) {
   final failureName = "${stem.snakeCase}_failure.dart";
   final useCasesName = "${stem.snakeCase}_use_cases.dart";
   final dataSourcesName = "${stem.snakeCase}_data_sources.dart";
+  final main = "main.dart";
 
   context.vars = {
     ...context.vars,
@@ -39,5 +40,6 @@ void run(HookContext context) {
     "failure_name": failureName,
     "use_cases_name": useCasesName,
     "data_sources_name": dataSourcesName,
+    "main": main,
   };
 }

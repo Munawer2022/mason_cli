@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'config/navigation/app_navigator.dart';
+
+
+GetIt getIt = GetIt.instance;
+void main() async {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarContrastEnforced: true,
+      systemStatusBarContrastEnforced: true));
+  getIt.registerSingleton<NetworkRepository>(NetworkRepository());
+  getIt.registerSingleton<{{class_name}}BaseApiService>({{class_name}}Repository(getIt()));
+  getIt.registerSingleton<AppNavigator>(AppNavigator());
+  getIt.registerSingleton<{{class_name}}Navigator>({{class_name}}Navigator(getIt()));
+  getIt.registerFactoryParam<{{class_name}}Cubit, {{class_name}}InitailParams, dynamic>(
+      (params, _) => {{class_name}}Cubit(getIt(), getIt(), params)..fetch{{class_name}}());
+
+  runApp(
+    const MyApp(),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: {{class_name}}Page(
+            cubit: getIt(param1: const {{class_name}}InitailParams())));
+  }
+}
