@@ -8,6 +8,7 @@ import 'domain/repositories/{{folder_name}}/{{base_api_service_file_name}}';
 import 'features/{{folder_name}}/{{cubit_file_name}}';
 import 'features/{{folder_name}}/{{navigator_file_name}}';
 import 'features/{{folder_name}}/{{page_file_name}}';
+import 'features/{{folder_name}}/{{initial_params_file_name}}';
 
 
 GetIt getIt = GetIt.instance;

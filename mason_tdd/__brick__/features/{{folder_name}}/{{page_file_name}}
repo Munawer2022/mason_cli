@@ -38,7 +38,7 @@ return Scaffold(
             if (state.error != null) {
               return Center(child: Text(state.error!));
             }
-            return state.isLoading
+            return state.isloading
                 ? const CircularProgressIndicator()
                 : ListView();
           },
