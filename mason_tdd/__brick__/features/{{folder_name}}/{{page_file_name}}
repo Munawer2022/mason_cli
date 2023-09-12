@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '{{cubit_file_name}}';
+import '{{state_file_name}}';
 
 
 class {{class_name}}Page extends StatefulWidget {
@@ -21,7 +23,6 @@ class _{{class_name}}State extends State<{{class_name}}Page> {
   @override
   void initState() {
     super.initState();
-    // TODO: Improve this
     cubit.navigator.context = context;
   }
 
@@ -39,16 +40,7 @@ return Scaffold(
             }
             return state.isLoading
                 ? const CircularProgressIndicator()
-                : ListView(
-                    children: state.users
-                        .map(
-                          (user) => UserCard(
-                            user: user,
-                            onTap: () => cubit.onTapUser(user),
-                          ),
-                        )
-                        .toList(),
-                  );
+                : ListView();
           },
         ),
       ),
