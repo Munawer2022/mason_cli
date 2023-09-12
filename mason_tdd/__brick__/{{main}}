@@ -25,7 +25,7 @@ void main() async {
   getIt.registerSingleton<AppNavigator>(AppNavigator());
   getIt.registerSingleton<{{class_name}}Navigator>({{class_name}}Navigator(getIt()));
   getIt.registerFactoryParam<{{class_name}}Cubit, {{class_name}}InitialParams, dynamic>(
-      (params, _) => {{class_name}}Cubit(getIt(), getIt(), params)..fetch{{class_name}}());
+      (params, _) => {{class_name}}Cubit(params, getIt(), getIt())..fetch{{class_name}}());
 
   runApp(
     const MyApp(),
