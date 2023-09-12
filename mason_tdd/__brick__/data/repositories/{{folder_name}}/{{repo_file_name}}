@@ -4,13 +4,13 @@ class {{class_name}}Repository implements {{class_name}}BaseApiService {
   {{class_name}}Repository(this._networkRepository);
 
   // @override
-  // Future<Either<UsersListFailure, List<User>>> getUsers() =>
+  // Future<Either<{{class_name}}Failure, List<Mock{{class_name}}Model>>> get{{class_name}}() =>
   //     _networkRepository.get('https://jsonplaceholder.typicode.com/users').then(
   //           (value) => value.fold(
-  //             (l) => left(UsersListFailure(error: l.error)),
+  //             (l) => left({{class_name}}Failure(error: l.error)),
   //             (r) {
   //               var list = r as List;
-  //               return right(list.map((e) => UserJson.fromJson(e).toDomain()).toList());
+  //               return right(list.map((e) => {{class_name}}Model.fromJson(e).toDomain()).toList());
   //             },
   //           ),
   //         );

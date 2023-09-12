@@ -1,7 +1,7 @@
 class Mock{{class_name}}Repository implements {{class_name}}BaseApiService {
   // @override
-  // Future<Either<UsersListFailure, List<User>>> getUsers() async => right([
-  //       User(
+  // Future<Either<{{class_name}}Failure, List<Mock{{class_name}}Model>>> get{{class_name}}() async => right([
+  //       Mock{{class_name}}Model(
   //         id: 123,
   //         name: 'name',
   //         username: 'username',
