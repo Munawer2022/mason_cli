@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'config/navigation/app_navigator.dart';
+import 'config/network/network_repository.dart';
+import 'data/repositories/{{folder_name}}/{{repo_file_name}}';
+import 'domain/repositories/{{folder_name}}/{{base_api_service_file_name}}';
+import 'features/{{folder_name}}/{{cubit_file_name}}';
+import 'features/{{folder_name}}/{{navigator_file_name}}';
+import 'features/{{folder_name}}/{{page_file_name}}';
 
 
 GetIt getIt = GetIt.instance;
@@ -17,7 +23,7 @@ void main() async {
   getIt.registerSingleton<{{class_name}}BaseApiService>({{class_name}}Repository(getIt()));
   getIt.registerSingleton<AppNavigator>(AppNavigator());
   getIt.registerSingleton<{{class_name}}Navigator>({{class_name}}Navigator(getIt()));
-  getIt.registerFactoryParam<{{class_name}}Cubit, {{class_name}}InitailParams, dynamic>(
+  getIt.registerFactoryParam<{{class_name}}Cubit, {{class_name}}InitialParams, dynamic>(
       (params, _) => {{class_name}}Cubit(getIt(), getIt(), params)..fetch{{class_name}}());
 
   runApp(
@@ -33,6 +39,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: {{class_name}}Page(
-            cubit: getIt(param1: const {{class_name}}InitailParams())));
+            cubit: getIt(param1: const {{class_name}}InitialParams())));
   }
 }
