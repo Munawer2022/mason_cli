@@ -4,7 +4,7 @@ class {{class_name}}State {
   final String? error;
 
   {{class_name}}State({required this.users, required this.isloading, this.error});
-  factory {{class_name}}State.initial() => {{class_name}}State(users: [], isloading: false);
+  factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) => {{class_name}}State(users: [], isloading: false);
   {{class_name}}State copyWith(
           {List<Mock{{class_name}}Model>? users, bool? isloading, String? error}) =>
       {{class_name}}State(

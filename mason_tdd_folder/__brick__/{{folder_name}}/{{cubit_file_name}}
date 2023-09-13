@@ -7,7 +7,7 @@ class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
   final {{class_name}}BaseApiService baseApiServices;
   final {{class_name}}Navigator navigator;
 final {{class_name}}InitialParams initialParams;
-{{class_name}}Cubit(this.initialParams,this.baseApiServices,this.navigator) : super({{class_name}}State.initial());
+{{class_name}}Cubit(this.initialParams,this.baseApiServices,this.navigator) : super({{class_name}}State.initial(initialParams:initialParams));
 
 Future<void> fetch{{class_name}}() async {
     emit(state.copyWith(isloading: true, error: null));
@@ -19,7 +19,7 @@ Future<void> fetch{{class_name}}() async {
     }));
   }
 
-void onInit(Mock{{class_name}}Model mock{{class_name}}Model) {}
+
 }
 
 
