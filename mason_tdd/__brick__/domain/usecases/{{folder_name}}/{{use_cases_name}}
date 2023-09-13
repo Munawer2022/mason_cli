@@ -1,4 +1,4 @@
 class {{class_name}}UseCases {
-  Future<Either<{{class_name}}Failure, {{class_name}}Model>> execute() {
+  Future<Either<{{class_name}}UseCasesFailure, Mock{{class_name}}Model>> execute() {
   }
 }
