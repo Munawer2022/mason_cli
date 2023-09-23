@@ -1,3 +1,12 @@
+extension EmptySpace on num {
+  // SizedBox get height => SizedBox(
+  //       height: toDouble(),
+  //     );
+  // SizedBox get width => SizedBox(
+  //       width: toDouble(),
+  //     );
+}
+
 class Utils {
 //   class TextFieldForm extends StatelessWidget {
 //   final validator;
