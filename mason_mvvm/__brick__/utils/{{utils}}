@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+  final ios = Platform.isIOS;
 class Utils {
   // bool isIOS(context) => Theme.of(context).platform == TargetPlatform.iOS;
 }

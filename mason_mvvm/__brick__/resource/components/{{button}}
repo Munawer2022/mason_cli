@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+
+class Button {
+  Widget getButton(String text, onPressed,
+          {double? width, double? height, bool loading = false}) =>
+     ios
+          ? cupertinoButton(text, onPressed,
+              width: width, height: height, loading: loading)
+          : elevatedButton(text, onPressed,
+              width: width, height: height, loading: loading);
+
+  Widget cupertinoButton(String text, onPressed,
+      {double? width, double? height, bool loading = false}) {
+    return SizedBox(
+      height: height ?? 50.0,
+      width: width ?? double.infinity,
+      child: CupertinoButton(
+        color: Colors.blue.shade300,
+        onPressed: loading == true ? null : onPressed,
+        child: loading
+            ? const CupertinoActivityIndicator()
+            : Text(
+                text,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+      ),
+    );
+  }
+
+  ElevatedButton elevatedButton(String text, onPressed,
+      {double? width, double? height, bool loading = false}) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue.shade300,
+          minimumSize: Size(width ?? double.infinity, height ?? 50.0)),
+      onPressed: loading == true ? null : onPressed,
+      child: loading
+          ? const CircularProgressIndicator(
+              color: Colors.white,
+            )
+          : Text(
+              text,
+              style: const TextStyle(color: Colors.white),
+            ),
+    );
+  }
+}

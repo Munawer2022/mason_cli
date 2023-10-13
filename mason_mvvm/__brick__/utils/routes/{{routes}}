@@ -5,43 +5,43 @@ import 'view/splash_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-   final ios = Platform.isIOS;
+ PageRoute pageRoute = PageRoute();
     switch (settings.name) {
       case RoutesName.splash:
-        return 
-       ios
-            ? CupertinoPageRoute(
-                builder: (BuildContext context) => const SplashScreen(),
-              )
-          :  
-        MaterialPageRoute(
-            builder: (BuildContext context) => const SplashScreen());
-
-    
-
-
+        return pageRoute.getPageRoute(const SplashScreen());
       default:
-        return ios
-            ?
-        CupertinoPageRoute(
+        return pageRoute.getDefaultRoute();
+    }
+  }
+}
+class PageRoute {
+  Route getPageRoute(page) =>
+      ios ? cupertinoPageRoute(page) : materialPageRoute(page);
+
+  cupertinoPageRoute(page) => CupertinoPageRoute(
+        builder: (BuildContext context) => page,
+      );
+  materialPageRoute(page) => MaterialPageRoute(
+        builder: (BuildContext context) => page,
+      );
+
+      Route getDefaultRoute() =>
+      ios ? cupertinoDefaultRoute() : materialDefaultRoute();
+
+  cupertinoDefaultRoute() => CupertinoPageRoute(
   builder: (BuildContext context) {
-    return CupertinoPageScaffold(
-     
+    return const CupertinoPageScaffold(
       child: Center(
         child: Text('No route defined'),
       ),
     );
   },
-)
-
-
-   :      MaterialPageRoute(builder: (_) {
+);
+  materialDefaultRoute() => MaterialPageRoute(builder: (_) {
           return const Scaffold(
             body: Center(
               child: Text('No route defined'),
             ),
           );
         });
-    }
-  }
 }

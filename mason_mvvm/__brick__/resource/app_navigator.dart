@@ -5,16 +5,19 @@ class AppNavigator {
   //     MaterialPageRoute(
   //       builder: (context) => page,
   //     ),
-  //   );
+  //   );}
   // //
   // push(BuildContext context, Widget page) {
   // Navigator.of(context).push(
   //           SlideFromRightPageRoute(
   //             widget: page
   //           ),
-  //         );
+  //         );}
+  // pop(BuildContext context) {
+  //   Navigator.of(context).pop();
+  // }
 }
-// }
+
 // class SlideFromRightPageRoute<T> extends PageRouteBuilder<T> {
 //   final Widget widget;
 
