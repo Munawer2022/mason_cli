@@ -1,0 +1,19 @@
+import 'package:flutter/material.dart';
+
+ElevatedButton elevatedButton(String text, onPressed,
+    {double? width, double? height, bool loading = false}) {
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue.shade300,
+        minimumSize: Size(width ?? double.infinity, height ?? 50.0)),
+    onPressed: loading == true ? null : onPressed,
+    child: loading
+        ? const CircularProgressIndicator(
+            color: Colors.white,
+          )
+        : Text(
+            text,
+            style: const TextStyle(color: Colors.white),
+          ),
+  );
+}

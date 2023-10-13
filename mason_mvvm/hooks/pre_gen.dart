@@ -15,7 +15,11 @@ void run(HookContext context) {
   final splashServices = "splash_services.dart";
   final splashscreen = "splash_screen.dart";
   final tokenmodel = "token_model.dart";
-  final tokenviewmodel = "token_view_model.dart";
+  final elevatedButton = "elevated_button.dart";
+  final networkApiService = "NetworkApiService.dart";
+  final apiResponse = "api_response.dart";
+  final routes = "routes.dart";
+  final utils = "utils.dart";
 
   context.vars = {
     ...context.vars,
@@ -32,6 +36,10 @@ void run(HookContext context) {
     "splash_services": splashServices,
     "splash_screen": splashscreen,
     "token_model": tokenmodel,
-    "token_view_model": tokenviewmodel,
+    "elevated_button": elevatedButton,
+    "NetworkApiService": networkApiService,
+    "api_response": apiResponse,
+    "routes": routes,
+      "utils": utils,
   };
 }

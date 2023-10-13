@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'utils/routes/routes_name.dart';
-import 'view_model/user_view_model.dart';
-import 'model/user_model.dart';
+import 'view_model/token_view_model.dart';
+import 'model/token_model.dart';
 
 class SplashServices {
 
 
-  Future<UserModel> getUserDate() => UserViewModel().getUser();
+  Future<TokenModel> getTokenDate() => TokenViewModel().getToken();
 
 
   void checkAuthentication(BuildContext context)async{
 
-    getUserDate().then((value)async{
+    getTokenDate().then((value)async{
 
       print(value.token.toString());
 
