@@ -13,13 +13,16 @@ void run(HookContext context) {
   final main = "main.dart";
   final folderName = "${stem.snakeCase}";
   final splashServices = "splash_services.dart";
-  final splashscreen = "splash_screen.dart";
+  final splashscreen = "splash_view.dart";
   final tokenmodel = "token_model.dart";
   final button = "button.dart";
   final networkApiService = "NetworkApiService.dart";
   final apiResponse = "api_response.dart";
   final routes = "routes.dart";
   final utils = "utils.dart";
+  final authRepository = "auth_repository.dart";
+  final screenName = "${stem.snakeCase}_view.dart";
+  final screenViewModel = "${stem.snakeCase}_view_model.dart";
 
   context.vars = {
     ...context.vars,
@@ -40,6 +43,9 @@ void run(HookContext context) {
     "NetworkApiService": networkApiService,
     "api_response": apiResponse,
     "routes": routes,
-      "utils": utils,
+    "utils": utils,
+    "auth_repository": authRepository,
+    "screen_name": screenName,
+    "screen_view_model": screenViewModel,
   };
 }

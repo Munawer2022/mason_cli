@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+import 'data/response/api_response.dart';
+import 'model/{{model_file_name}}';
+import 'respository/{{repo_file_name}}';
+
+class {{class_name}}ViewViewModel with ChangeNotifier {
+  final _myRepo = {{class_name}}Repository();
+
+  ApiResponse<{{class_name}}Model> model = ApiResponse.loading();
+
+  set{{class_name}}(ApiResponse<{{class_name}}Model> response) {
+    model = response;
+    notifyListeners();
+  }
+
+  Future<void> fetch{{class_name}}Api() async {
+    set{{class_name}}(ApiResponse.loading());
+
+    _myRepo.fetch{{class_name}}().then((value) {
+      set{{class_name}}(ApiResponse.completed(value));
+    }).onError((error, stackTrace) {
+      set{{class_name}}(ApiResponse.error(error.toString()));
+    });
+  }
+}

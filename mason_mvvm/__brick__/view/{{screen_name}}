@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'data/response/status.dart';
+import 'model/{{model_file_name}}';
+import 'utils/routes/routes_name.dart';
+import 'utils/utils.dart';
+import 'view_model/home_view_model.dart';
+
+class {{class_name}}View extends StatefulWidget {
+  const {{class_name}}View({Key? key}) : super(key: key);
+
+  @override
+  _{{class_name}}ViewState createState() => _{{class_name}}ViewState();
+}
+
+class _{{class_name}}ViewState extends State<{{class_name}}View> {
+  {{class_name}}ViewViewModel model = {{class_name}}ViewViewModel();
+
+  @override
+  void initState() {
+    model.fetch{{class_name}}Api();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final tokenPrefernece = Provider.of<UserViewModel>(context);
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          InkWell(
+              onTap: () {
+                userPrefernece.remove().then((value) {
+                  Navigator.pushNamed(context, RoutesName.login);
+                });
+              },
+              child: Center(child: Text('Logout'))),
+          SizedBox(
+            width: 20,
+          )
+        ],
+      ),
+      body: ChangeNotifierProvider<{{class_name}}ViewViewModel>(
+        create: (BuildContext context) => homeViewViewModel,
+        child: Consumer<HomeViewViewModel>(builder: (context, value, _) {
+          switch (value.moviesList.status) {
+            case Status.LOADING:
+              return Center(child: CircularProgressIndicator());
+            case Status.ERROR:
+              return Center(child: Text(value.moviesList.message.toString()));
+            case Status.COMPLETED:
+              return const SizedBox();
+          }
+          return Container();
+        }),
+      ),
+    );
+  }
+}
