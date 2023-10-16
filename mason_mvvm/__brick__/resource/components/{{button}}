@@ -3,15 +3,16 @@ import 'package:flutter/cupertino.dart';
 import '/utils/utils.dart';
 
 class Button {
-  Widget getButton(String text, onPressed,
-          {double? width, double? height, bool loading = false}) =>
+  Widget getButton(
+          { required String text,
+          required onPressed,double? width, double? height, bool loading = false}) =>
      ios
-          ? cupertinoButton(text, onPressed,
+          ? _cupertinoButton(text, onPressed,
               width: width, height: height, loading: loading)
-          : elevatedButton(text, onPressed,
+          : _elevatedButton(text, onPressed,
               width: width, height: height, loading: loading);
 
-  Widget cupertinoButton(String text, onPressed,
+  Widget _cupertinoButton(String text, onPressed,
       {double? width, double? height, bool loading = false}) {
     return SizedBox(
       height: height ?? 50.0,
@@ -31,7 +32,7 @@ class Button {
     );
   }
 
-  ElevatedButton elevatedButton(String text, onPressed,
+  ElevatedButton _elevatedButton(String text, onPressed,
       {double? width, double? height, bool loading = false}) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(

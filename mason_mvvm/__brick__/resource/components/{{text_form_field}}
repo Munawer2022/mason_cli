@@ -1,0 +1,75 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import '/utils/utils.dart';
+
+class PlatformTextFormField {
+  Widget getTextFormField({
+    controller,
+    hintText,
+    keyboardType,
+    prefixIcon,
+    suffixIcon,
+  }) =>
+      ios
+          ? _cupertinoTextFormField(
+              controller, hintText, keyboardType, prefixIcon, suffixIcon)
+          : _materialTextFormField(
+              controller,
+              hintText,
+              keyboardType,
+              prefixIcon,
+              suffixIcon,
+            );
+
+  CupertinoTextField _cupertinoTextFormField(
+      [controller, hintText, keyboardType, prefixIcon, suffixIcon]) {
+    return CupertinoTextField(
+      controller: controller,
+      placeholder: hintText,
+      keyboardType: keyboardType,
+      prefix: prefixIcon,
+      suffix: suffixIcon,
+      textInputAction: TextInputAction.next,
+    );
+  }
+
+  TextFormField _materialTextFormField(
+      [controller, hintText, keyboardType, prefixIcon, suffixIcon]) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        suffixIcon: suffixIcon,
+        prefixIcon: prefixIcon,
+        hintText: hintText,
+      ),
+    );
+  }
+}
+ //this hide code for password text field.
+
+
+//  ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
+
+
+// ValueListenableBuilder(
+//             valueListenable: _obsecurePassword,
+//             builder: (context, value, child) {
+//               return TextFormField(
+//                 obscureText: _obsecurePassword.value,
+//                 obscuringCharacter: "*",
+//                 decoration: InputDecoration(
+//                   hintText: 'Password',
+//                   labelText: 'Password',
+//                   prefixIcon: Icon(Icons.lock_open_rounded),
+//                   suffixIcon: InkWell(
+//                       onTap: () {
+//                         _obsecurePassword.value = !_obsecurePassword.value;
+//                       },
+//                       child: Icon(_obsecurePassword.value
+//                           ? Icons.visibility_off_outlined
+//                           : Icons.visibility)),
+//                 ),
+//               );
+//             }),

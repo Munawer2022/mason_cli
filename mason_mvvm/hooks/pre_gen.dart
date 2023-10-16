@@ -29,6 +29,7 @@ void run(HookContext context) {
   final signupview = "signup_view.dart";
   final routesName = "routes_name.dart";
   final appNavigator = "app_navigator.dart";
+  final textformfield = "text_form_field.dart";
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,
@@ -58,5 +59,6 @@ void run(HookContext context) {
     "signup_view": signupview,
     "routes_name": routesName,
     "app_navigator": appNavigator,
+    "text_form_field": textformfield,
   };
 }
