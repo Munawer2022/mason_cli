@@ -28,6 +28,7 @@ void run(HookContext context) {
   final authViewModel = "auth_view_model.dart";
   final signupview = "signup_view.dart";
   final routesName = "routes_name.dart";
+  final appNavigator = "app_navigator.dart";
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,
@@ -56,5 +57,6 @@ void run(HookContext context) {
     "auth_view_view_model": authViewModel,
     "signup_view": signupview,
     "routes_name": routesName,
+    "app_navigator": appNavigator,
   };
 }

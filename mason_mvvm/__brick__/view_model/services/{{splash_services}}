@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/services/token_view_model.dart';
 import '/model/token_model.dart';
+import '/resource/app_navigator.dart';
 
 class SplashServices {
 
@@ -18,10 +19,10 @@ class SplashServices {
 
       if(value.token.toString() == 'null' || value.token.toString() == ''){
         await Future.delayed(const Duration(seconds: 2));
-        Navigator.pushNamed(context, RoutesName.login);
+        AppNavigator().push(context, RoutesName.login);
       }else {
         await  Future.delayed(const Duration(seconds: 2));
-        Navigator.pushNamed(context, RoutesName.home);
+        AppNavigator().push(context, RoutesName.{{folder_name}});
       }
 
     }).onError((error, stackTrace){

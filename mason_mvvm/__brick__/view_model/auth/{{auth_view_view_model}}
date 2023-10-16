@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '/resource/app_navigator.dart';
 import '/model/token_model.dart';
 import '/respository/auth_repository.dart';
 import '/utils/routes/routes_name.dart';
@@ -31,7 +32,7 @@ class AuthViewModel with ChangeNotifier {
       setLoading(false);
       final tokenPreference = Provider.of<TokenViewModel>(context, listen: false);
       tokenPreference.saveToken(TokenModel(token: value['token'].toString()));
-      Navigator.pushNamed(context, RoutesName.home);
+      AppNavigator().push(context, RoutesName.{{folder_name}});
     }).onError((error, stackTrace) {
       setLoading(false);
     });
@@ -42,7 +43,7 @@ class AuthViewModel with ChangeNotifier {
 
     _myRepo.signUpApi(data).then((value) {
       setSignUpLoading(false);
-      Navigator.pushNamed(context, RoutesName.home);
+      AppNavigator().push(context, RoutesName.{{folder_name}});
     }).onError((error, stackTrace) {
       setSignUpLoading(false);
     });

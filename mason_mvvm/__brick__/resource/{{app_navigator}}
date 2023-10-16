@@ -1,11 +1,11 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+
 class AppNavigator {
-  // push(BuildContext context, Widget page) {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(
-  //       builder: (context) => page,
-  //     ),
-  //   );}
+  push(BuildContext context, page) {
+    Navigator.of(context).push(
+    page,
+    );
+  }
   // //
   // push(BuildContext context, Widget page) {
   // Navigator.of(context).push(
@@ -13,9 +13,9 @@ class AppNavigator {
   //             widget: page
   //           ),
   //         );}
-  // pop(BuildContext context) {
-  //   Navigator.of(context).pop();
-  // }
+  pop(BuildContext context) {
+    Navigator.of(context).pop();
+  }
 }
 
 // class SlideFromRightPageRoute<T> extends PageRouteBuilder<T> {

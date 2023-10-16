@@ -3,16 +3,26 @@ import 'package:flutter/cupertino.dart';
 import '/utils/routes/routes_name.dart';
 import '/utils/utils.dart';
 import '/view/splash_view.dart';
+import '/view/{{screen_name}}';
+import '/view/login_view.dart';
+import '/view/signup_view.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
  PageRoute pageRoute = PageRoute();
     switch (settings.name) {
       case RoutesName.splash:
-        return pageRoute.getPageRoute(const SplashScreen());
+        return pageRoute.getPageRoute(const SplashView());
+      case RoutesName.{{folder_name}}:
+        return pageRoute.getPageRoute(const {{class_name}}View());
+      case RoutesName.login:
+        return pageRoute.getPageRoute(const LoginView());
+      case RoutesName.signUp:
+        return pageRoute.getPageRoute(const SignUpView());
+    
       default:
         return pageRoute.getDefaultRoute();
-    }
+    }s
   }
 }
 class PageRoute {

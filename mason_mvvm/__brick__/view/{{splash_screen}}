@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import '/view_model/services/splash_services.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+class SplashView extends StatefulWidget {
+  const SplashView({Key? key}) : super(key: key);
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _SplashViewState createState() => _SplashViewState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashViewState extends State<SplashView> {
   SplashServices splashServices = SplashServices();
 
   @override
