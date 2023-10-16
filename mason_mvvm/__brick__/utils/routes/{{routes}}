@@ -4,8 +4,8 @@ import '/utils/routes/routes_name.dart';
 import '/utils/utils.dart';
 import '/view/splash_view.dart';
 import '/view/{{screen_name}}';
-import '/view/login_view.dart';
-import '/view/signup_view.dart';
+import '/view/auth/login_view.dart';
+import '/view/auth/signup_view.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -22,7 +22,7 @@ class Routes {
     
       default:
         return pageRoute.getDefaultRoute();
-    }s
+    }
   }
 }
 class PageRoute {

@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import '/utils/routes/routes.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/{{screen_view_model}}';
+import '/view_model/services/{{token_view_model}}';
+import '/view_model/auth/{{auth_view_view_model}}';
+
 
 void main() {
   runApp(const MyApp());
@@ -16,6 +19,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => {{class_name}}ViewModel()),
+            ChangeNotifierProvider(create: (_) => TokenViewModel()),
+            ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ],
       child: const MaterialApp(
         initialRoute: RoutesName.splash,
