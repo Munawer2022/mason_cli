@@ -4,7 +4,8 @@ import 'data/response/status.dart';
 import 'model/{{model_file_name}}';
 import 'utils/routes/routes_name.dart';
 import 'utils/utils.dart';
-import 'view_model/home_view_model.dart';
+import 'view_model/{{screen_view_model}}';
+import 'view_model/{{token_view_model}}';
 
 class {{class_name}}View extends StatefulWidget {
   const {{class_name}}View({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class {{class_name}}View extends StatefulWidget {
 }
 
 class _{{class_name}}ViewState extends State<{{class_name}}View> {
-  {{class_name}}ViewViewModel model = {{class_name}}ViewViewModel();
+  {{class_name}}ViewModel model = {{class_name}}ViewModel();
 
   @override
   void initState() {
@@ -24,14 +25,14 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
 
   @override
   Widget build(BuildContext context) {
-    final tokenPrefernece = Provider.of<UserViewModel>(context);
+    final tokenPrefernece = Provider.of<TokenViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
           InkWell(
               onTap: () {
-                userPrefernece.remove().then((value) {
+                tokenPrefernece.remove().then((value) {
                   Navigator.pushNamed(context, RoutesName.login);
                 });
               },
@@ -41,12 +42,10 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
           )
         ],
       ),
-      body: ChangeNotifierProvider<{{class_name}}ViewViewModel>(
-        create: (BuildContext context) => homeViewViewModel,
-        child: Consumer<HomeViewViewModel>(builder: (context, value, _) {
+      body: Consumer<HomeViewViewModel>(builder: (context, value, _) {
           switch (value.moviesList.status) {
             case Status.LOADING:
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             case Status.ERROR:
               return Center(child: Text(value.moviesList.message.toString()));
             case Status.COMPLETED:
@@ -54,7 +53,7 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
           }
           return Container();
         }),
-      ),
+      
     );
   }
 }

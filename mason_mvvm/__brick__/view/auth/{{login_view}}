@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:mvvm/res/components/round_button.dart';
-import 'package:mvvm/utils/routes/routes_name.dart';
-import 'package:mvvm/utils/utils.dart';
-import 'package:mvvm/view/home_screen.dart';
-import 'package:mvvm/view_model/auth_view_model.dart';
+import 'utils/routes/routes_name.dart';
+import 'response/components/button.dart';
+import 'view/{{screen_name}}';
+import 'view_model/auth_view_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -19,20 +18,12 @@ class _LoginViewState extends State<LoginView> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  FocusNode emailFocusNode = FocusNode();
-  FocusNode passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-
     _emailController.dispose();
     _passwordController.dispose();
-
-    emailFocusNode.dispose();
-    passwordFocusNode.dispose();
-
     _obsecurePassword.dispose();
   }
 

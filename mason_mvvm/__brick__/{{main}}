@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'utils/routes/routes.dart';
 import 'utils/routes/routes_name.dart';
-import 'view_model/{{class_name}}_view_model.dart';
+import 'view_model/{{screen_view_model}}';
 
 void main() {
   runApp(const MyApp());
