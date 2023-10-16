@@ -4,16 +4,28 @@ import '/utils/utils.dart';
 
 class Button {
   Widget getButton(
-          { required String text,
-          required onPressed,double? width, double? height, bool loading = false}) =>
-     ios
-          ? _cupertinoButton(text, onPressed,
-              width: width, height: height, loading: loading)
-          : _elevatedButton(text, onPressed,
-              width: width, height: height, loading: loading);
+          {required String text,
+          required void Function()? onPressed,
+          double? width,
+          double? height,
+          bool loading = false}) =>
+      ios
+          ? _cupertinoButton(text,
+              onPressed: onPressed,
+              width: width,
+              height: height,
+              loading: loading)
+          : _elevatedButton(text,
+              onPressed: onPressed,
+              width: width,
+              height: height,
+              loading: loading);
 
-  Widget _cupertinoButton(String text, onPressed,
-      {double? width, double? height, bool loading = false}) {
+  Widget _cupertinoButton(String text,
+      {required void Function()? onPressed,
+      double? width,
+      double? height,
+      bool loading = false}) {
     return SizedBox(
       height: height ?? 50.0,
       width: width ?? double.infinity,
@@ -32,8 +44,11 @@ class Button {
     );
   }
 
-  ElevatedButton _elevatedButton(String text, onPressed,
-      {double? width, double? height, bool loading = false}) {
+  ElevatedButton _elevatedButton(String text,
+      {required void Function()? onPressed,
+      double? width,
+      double? height,
+      bool loading = false}) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue.shade300,

@@ -3,26 +3,32 @@ import 'package:flutter/material.dart';
 import '/utils/utils.dart';
 
 class PlatformTextFormField {
-  Widget getTextFormField({
-    controller,
-    hintText,
-    keyboardType,
-    prefixIcon,
-    suffixIcon,
-  }) =>
+  Widget getTextFormField(
+          {TextEditingController? controller,
+          String? hintText,
+          TextInputType? keyboardType,
+          Widget? prefixIcon,
+          Widget? suffixIcon}) =>
       ios
           ? _cupertinoTextFormField(
-              controller, hintText, keyboardType, prefixIcon, suffixIcon)
+              controller: controller,
+              hintText: hintText,
+              keyboardType: keyboardType,
+              prefixIcon: prefixIcon,
+              suffixIcon: suffixIcon)
           : _materialTextFormField(
-              controller,
-              hintText,
-              keyboardType,
-              prefixIcon,
-              suffixIcon,
-            );
+              controller: controller,
+              hintText: hintText,
+              keyboardType: keyboardType,
+              prefixIcon: prefixIcon,
+              suffixIcon: suffixIcon);
 
   CupertinoTextField _cupertinoTextFormField(
-      [controller, hintText, keyboardType, prefixIcon, suffixIcon]) {
+      {TextEditingController? controller,
+      String? hintText,
+      TextInputType? keyboardType,
+      Widget? prefixIcon,
+      Widget? suffixIcon}) {
     return CupertinoTextField(
       controller: controller,
       placeholder: hintText,
@@ -34,7 +40,11 @@ class PlatformTextFormField {
   }
 
   TextFormField _materialTextFormField(
-      [controller, hintText, keyboardType, prefixIcon, suffixIcon]) {
+      {TextEditingController? controller,
+      String? hintText,
+      TextInputType? keyboardType,
+      Widget? prefixIcon,
+      Widget? suffixIcon}) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
