@@ -11,7 +11,7 @@ class AuthRepository {
           await _apiServices.getPostApiResponse(AppUrl.loginEndPint, data);
       return response;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
