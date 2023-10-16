@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'utils/routes/routes_name.dart';
 import 'response/components/button.dart';
 import 'view/{{screen_name}}';
-import 'view_model/auth_view_model.dart';
+import 'view_model/auth/auth_view_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);

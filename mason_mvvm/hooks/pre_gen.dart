@@ -26,7 +26,8 @@ void run(HookContext context) {
   final screenViewModel = "${stem.snakeCase}_view_model.dart";
   final loginview = "login_view.dart";
   final authViewModel = "auth_view_view_model.dart";
-final signupview = "signup_view.dart";
+  final signupview = "signup_view.dart";
+  final routesName = "routes_name.dart";
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,
@@ -42,7 +43,7 @@ final signupview = "signup_view.dart";
     "splash_services": splashServices,
     "splash_screen": splashscreen,
     "token_model": tokenmodel,
-     "token_view_model": tokenviewmodel,
+    "token_view_model": tokenviewmodel,
     "button": button,
     "NetworkApiService": networkApiService,
     "api_response": apiResponse,
@@ -51,8 +52,9 @@ final signupview = "signup_view.dart";
     "auth_repository": authRepository,
     "screen_name": screenName,
     "screen_view_model": screenViewModel,
-     "login_view": loginview,
-      "auth_view_view_model": authViewModel,
-  "signup_view": signupview,
+    "login_view": loginview,
+    "auth_view_view_model": authViewModel,
+    "signup_view": signupview,
+    "routes_name": routesName,
   };
 }

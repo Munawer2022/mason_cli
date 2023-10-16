@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'model/token_model.dart';
 import 'respository/auth_repository.dart';
 import 'utils/routes/routes_name.dart';
-import 'view_model/{{screen_view_model}}';
+import 'view_model/services/{{token_view_model}}';
 
 class AuthViewModel with ChangeNotifier {
   final _myRepo = AuthRepository();
@@ -30,7 +30,7 @@ class AuthViewModel with ChangeNotifier {
 
     _myRepo.loginApi(data).then((value) {
       setLoading(false);
-      final tokenPreference = Provider.of<{{class_name}}ViewModel>(context, listen: false);
+      final tokenPreference = Provider.of<TokenViewModel>(context, listen: false);
       tokenPreference.saveToken(TokenModel(token: value['token'].toString()));
       Navigator.pushNamed(context, RoutesName.home);
     }).onError((error, stackTrace) {

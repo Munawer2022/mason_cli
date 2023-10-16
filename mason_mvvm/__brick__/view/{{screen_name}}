@@ -5,7 +5,7 @@ import 'model/{{model_file_name}}';
 import 'utils/routes/routes_name.dart';
 import 'utils/utils.dart';
 import 'view_model/{{screen_view_model}}';
-import 'view_model/{{token_view_model}}';
+import 'view_model/services/{{token_view_model}}';
 
 class {{class_name}}View extends StatefulWidget {
   const {{class_name}}View({Key? key}) : super(key: key);
