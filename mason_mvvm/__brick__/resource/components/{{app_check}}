@@ -1,0 +1,32 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import '/utils/utils.dart';
+
+class AppCheck {
+ Widget getApp(
+          {String? initialRoute,
+          Route<dynamic>? Function(RouteSettings)? onGenerateRoute}) =>
+      ios
+          ? _cupertinoApp(
+              initialRoute: initialRoute, onGenerateRoute: onGenerateRoute)
+          : _materialApp(
+              initialRoute: initialRoute, onGenerateRoute: onGenerateRoute);
+
+  CupertinoApp _cupertinoApp(
+      {String? initialRoute,
+      Route<dynamic>? Function(RouteSettings)? onGenerateRoute}) {
+    return CupertinoApp(
+      initialRoute: initialRoute,
+      onGenerateRoute: onGenerateRoute,
+    );
+  }
+
+  MaterialApp _materialApp(
+      {String? initialRoute,
+      Route<dynamic>? Function(RouteSettings)? onGenerateRoute}) {
+    return MaterialApp(
+      initialRoute: initialRoute,
+      onGenerateRoute: onGenerateRoute,
+    );
+  }
+}

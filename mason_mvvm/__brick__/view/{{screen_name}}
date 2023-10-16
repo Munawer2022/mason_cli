@@ -4,6 +4,7 @@ import '/data/response/status.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/{{screen_view_model}}';
 import '/view_model/services/{{token_view_model}}';
+import '/resource/app_navigator.dart';
 
 class {{class_name}}View extends StatefulWidget {
   const {{class_name}}View({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
           InkWell(
               onTap: () {
                 tokenPrefernece.removeToken().then((value) {
-                  Navigator.pushNamed(context, RoutesName.login);
+                  AppNavigator().push(context, RoutesName.login);
                 });
               },
               child: Center(child: Text('Logout'))),
@@ -40,17 +41,17 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
           )
         ],
       ),
-      body: Consumer<{{class_name}}ViewModel>(builder: (context, value, _) {
-          switch (value.moviesList.status) {
-            case Status.LOADING:
-              return const Center(child: CircularProgressIndicator());
-            case Status.ERROR:
-              return Center(child: Text(value.moviesList.message.toString()));
-            case Status.COMPLETED:
-              return const SizedBox();
-          }
-          return Container();
-        }),
+      // body: Consumer<{{class_name}}ViewModel>(builder: (context, value, _) {
+      //     switch (value.moviesList.status) {
+      //       case Status.LOADING:
+      //         return const Center(child: CircularProgressIndicator());
+      //       case Status.ERROR:
+      //         return Center(child: Text(value.moviesList.message.toString()));
+      //       case Status.COMPLETED:
+      //         return const SizedBox();
+      //     }
+      //     return Container();
+      //   }),
       
     );
   }

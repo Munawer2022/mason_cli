@@ -1,0 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import '/utils/utils.dart';
+
+class ScaffoldCheck {
+  Widget getScaffold({required Widget body}) =>
+      ios ? _cupertinoPageScaffold(body: body) : _scaffold(body: body);
+
+  CupertinoPageScaffold _cupertinoPageScaffold({required Widget body}) {
+    return CupertinoPageScaffold(
+      child: body,
+    );
+  }
+
+  Scaffold _scaffold({Widget? body}) {
+    return Scaffold(
+      body: body,
+    );
+  }
+}

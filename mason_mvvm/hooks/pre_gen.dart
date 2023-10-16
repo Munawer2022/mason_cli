@@ -30,6 +30,8 @@ void run(HookContext context) {
   final routesName = "routes_name.dart";
   final appNavigator = "app_navigator.dart";
   final textformfield = "text_form_field.dart";
+  final appCheck = "app_check.dart";
+  final scaffoldCheck = "scaffold_check.dart";
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,
@@ -60,5 +62,7 @@ void run(HookContext context) {
     "routes_name": routesName,
     "app_navigator": appNavigator,
     "text_form_field": textformfield,
+    "app_check": appCheck,
+    "scaffold_check": scaffoldCheck,
   };
 }

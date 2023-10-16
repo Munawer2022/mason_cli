@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppNavigator {
   push(BuildContext context, page) {
-    Navigator.of(context).push(
+    Navigator.of(context).pushNamed(
     page,
     );
   }

@@ -1,1 +1,3 @@
-class {{class_name}}Model{}
+class {{class_name}}Model{
+    static fromJson(response) {}
+}
