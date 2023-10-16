@@ -1,10 +1,10 @@
-import 'data/network/BaseApiServices.dart';
-import 'data/network/NetworkApiService.dart';
-import 'model/{{model_file_name}}';
-import 'resource/app_url.dart';
+import '/data/network/BaseApiServices.dart';
+import '/data/network/NetworkApiService.dart';
+import '/model/{{model_file_name}}';
+import '/resource/app_url.dart';
 
 class {{class_name}}Repository {
-  BaseApiServices _apiServices = NetworkApiService();
+  final BaseApiServices _apiServices = NetworkApiService();
 
   Future<{{class_name}}Model> fetch{{class_name}}() async {
     try {
@@ -12,7 +12,7 @@ class {{class_name}}Repository {
           await _apiServices.getGetApiResponse(AppUrl.moviesListEndPoint);
       return response = {{class_name}}Model.fromJson(response);
     } catch (e) {
-      throw e;
+      rethrow;
     }
-  };
+  }
 }

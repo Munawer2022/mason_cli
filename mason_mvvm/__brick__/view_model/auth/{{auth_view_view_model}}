@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
-import 'model/token_model.dart';
-import 'respository/auth_repository.dart';
-import 'utils/routes/routes_name.dart';
-import 'view_model/services/{{token_view_model}}';
+import '/model/token_model.dart';
+import '/respository/auth_repository.dart';
+import '/utils/routes/routes_name.dart';
+import '/view_model/services/{{token_view_model}}';
 
 class AuthViewModel with ChangeNotifier {
   final _myRepo = AuthRepository();

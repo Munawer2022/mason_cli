@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'data/response/status.dart';
-import 'model/{{model_file_name}}';
-import 'utils/routes/routes_name.dart';
-import 'utils/utils.dart';
-import 'view_model/{{screen_view_model}}';
-import 'view_model/services/{{token_view_model}}';
+import '/data/response/status.dart';
+import '/utils/routes/routes_name.dart';
+import '/view_model/{{screen_view_model}}';
+import '/view_model/services/{{token_view_model}}';
 
 class {{class_name}}View extends StatefulWidget {
   const {{class_name}}View({Key? key}) : super(key: key);
@@ -32,7 +30,7 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
         actions: [
           InkWell(
               onTap: () {
-                tokenPrefernece.remove().then((value) {
+                tokenPrefernece.removeToken().then((value) {
                   Navigator.pushNamed(context, RoutesName.login);
                 });
               },
@@ -42,7 +40,7 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
           )
         ],
       ),
-      body: Consumer<HomeViewViewModel>(builder: (context, value, _) {
+      body: Consumer<{{class_name}}ViewModel>(builder: (context, value, _) {
           switch (value.moviesList.status) {
             case Status.LOADING:
               return const Center(child: CircularProgressIndicator());

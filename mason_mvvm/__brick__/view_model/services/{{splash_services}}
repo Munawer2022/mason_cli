@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'utils/routes/routes_name.dart';
-import 'view_model/services/token_view_model.dart';
-import 'model/token_model.dart';
+import '/utils/routes/routes_name.dart';
+import '/view_model/services/token_view_model.dart';
+import '/model/token_model.dart';
 
 class SplashServices {
 
@@ -17,10 +17,10 @@ class SplashServices {
       print(value.token.toString());
 
       if(value.token.toString() == 'null' || value.token.toString() == ''){
-        await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 2));
         Navigator.pushNamed(context, RoutesName.login);
       }else {
-        await  Future.delayed(Duration(seconds: 2));
+        await  Future.delayed(const Duration(seconds: 2));
         Navigator.pushNamed(context, RoutesName.home);
       }
 

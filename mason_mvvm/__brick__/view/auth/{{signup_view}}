@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'response/components/button.dart';
-import 'utils/routes/routes_name.dart';
-import 'view_model/auth/{{auth_view_view_model}}';
+import '/response/components/button.dart';
+import '/utils/routes/routes_name.dart';
+import '/view_model/auth/{{auth_view_view_model}}';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -44,7 +44,6 @@ class _SignUpViewState extends State<SignUpView> {
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              focusNode: emailFocusNode,
               decoration: const InputDecoration(
                   hintText: 'Email',
                   labelText: 'Email',

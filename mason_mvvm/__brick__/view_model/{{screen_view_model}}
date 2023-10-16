@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'data/response/api_response.dart';
-import 'model/{{model_file_name}}';
-import 'respository/{{repo_file_name}}';
+import '/data/response/api_response.dart';
+import '/model/{{model_file_name}}';
+import '/respository/{{repo_file_name}}';
 
 class {{class_name}}ViewModel with ChangeNotifier {
   final _myRepo = {{class_name}}Repository();

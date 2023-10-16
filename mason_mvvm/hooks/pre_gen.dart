@@ -25,7 +25,7 @@ void run(HookContext context) {
   final screenName = "${stem.snakeCase}_view.dart";
   final screenViewModel = "${stem.snakeCase}_view_model.dart";
   final loginview = "login_view.dart";
-  final authViewModel = "auth_view_view_model.dart";
+  final authViewModel = "auth_view_model.dart";
   final signupview = "signup_view.dart";
   final routesName = "routes_name.dart";
   context.vars = {
