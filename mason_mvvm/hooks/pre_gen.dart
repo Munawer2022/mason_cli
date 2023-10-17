@@ -16,7 +16,7 @@ void run(HookContext context) {
   final splashscreen = "splash_view.dart";
   final tokenmodel = "token_model.dart";
   final tokenviewmodel = "token_view_model.dart";
-  final button = "button.dart";
+  final button = "platform_button.dart";
   final networkApiService = "NetworkApiService.dart";
   final apiResponse = "api_response.dart";
   final routes = "routes.dart";
@@ -29,9 +29,9 @@ void run(HookContext context) {
   final signupview = "signup_view.dart";
   final routesName = "routes_name.dart";
   final appNavigator = "app_navigator.dart";
-  final textformfield = "text_form_field.dart";
-  final appCheck = "app_check.dart";
-  final scaffoldCheck = "scaffold_check.dart";
+  final textformfield = "platform_text_form_field.dart";
+  final appCheck = "platform_app_check.dart";
+  final scaffoldCheck = "platform_scaffold_check.dart";
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,

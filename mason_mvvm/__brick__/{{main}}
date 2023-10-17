@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/resource/components/app_check.dart';
+import '/resource/components/platform_app_check.dart';
 import '/utils/routes/routes.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/{{screen_view_model}}';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => TokenViewModel()),
             ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ],
-      child: AppCheck().getApp(
+      child: PlatformAppCheck().getApp(
         initialRoute: RoutesName.splash,
         onGenerateRoute: Routes.generateRoute,
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/view_model/services/splash_services.dart';
-import '/resource/components/scaffold_check.dart';
+import '/resource/components/platform_scaffold_check.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -20,8 +20,8 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldCheck().getScaffold(
-      body: Center(
+    return PlatformScaffoldCheck().getScaffold(
+      body:const Center(
         child: Text(
           'Splash screen',
         ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import '/utils/utils.dart';
 
-class ScaffoldCheck {
+class PlatformScaffoldCheck {
   Widget getScaffold({required Widget body}) =>
       ios ? _cupertinoPageScaffold(body: body) : _scaffold(body: body);
 

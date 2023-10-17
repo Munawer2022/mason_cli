@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import '/utils/utils.dart';
 
-class Button {
+class PlatformButton {
   Widget getButton(
           {required String text,
           required void Function()? onPressed,

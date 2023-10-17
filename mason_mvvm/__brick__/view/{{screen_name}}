@@ -5,6 +5,8 @@ import '/utils/routes/routes_name.dart';
 import '/view_model/{{screen_view_model}}';
 import '/view_model/services/{{token_view_model}}';
 import '/resource/app_navigator.dart';
+import '/resource/components/platform_scaffold_check.dart';
+
 
 class {{class_name}}View extends StatefulWidget {
   const {{class_name}}View({Key? key}) : super(key: key);
@@ -25,7 +27,7 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
   @override
   Widget build(BuildContext context) {
     final tokenPrefernece = Provider.of<TokenViewModel>(context);
-    return Scaffold(
+    return PlatformScaffoldCheck().getScaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
