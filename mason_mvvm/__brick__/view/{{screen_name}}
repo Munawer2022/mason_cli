@@ -37,12 +37,13 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
                   AppNavigator().push(context, RoutesName.login);
                 });
               },
-              child: Center(child: Text('Logout'))),
+              child:const Center(child: Text('Logout'))),
           SizedBox(
             width: 20,
           )
         ],
       ),
+      body: const SizedBox()
       // body: Consumer<{{class_name}}ViewModel>(builder: (context, value, _) {
       //     switch (value.moviesList.status) {
       //       case Status.LOADING:
