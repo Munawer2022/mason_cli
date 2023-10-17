@@ -3,17 +3,25 @@ import 'package:flutter/cupertino.dart';
 import '/utils/utils.dart';
 
 class PlatformScaffoldCheck {
-  Widget getScaffold({required Widget body}) =>
-      ios ? _cupertinoPageScaffold(body: body) : _scaffold(body: body);
+  Widget getScaffold(
+          {required Widget body,
+          ObstructingPreferredSizeWidget? navigationBar,
+          PreferredSizeWidget? appBar}) =>
+      ios
+          ? _cupertinoPageScaffold(body: body, navigationBar: navigationBar)
+          : _scaffold(body: body, appBar: appBar);
 
-  CupertinoPageScaffold _cupertinoPageScaffold({required Widget body}) {
+  CupertinoPageScaffold _cupertinoPageScaffold(
+      {required Widget body, ObstructingPreferredSizeWidget? navigationBar}) {
     return CupertinoPageScaffold(
+      navigationBar: navigationBar,
       child: body,
     );
   }
 
-  Scaffold _scaffold({Widget? body}) {
+  Scaffold _scaffold({Widget? body, PreferredSizeWidget? appBar}) {
     return Scaffold(
+      appBar: appBar,
       body: body,
     );
   }
