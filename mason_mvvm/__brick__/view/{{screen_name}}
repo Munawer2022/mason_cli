@@ -47,7 +47,9 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
             case Status.LOADING:
               return const Center(child: CircularProgressIndicator.adaptive());
             case Status.ERROR:
-              return Center(child: Text(value.model.message.toString()));
+              return Center(child: Text(value.model.message.toString(),
+                textAlign: TextAlign.center,
+              ));
             case Status.COMPLETED:
               return const SizedBox();
           }
