@@ -40,19 +40,19 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
               child:const Center(child: Text('Logout'))),
         ],
       ),
-      body: Consumer<{{class_name}}ViewModel>(builder: (context, value, _) {
-          switch (value.model.status) {
+      body: ChangeNotifierProvider<{{class_name}}ViewModel>(
+        create: (BuildContext context) => model,
+        child: Consumer<{{class_name}}ViewModel>(builder: (context, value, _) {
+          switch (value.model.status!) {
             case Status.LOADING:
               return const Center(child: CircularProgressIndicator.adaptive());
             case Status.ERROR:
               return Center(child: Text(value.model.message.toString()));
             case Status.COMPLETED:
               return const SizedBox();
-            case null:
-          // TODO: Handle this case.
           }
-          return Container();
         }),
+      ),
       
     );
   }
