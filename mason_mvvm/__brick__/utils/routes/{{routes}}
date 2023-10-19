@@ -15,8 +15,8 @@ class Routes {
     switch (settings.name) {
       case RoutesName.splash:
         return platformPageRoute.getPageRoute(const SplashView());
-      case RoutesName.home:
-        return platformPageRoute.getPageRoute(const HomeView());
+      case RoutesName.{{folder_name}}:
+        return platformPageRoute.getPageRoute(const {{class_name}}View());
       case RoutesName.login:
         return platformPageRoute.getPageRoute(const LoginView());
       case RoutesName.signUp:
