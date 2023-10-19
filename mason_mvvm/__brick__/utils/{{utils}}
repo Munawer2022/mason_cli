@@ -1,6 +1,29 @@
 import 'dart:io';
 
-  final ios = Platform.isIOS;
+import 'package:flutter/material.dart';
+
+final ios = Platform.isIOS;
+
 class Utils {
   // bool isIOS(context) => Theme.of(context).platform == TargetPlatform.iOS;
+
+  snackbar(text, context) {
+    var snackBar = SnackBar(
+      backgroundColor: Colors.green.shade300,
+      content: Text(
+        text,
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  errorSnackbar(text, context) {
+    var snackBar = SnackBar(
+      backgroundColor: Colors.red.shade300,
+      content: Text(
+        text,
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }
