@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import '../theme.dart';
 import '/utils/utils.dart';
 
 class PlatformAppCheck {
- Widget getApp(
+  Widget getApp(
           {String? initialRoute,
           Route<dynamic>? Function(RouteSettings)? onGenerateRoute}) =>
       ios
@@ -16,7 +17,9 @@ class PlatformAppCheck {
       {String? initialRoute,
       Route<dynamic>? Function(RouteSettings)? onGenerateRoute}) {
     return CupertinoApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: initialRoute,
+      theme: cupertinoThemeData(),
       onGenerateRoute: onGenerateRoute,
     );
   }
@@ -25,7 +28,9 @@ class PlatformAppCheck {
       {String? initialRoute,
       Route<dynamic>? Function(RouteSettings)? onGenerateRoute}) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: initialRoute,
+      theme: themeData(),
       onGenerateRoute: onGenerateRoute,
     );
   }

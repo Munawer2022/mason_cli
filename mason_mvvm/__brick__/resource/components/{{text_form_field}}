@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../color.dart';
 import '/utils/utils.dart';
 
 class PlatformTextFormField {
@@ -8,34 +10,51 @@ class PlatformTextFormField {
           String? hintText,
           TextInputType? keyboardType,
           Widget? prefixIcon,
-          Widget? suffixIcon}) =>
+          Widget? suffixIcon,
+          String? Function(String?)? validator,
+          bool readOnly = false,
+          void Function()? onTap}) =>
       ios
           ? _cupertinoTextFormField(
               controller: controller,
               hintText: hintText,
               keyboardType: keyboardType,
               prefixIcon: prefixIcon,
-              suffixIcon: suffixIcon)
+              suffixIcon: suffixIcon,
+              readOnly: readOnly,
+              onTap: onTap)
           : _materialTextFormField(
               controller: controller,
               hintText: hintText,
               keyboardType: keyboardType,
               prefixIcon: prefixIcon,
-              suffixIcon: suffixIcon);
+              suffixIcon: suffixIcon,
+              validator: validator,
+              readOnly: readOnly,
+              onTap: onTap);
 
   CupertinoTextField _cupertinoTextFormField(
       {TextEditingController? controller,
       String? hintText,
       TextInputType? keyboardType,
       Widget? prefixIcon,
-      Widget? suffixIcon}) {
+      Widget? suffixIcon,
+      // String? Function(String?)? validator,
+      bool readOnly = false,
+      void Function()? onTap}) {
     return CupertinoTextField(
       controller: controller,
       placeholder: hintText,
+      placeholderStyle: style.labelMedium,
       keyboardType: keyboardType,
       prefix: prefixIcon,
       suffix: suffixIcon,
+      readOnly: readOnly,
+      onTap: onTap,
       textInputAction: TextInputAction.next,
+      padding: EdgeInsets.all(12.r),
+      decoration: BoxDecoration(
+          color: cardColor, borderRadius: BorderRadius.circular(10.r)),
     );
   }
 
@@ -44,16 +63,30 @@ class PlatformTextFormField {
       String? hintText,
       TextInputType? keyboardType,
       Widget? prefixIcon,
-      Widget? suffixIcon}) {
+      Widget? suffixIcon,
+      String? Function(String?)? validator,
+      bool readOnly = false,
+      void Function()? onTap}) {
     return TextFormField(
-      controller: controller,
+      readOnly: readOnly,
+      onTap: onTap,
       keyboardType: keyboardType,
       textInputAction: TextInputAction.next,
+      validator: validator,
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
+        isDense: true,
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10.0.r),
+        ),
+        fillColor: cardColor,
+        filled: true,
         prefixIcon: prefixIcon,
         hintText: hintText,
+        hintStyle: style.labelMedium,
       ),
+      controller: controller,
     );
   }
 }

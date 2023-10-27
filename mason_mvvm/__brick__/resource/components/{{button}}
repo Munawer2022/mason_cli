@@ -1,67 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../color.dart';
 import '/utils/utils.dart';
 
 class PlatformButton {
-  Widget getButton(
-          {required String text,
-          required void Function()? onPressed,
-          double? width,
-          double? height,
-          bool loading = false}) =>
+  Widget getButton({
+    required Widget child,
+    required void Function()? onPressed,
+    double? width,
+    double? height,
+    Color? color,
+    double? radius,
+    bool loading = false,
+  }) =>
       ios
-          ? _cupertinoButton(text,
+          ? _cupertinoButton(
+              child: child,
               onPressed: onPressed,
               width: width,
               height: height,
-              loading: loading)
-          : _elevatedButton(text,
+              color: color,
+              loading: loading,
+              radius: radius)
+          : _elevatedButton(
+              child: child,
               onPressed: onPressed,
               width: width,
               height: height,
-              loading: loading);
+              color: color,
+              loading: loading,
+              radius: radius);
 
-  Widget _cupertinoButton(String text,
-      {required void Function()? onPressed,
-      double? width,
-      double? height,
-      bool loading = false}) {
-    return SizedBox(
-      height: height ?? 50.0,
-      width: width ?? double.infinity,
-      child: CupertinoButton(
-        color: Colors.blue.shade300,
-        onPressed: loading == true ? null : onPressed,
-        child: loading
-            ? const CupertinoActivityIndicator()
-            : Text(
-                text,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+  Widget _cupertinoButton({
+    required Widget child,
+    required void Function()? onPressed,
+    double? width,
+    double? height,
+    Color? color,
+    double? radius,
+    bool loading = false,
+  }) =>
+      SizedBox(
+        height: height?.h ?? 50.0.h,
+        width: width?.w ?? double.infinity.w,
+        child: CupertinoButton(
+            borderRadius: BorderRadius.circular(radius?.r ?? 10.0.r),
+            color: color ?? buttonColor,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            onPressed: loading == true ? null : onPressed,
+            child: loading ? const CupertinoActivityIndicator() : child),
+      );
+
+  ElevatedButton _elevatedButton({
+    required Widget? child,
+    required void Function()? onPressed,
+    double? width,
+    double? height,
+    Color? color,
+    double? radius,
+    bool loading = false,
+  }) =>
+      ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(radius?.r ?? 10.0.r),
               ),
-      ),
-    );
-  }
-
-  ElevatedButton _elevatedButton(String text,
-      {required void Function()? onPressed,
-      double? width,
-      double? height,
-      bool loading = false}) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue.shade300,
-          minimumSize: Size(width ?? double.infinity, height ?? 50.0)),
-      onPressed: loading == true ? null : onPressed,
-      child: loading
-          ? const CircularProgressIndicator(
-              color: Colors.white,
-            )
-          : Text(
-              text,
-              style: const TextStyle(color: Colors.white),
-            ),
-    );
-  }
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              backgroundColor: color ?? buttonColor,
+              minimumSize:
+                  Size(width?.w ?? double.infinity.w, height?.h ?? 50.0.h)),
+          onPressed: loading == true ? null : onPressed,
+          child: loading
+              ? const CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              : child);
 }
