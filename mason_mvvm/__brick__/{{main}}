@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => TokenViewModel()),
             ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ],
-      child: PlatformAppCheck().getApp(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme:ThemeData(useMaterial3: true),
         initialRoute: RoutesName.splash,
         onGenerateRoute: Routes.generateRoute,
       ),

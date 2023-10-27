@@ -27,7 +27,7 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
   @override
   Widget build(BuildContext context) {
     final tokenPrefernece = Provider.of<TokenViewModel>(context);
-    return PlatformScaffoldCheck().getScaffold(
+    return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
