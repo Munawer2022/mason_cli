@@ -1,59 +1,28 @@
+import 'package:chap_chap/view/into_slider_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import '/utils/routes/routes_name.dart';
-import '/utils/utils.dart';
 import '/view/splash_view.dart';
-import '/view/{{screen_name}}';
-import '/view/auth/login_view.dart';
-import '/view/auth/signup_view.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    DefaultPlatformPageRoute defaultPlatformPageRoute =
-        DefaultPlatformPageRoute();
-    PlatformPageRoute platformPageRoute = PlatformPageRoute();
+    PageRoute pageRoute = PageRoute();
     switch (settings.name) {
       case RoutesName.splash:
-        return platformPageRoute.getPageRoute(const SplashView());
-      case RoutesName.{{folder_name}}:
-        return platformPageRoute.getPageRoute(const {{class_name}}View());
-      case RoutesName.login:
-        return platformPageRoute.getPageRoute(const LoginView());
-      case RoutesName.signUp:
-        return platformPageRoute.getPageRoute(const SignUpView());
-
+        return pageRoute.getPageRoute(const SplashView());
       default:
-        return defaultPlatformPageRoute.getDefaultRoute();
+        return pageRoute.getDefaultRoute();
     }
   }
 }
 
-class PlatformPageRoute {
-  Route getPageRoute(page) =>
-      ios ? cupertinoPageRoute(page) : materialPageRoute(page);
-
-  cupertinoPageRoute(page) => CupertinoPageRoute(
-        builder: (BuildContext context) => page,
-      );
-  materialPageRoute(page) => MaterialPageRoute(
+class PageRoute extends DefaultPageRoute {
+  Route getPageRoute(page) => MaterialPageRoute(
         builder: (BuildContext context) => page,
       );
 }
 
-class DefaultPlatformPageRoute {
-  Route getDefaultRoute() =>
-      ios ? cupertinoDefaultRoute() : materialDefaultRoute();
-
-  cupertinoDefaultRoute() => CupertinoPageRoute(
-        builder: (BuildContext context) {
-          return const CupertinoPageScaffold(
-            child: Center(
-              child: Text('No route defined'),
-            ),
-          );
-        },
-      );
-  materialDefaultRoute() => MaterialPageRoute(builder: (_) {
+class DefaultPageRoute {
+  Route getDefaultRoute() => MaterialPageRoute(builder: (_) {
         return const Scaffold(
           body: Center(
             child: Text('No route defined'),

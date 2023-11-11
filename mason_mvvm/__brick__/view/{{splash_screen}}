@@ -20,7 +20,7 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffoldCheck().getScaffold(
+    return Scaffold(
       body:const Center(
         child: Text(
           'Splash screen',

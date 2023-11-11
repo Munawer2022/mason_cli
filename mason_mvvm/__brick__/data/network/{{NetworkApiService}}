@@ -15,7 +15,7 @@ class NetworkApiService extends BaseApiServices {
           await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
       responseJson = returnResponse(response);
    } on TimeoutException {
-      throw 'Request to the server timed out. Please check your internet connection and try again.';
+      throw 'Please check your internet connection and try again.';
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
@@ -32,7 +32,7 @@ class NetworkApiService extends BaseApiServices {
 
       responseJson = returnResponse(response);
     } on TimeoutException {
-      throw 'Request to the server timed out. Please check your internet connection and try again.';
+      throw 'Please check your internet connection and try again.';
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }

@@ -32,6 +32,7 @@ void run(HookContext context) {
   final textformfield = "platform_text_form_field.dart";
   final appCheck = "platform_app_check.dart";
   final scaffoldCheck = "platform_scaffold_check.dart";
+  final theme = "theme.dart";
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,
@@ -64,5 +65,6 @@ void run(HookContext context) {
     "text_form_field": textformfield,
     "app_check": appCheck,
     "scaffold_check": scaffoldCheck,
+    "theme": theme,
   };
 }

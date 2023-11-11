@@ -1,35 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/resource/components/platform_app_check.dart';
 import '/utils/routes/routes.dart';
 import '/utils/routes/routes_name.dart';
-// import '/view_model/{{screen_view_model}}';
 import '/view_model/services/{{token_view_model}}';
 import '/view_model/auth/{{auth_view_view_model}}';
 
-
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    // ChangeNotifierProvider(create: (_) => AuthViewModel()),
+    ChangeNotifierProvider(create: (_) => TokenViewModel()),
+  ], child: const MyApp()));
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          // ChangeNotifierProvider(create: (_) => {{class_name}}ViewModel()),
-            ChangeNotifierProvider(create: (_) => TokenViewModel()),
-            ChangeNotifierProvider(create: (_) => AuthViewModel()),
-        ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme:ThemeData(useMaterial3: true),
-        initialRoute: RoutesName.splash,
-        onGenerateRoute: Routes.generateRoute,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ScreenUtilInit(
+      designSize: const Size(430, 932),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: Themes.lightThemeData(),
+            initialRoute: RoutesName.splash,
+            onGenerateRoute: Routes.generateRoute,
+          ));
 }
 

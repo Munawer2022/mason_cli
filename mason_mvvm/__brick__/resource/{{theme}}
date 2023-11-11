@@ -1,0 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class Themes {
+  static ThemeData lightThemeData() => ThemeData();
+}
