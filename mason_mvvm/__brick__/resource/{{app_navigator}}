@@ -1,10 +1,10 @@
   import 'package:flutter/material.dart';
 
   class AppNavigator {
-    void pushNamed(BuildContext context, String routeName, {Object? arguments}) =>
+   static void pushNamed(BuildContext context, String routeName, {Object? arguments}) =>
         Navigator.of(context).pushNamed(routeName, arguments: arguments);
 
-    void pop(BuildContext context) => Navigator.of(context).pop();
+   static void pop(BuildContext context) => Navigator.of(context).pop();
   }
 
   // class SlideFromRightPageRoute<T> extends PageRouteBuilder<T> {

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/resource/components/platform_button.dart';
-import '/resource/components/platform_text_form_field.dart';
-import '/resource/components/platform_scaffold_check.dart';
+import '../../resource/components/platform_text_form_field.dart';
+
 import '/utils/routes/routes_name.dart';
 import '/view_model/auth/{{auth_view_view_model}}';
 import '/resource/app_navigator.dart';
@@ -32,18 +31,20 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   Widget build(BuildContext context) {
     final authViewMode = Provider.of<AuthViewModel>(context);
-    return PlatformScaffoldCheck().getScaffold(
+    return Scaffold(
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            PlatformTextFormField().getTextFormField(
+            CustomTextFormField.textFormField(
+              context,
                   controller: _emailController,
               keyboardType: TextInputType.emailAddress,
                 hintText: 'Email',
             ),
-            PlatformTextFormField().getTextFormField(
+            CustomTextFormField.textFormField(
+              context,
                   controller: _passwordController,
               // keyboardType: TextInputType.emailAddress,
                 hintText: 'password',
@@ -52,7 +53,7 @@ class _SignUpViewState extends State<SignUpView> {
             SizedBox(
               height: 50,
             ),
-            PlatformButton().getButton(
+            CustomButton.getButton(
               text: 'Sign Up',
               loading: authViewMode.signUpLoading,
               onPressed: () {

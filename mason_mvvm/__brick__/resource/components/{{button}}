@@ -16,15 +16,15 @@ class CustomButton {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(radius?.r ?? 10.0.r),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              backgroundColor: color ?? AppColors.primaryElevatedButtonColor,
+              padding: const EdgeInsets.symmetric(horizontal: 16.w),
+              backgroundColor: color ?? Colors.blue,
               minimumSize:
                   Size(width?.w ?? double.infinity.w, height?.h ?? 50.0.h)),
           onPressed: loading == true ? null : onPressed,
           child: loading
-              ? CircularProgressIndicator.adaptive(
+              ? const CircularProgressIndicator.adaptive(
                   backgroundColor:
-                      AppColors.buttonLoadingprogressIndicatorColor,
+                      Colors.white,
                 )
               : child);
   // Widget getButton({

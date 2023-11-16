@@ -1,7 +1,5 @@
-import 'package:chap_chap/resource/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../utils/global_instances.dart';
 
 class CustomTextFormField {
  static TextFormField textFormField(BuildContext context,
@@ -12,7 +10,9 @@ class CustomTextFormField {
       Widget? suffixIcon,
       String? Function(String?)? validator,
       bool readOnly = false,
-      void Function()? onTap}) {
+      void Function()? onTap,
+      Iterable<String>? autofillHints
+      }) {
     return TextFormField(
       autofillHints: autofillHints,
       cursorOpacityAnimates: true,
@@ -28,11 +28,11 @@ class CustomTextFormField {
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(10.0.r),
         ),
-        fillColor: AppColors.textFormFieldFillColor,
-        filled: true,
+        // fillColor: AppColors.textFormFieldFillColor,
+        // filled: true,
         prefixIcon: prefixIcon,
         hintText: hintText,
-        hintStyle: themeData(context).textTheme.labelMedium,
+        // hintStyle: themeData(context).textTheme.labelMedium,
       ),
       controller: controller,
     );

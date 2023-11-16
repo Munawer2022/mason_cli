@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '/utils/routes/routes.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/services/{{token_view_model}}';
-import '/view_model/auth/{{auth_view_view_model}}';
+import 'resource/theme.dart';
 
 void main() {
   runApp(MultiProvider(providers: [

@@ -1,4 +1,3 @@
-import 'package:chap_chap/view/into_slider_view.dart';
 import 'package:flutter/material.dart';
 import '/utils/routes/routes_name.dart';
 import '/view/splash_view.dart';

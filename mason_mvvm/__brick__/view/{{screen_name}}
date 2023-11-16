@@ -5,7 +5,6 @@ import '/utils/routes/routes_name.dart';
 import '/view_model/{{screen_view_model}}';
 import '/view_model/services/{{token_view_model}}';
 import '/resource/app_navigator.dart';
-import '/resource/components/platform_scaffold_check.dart';
 
 
 class {{class_name}}View extends StatefulWidget {
@@ -34,7 +33,7 @@ class _{{class_name}}ViewState extends State<{{class_name}}View> {
           InkWell(
               onTap: () {
                 tokenPrefernece.removeToken().then((value) {
-                  AppNavigator().push(context, RoutesName.login);
+                  AppNavigator.pushNamed(context, RoutesName.login);
                 });
               },
               child:const Center(child: Text('Logout'))),
