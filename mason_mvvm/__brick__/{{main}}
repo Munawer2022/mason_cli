@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '/utils/routes/routes.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/services/{{token_view_model}}';
-import 'resource/theme.dart';
 import 'package:device_preview/device_preview.dart';
 import 'resource/app_theme.dart';
 

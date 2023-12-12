@@ -1,6 +1,5 @@
 import '/data/network/BaseApiServices.dart';
 import '/data/network/NetworkApiService.dart';
-import '/model/{{model_file_name}}';
 import '/resource/app_url.dart';
 
 class {{class_name}}Repository {

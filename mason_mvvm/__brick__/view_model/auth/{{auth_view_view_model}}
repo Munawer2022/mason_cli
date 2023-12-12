@@ -12,16 +12,8 @@ class AuthViewModel with ChangeNotifier {
   bool _loginLoading = false;
   bool get loginLoading => _loginLoading;
 
-  bool _signUpLoading = false;
-  bool get signUpLoading => _signUpLoading;
-
   setLoginLoading(bool value) {
     _loginLoading = value;
-    notifyListeners();
-  }
-
-  setSignUpLoading(bool value) {
-    _signUpLoading = value;
     notifyListeners();
   }
 
@@ -34,8 +26,16 @@ class AuthViewModel with ChangeNotifier {
       tokenPreference.saveToken(TokenModel(token: value['token'].toString()));
       AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
     }).onError((error, stackTrace) {
-      setLosetLoginLoadingading(false);
+      setLoginLoading(false);
     });
+  }
+
+bool _signUpLoading = false;
+  bool get signUpLoading => _signUpLoading;
+
+  setSignUpLoading(bool value) {
+    _signUpLoading = value;
+    notifyListeners();
   }
 
   Future<void> signUpApi(dynamic data, BuildContext context) async {
