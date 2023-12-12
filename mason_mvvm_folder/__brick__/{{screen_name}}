@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+
+class {{class_name}}View extends StatelessWidget {
+  const {{class_name}}View({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(   
+      body: SizedBox()
+    );
+  }
+}
+// body:  Consumer<{{class_name}}ViewModel>(builder: (context, value, _) {
+//           switch (value.{{folder_name}}Model.status) {
+//             case Status.LOADING:
+//               return const Center(child: CircularProgressIndicator.adaptive());
+//             case Status.ERROR:
+//               return Center(child: Text(value.{{folder_name}}Model.message.toString(),
+//                 textAlign: TextAlign.center,
+//               ));
+//             case Status.COMPLETED:
+//               return const SizedBox();
+//                 case null:
+//                           return Center(child: Text('Not Has Data Found'));
+//           }
+//         }),
