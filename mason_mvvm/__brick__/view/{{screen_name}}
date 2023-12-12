@@ -1,62 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '/data/response/status.dart';
-import '/utils/routes/routes_name.dart';
-import '/view_model/{{screen_view_model}}';
-import '/view_model/services/{{token_view_model}}';
-import '/resource/app_navigator.dart';
 
-
-class {{class_name}}View extends StatefulWidget {
+class {{class_name}}View extends StatelessWidget {
   const {{class_name}}View({Key? key}) : super(key: key);
 
   @override
-  _{{class_name}}ViewState createState() => _{{class_name}}ViewState();
-}
-
-class _{{class_name}}ViewState extends State<{{class_name}}View> {
-  {{class_name}}ViewModel {{folder_name}}ViewModel = {{class_name}}ViewModel();
-
-  @override
-  void initState() {
-    {{folder_name}}ViewModel.fetch{{class_name}}Api();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final tokenPrefernece = Provider.of<TokenViewModel>(context);
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        actions: [
-          InkWell(
-              onTap: () {
-                tokenPrefernece.removeToken().then((value) {
-                  AppNavigator.pushNamed(context, RoutesName.login);
-                });
-              },
-              child:const Center(child: Text('Logout'))),
-        ],
-      ),
-      body: ChangeNotifierProvider<{{class_name}}ViewModel>(
-        create: (BuildContext context) => {{folder_name}}ViewModel,
-        child: Consumer<{{class_name}}ViewModel>(builder: (context, value, _) {
-          switch (value.{{folder_name}}Model.status) {
-            case Status.LOADING:
-              return const Center(child: CircularProgressIndicator.adaptive());
-            case Status.ERROR:
-              return Center(child: Text(value.{{folder_name}}Model.message.toString(),
-                textAlign: TextAlign.center,
-              ));
-            case Status.COMPLETED:
-              return const SizedBox();
-                case null:
-                          return Center(child: Text('Not Has Data Found'));
-          }
-        }),
-      ),
-      
+    return Scaffold(   
+      body: SizedBox()
     );
   }
 }

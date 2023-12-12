@@ -2,5 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Themes {
-  static ThemeData lightThemeData() => ThemeData();
+  static ThemeData lightThemeData() => ThemeData(
+     useMaterial3: true,
+      brightness: Brightness.light,
+      fontFamily: 'Poppins',
+      colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+          ),
+          textTheme: TextTheme()
+  );
 }

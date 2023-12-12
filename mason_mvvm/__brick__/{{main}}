@@ -5,12 +5,22 @@ import '/utils/routes/routes.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/services/{{token_view_model}}';
 import 'resource/theme.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() {
+  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //     statusBarColor: AppColors.primaryColor,
+  //     statusBarIconBrightness: Brightness.light,
+  //     statusBarBrightness: Brightness.light,
+  //     systemStatusBarContrastEnforced: false));
   runApp(MultiProvider(providers: [
     // ChangeNotifierProvider(create: (_) => AuthViewModel()),
     ChangeNotifierProvider(create: (_) => TokenViewModel()),
-  ], child: const MyApp()));
+  ], child: const MyApp()
+   // child: DevicePreview(
+      //     enabled: true, builder: (BuildContext context) => const MyApp())
+    
+  ));
 }
 
 
@@ -23,6 +33,9 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) => MaterialApp(
+           // useInheritedMediaQuery: true,
+            // locale: DevicePreview.locale(context),
+            // builder: DevicePreview.appBuilder,
             debugShowCheckedModeBanner: false,
             theme: Themes.lightThemeData(),
             initialRoute: RoutesName.splash,

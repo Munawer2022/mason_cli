@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomTextFormField {
+class AppTextFormField {
  static TextFormField textFormField(BuildContext context,
       {TextEditingController? controller,
       String? hintText,

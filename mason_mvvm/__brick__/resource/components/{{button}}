@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomButton {
+class AppButton {
  static ElevatedButton getButton({
     required Widget? child,
     required void Function()? onPressed,
@@ -27,51 +27,5 @@ class CustomButton {
                       Colors.white,
                 )
               : child);
-  // Widget getButton({
-  //   required Widget child,
-  //   required void Function()? onPressed,
-  //   double? width,
-  //   double? height,
-  //   Color? color,
-  //   double? radius,
-  //   bool loading = false,
-  // }) =>
-  //     // ios
-  //     //     ? _cupertinoButton(
-  //     //         child: child,
-  //     //         onPressed: onPressed,
-  //     //         width: width,
-  //     //         height: height,
-  //     //         color: color,
-  //     //         loading: loading,
-  //     //         radius: radius)
-  //     //     :
-  //     _elevatedButton(
-  //         child: child,
-  //         onPressed: onPressed,
-  //         width: width,
-  //         height: height,
-  //         color: color,
-  //         loading: loading,
-  //         radius: radius);
-
-  // Widget _cupertinoButton({
-  //   required Widget child,
-  //   required void Function()? onPressed,
-  //   double? width,
-  //   double? height,
-  //   Color? color,
-  //   double? radius,
-  //   bool loading = false,
-  // }) =>
-  //     SizedBox(
-  //       height: height?.h ?? 50.0.h,
-  //       width: width?.w ?? double.infinity.w,
-  //       child: CupertinoButton(
-  //           borderRadius: BorderRadius.circular(radius?.r ?? 10.0.r),
-  //           color: color ?? AppColors.primaryElevatedButtonColor,
-  //           padding: EdgeInsets.symmetric(horizontal: 16),
-  //           onPressed: loading == true ? null : onPressed,
-  //           child: loading ? const CupertinoActivityIndicator() : child),
-  //     );
+ 
 }
