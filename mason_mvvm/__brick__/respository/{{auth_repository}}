@@ -8,7 +8,7 @@ class AuthRepository {
   Future<dynamic> loginApi(dynamic data) async {
     try {
       dynamic response =
-          await _apiServices.getPostApiResponse(AppUrl.loginEndPint, data);
+          await _apiServices.getPostApiResponse(AppUrl.login, data);
       return response;
     } catch (e) {
       rethrow;
@@ -18,7 +18,7 @@ class AuthRepository {
   Future<dynamic> signUpApi(dynamic data) async {
     try {
       dynamic response = await _apiServices.getPostApiResponse(
-          AppUrl.registerApiEndPoint, data);
+          AppUrl.signUp, data);
       return response;
     } catch (e) {
       rethrow;

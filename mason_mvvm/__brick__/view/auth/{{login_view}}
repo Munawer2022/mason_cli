@@ -1,91 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '/resource/components/platform_button.dart';
-import '/resource/components/platform_text_form_field.dart';
-import '/utils/routes/routes_name.dart';
-import '/view_model/auth/{{auth_view_view_model}}';
-import '/resource/app_navigator.dart';
-import '/resource/components/platform_scaffold_check.dart';
 
-
-
-class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
-
-  @override
-  _LoginViewState createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
-  // ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    // _obsecurePassword.dispose();
-  }
+class LoginView extends StatelessWidget {
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final authViewMode = Provider.of<AuthViewModel>(context);
-    return PlatformScaffoldCheck().getScaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            PlatformTextFormField().getTextFormField(
-                  controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-                hintText: 'Email',
-            ),
-            PlatformTextFormField().getTextFormField(
-                  controller: _passwordController,
-              // keyboardType: TextInputType.emailAddress,
-                hintText: 'password',
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            PlatformButton().getButton(
-              text: 'Sign Up',
-              loading: authViewMode.signUpLoading,
-              onPressed: () {
-                if (_emailController.text.isEmpty) {
-                  print('Please enter email');
-                } else if (_passwordController.text.isEmpty) {
-                  print('Please enter password');
-                } else if (_passwordController.text.length < 6) {
-                  print(
-                      'Please enter 6 digit password');
-                } else {
-                  Map data = {
-                    'email': _emailController.text.toString(),
-                    'password': _passwordController.text.toString(),
-                  };
-
-                  authViewMode.signUpApi(data, context);
-                  print('api hit');
-                }
-              },
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            InkWell(
-                onTap: () {
-                  AppNavigator().push(context, RoutesName.signUp);
-                },
-                child: Text("Don't have an accont? Sign Up"))
-          ],
-        ),
-      ),
-    );
+    return const SizedBox();
   }
 }

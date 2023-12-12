@@ -6,13 +6,27 @@ import '/resource/app_url.dart';
 class {{class_name}}Repository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  Future<{{class_name}}Model> fetch{{class_name}}() async {
-    try {
-      dynamic response =
-          await _apiServices.getGetApiResponse(AppUrl.moviesListEndPoint);
-      return response = {{class_name}}Model.fromJson(response);
-    } catch (e) {
-      rethrow;
-    }
-  }
+  //   ***   this is Get api data   ***
+
+  // Future<{{class_name}}Model> fetch{{class_name}}Api() async {
+  //   try {
+  //     dynamic response =
+  //         await _apiServices.getGetApiResponse(AppUrl.{{folder_name}});
+  //     return response = {{class_name}}Model.fromJson(response);
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+
+  //   ***   this is Post api data   ***
+
+  // Future<dynamic> {{folder_name}}Api(dynamic data) async {
+  //   try {
+  //     dynamic response =
+  //         await _apiServices.getPostApiResponse(AppUrl.{{folder_name}}, data);
+  //     return response;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 }

@@ -7,16 +7,16 @@ import '/utils/routes/routes_name.dart';
 import '/view_model/services/{{token_view_model}}';
 
 class AuthViewModel with ChangeNotifier {
-  final _myRepo = AuthRepository();
+  final authRepository = AuthRepository();
 
-  bool _loading = false;
-  bool get loading => _loading;
+  bool _loginLoading = false;
+  bool get loginLoading => _loginLoading;
 
   bool _signUpLoading = false;
   bool get signUpLoading => _signUpLoading;
 
-  setLoading(bool value) {
-    _loading = value;
+  setLoginLoading(bool value) {
+    _loginLoading = value;
     notifyListeners();
   }
 
@@ -26,24 +26,24 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<void> loginApi(dynamic data, BuildContext context) async {
-    setLoading(true);
+    setLoginLoading(true);
 
-    _myRepo.loginApi(data).then((value) {
-      setLoading(false);
+    authRepository.loginApi(data).then((value) {
+      setLoginLoading(false);
       final tokenPreference = Provider.of<TokenViewModel>(context, listen: false);
       tokenPreference.saveToken(TokenModel(token: value['token'].toString()));
-      AppNavigator().push(context, RoutesName.{{folder_name}});
+      AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
     }).onError((error, stackTrace) {
-      setLoading(false);
+      setLosetLoginLoadingading(false);
     });
   }
 
   Future<void> signUpApi(dynamic data, BuildContext context) async {
     setSignUpLoading(true);
 
-    _myRepo.signUpApi(data).then((value) {
+    authRepository.signUpApi(data).then((value) {
       setSignUpLoading(false);
-      AppNavigator().push(context, RoutesName.{{folder_name}});
+      AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
     }).onError((error, stackTrace) {
       setSignUpLoading(false);
     });

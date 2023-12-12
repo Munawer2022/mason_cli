@@ -1,25 +1,59 @@
 import 'package:flutter/material.dart';
 import '/data/response/api_response.dart';
-import '/model/{{model_file_name}}';
 import '/respository/{{repo_file_name}}';
+import '/resource/app_navigator.dart';
+import 'services/token_view_model.dart';
+import '/utils/routes/routes_name.dart';
+import 'package:provider/provider.dart';
+import 'services/token_view_model.dart';
 
 class {{class_name}}ViewModel with ChangeNotifier {
-  final _myRepo = {{class_name}}Repository();
+  final {{folder_name}}Repository = {{class_name}}Repository();
 
-  ApiResponse<{{class_name}}Model> {{folder_name}}Model = ApiResponse.loading();
+  //   ***   this is Get api data   ***
 
-  set{{class_name}}(ApiResponse<{{class_name}}Model> response) {
-    {{folder_name}}Model = response;
-    notifyListeners();
-  }
+  // ApiResponse<{{class_name}}Model> {{folder_name}}Model = ApiResponse.loading();
 
-  Future<void> fetch{{class_name}}Api() async {
-    set{{class_name}}(ApiResponse.loading());
+  // set{{class_name}}Loading(ApiResponse<{{class_name}}Model> response) {
+  //   {{folder_name}}Model = response;
+  //   notifyListeners();
+  // }
 
-    _myRepo.fetch{{class_name}}().then((value) {
-      set{{class_name}}(ApiResponse.completed(value));
-    }).onError((error, stackTrace) {
-      set{{class_name}}(ApiResponse.error(error.toString()));
-    });
-  }
+  // Future<void> fetch{{class_name}}Api() async {
+  //   set{{class_name}}Loading(ApiResponse.loading());
+
+  //   {{folder_name}}Repository.fetch{{class_name}}Api().then((value) {
+  //     set{{class_name}}Loading(ApiResponse.completed(value));
+  //   }).onError((error, stackTrace) {
+  //     set{{class_name}}Loading(ApiResponse.error(error.toString()));
+  //   });
+  // }
+
+
+
+
+  //   ***   this is Post api data   ***
+
+  // bool _{{folder_name}}Loading = false;
+  // bool get {{folder_name}}Loading => _{{folder_name}}Loading;
+
+  // set{{class_name}}Loading(bool value) {
+  //   _{{folder_name}}Loading = value;
+  //   notifyListeners();
+  // }
+
+  // Future<void> {{folder_name}}Api(dynamic data, BuildContext context) async {
+  //   set{{class_name}}Loading(true);
+
+  //   {{folder_name}}Repository.{{folder_name}}Api(data).then((value) {
+  //     set{{class_name}}Loading(false);
+  //     final tokenPreference =
+  //         Provider.of<TokenViewModel>(context, listen: false);
+  //     tokenPreference.saveToken(TokenModel(token: value['token'].toString()));
+  //     AppNavigator.pushNamed(context, RoutesName.munawer);
+  //   }).onError((error, stackTrace) {
+  //     set{{class_name}}Loading(false);
+  //   });
+  // }
+
 }

@@ -16,7 +16,7 @@ class AppButton {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(radius?.r ?? 10.0.r),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16.w),
+              padding:  EdgeInsets.symmetric(horizontal: 16.w),
               backgroundColor: color ?? Colors.blue,
               minimumSize:
                   Size(width?.w ?? double.infinity.w, height?.h ?? 50.0.h)),
