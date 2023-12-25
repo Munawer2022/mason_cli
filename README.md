@@ -45,3 +45,4 @@ mason upgrade --global
 
 # Generate a new brick with hooks.
 mason new <BRICK_NAME> --hooks
+mason make <BRICK_NAME> -o lib
