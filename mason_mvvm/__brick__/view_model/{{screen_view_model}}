@@ -57,3 +57,10 @@ class {{class_name}}ViewModel with ChangeNotifier {
   // }
 
 }
+
+// {{#isFlutterBloc}}
+// isFlutterBloc
+// {{/isFlutterBloc}}
+// {{#isProvider}}
+// isProvider
+// {{/isProvider}}
