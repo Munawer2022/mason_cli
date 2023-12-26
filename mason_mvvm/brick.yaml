@@ -31,3 +31,12 @@ vars:
     description: Your name
     default: Dash
     prompt: What is your name?
+
+  stateManagement:
+    type: enum
+    description: Select the stateManagement you want to include
+    values:
+      - provider
+      - flutter_bloc
+    prompt: Which stateManagement would you like to include in your application?
+    # defaults: provider
