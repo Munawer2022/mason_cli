@@ -12,6 +12,8 @@ Future<void> run(HookContext context) async {
   await Process.runSync('flutter', ['pub', 'add', 'flutter_screenutil'],
       runInShell: true);
   await Process.runSync('flutter', ['pub', 'add', 'http'], runInShell: true);
+  await Process.runSync('flutter', ['pub', 'add', 'shared_preferences'],
+      runInShell: true);
   await Process.runSync('flutter', ['pub', 'get'], runInShell: true);
 
   progress.complete();
