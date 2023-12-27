@@ -40,3 +40,10 @@ vars:
       - flutter_bloc
     prompt: Which stateManagement would you like to include in your application?
     # defaults: provider
+  http:
+    type: enum
+    description: Select the api you want to include
+    values:
+      - get
+      - post
+    prompt: Which api would you like to include in your application?
