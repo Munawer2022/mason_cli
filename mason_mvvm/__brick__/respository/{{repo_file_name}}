@@ -1,31 +1,32 @@
 import '/data/network/BaseApiServices.dart';
 import '/data/network/NetworkApiService.dart';
 import '/resource/app_url.dart';
-
+{{#isGet}} 
+import '../model/{{folder_name}}_model.dart';
+{{/isGet}}
 class {{class_name}}Repository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  //   ***   this is Get api data   ***
-
-  // Future<{{class_name}}Model> fetch{{class_name}}Api() async {
-  //   try {
-  //     dynamic response =
-  //         await _apiServices.getGetApiResponse(AppUrl.{{folder_name}});
-  //     return response = {{class_name}}Model.fromJson(response);
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
-
-  //   ***   this is Post api data   ***
-
-  // Future<dynamic> {{folder_name}}Api(dynamic data) async {
-  //   try {
-  //     dynamic response =
-  //         await _apiServices.getPostApiResponse(AppUrl.{{folder_name}}, data);
-  //     return response;
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+{{#isGet}}
+  Future<{{class_name}}Model> fetch{{class_name}}Api() async {
+    try {
+      dynamic response =
+          await _apiServices.getGetApiResponse(AppUrl.{{folder_name}});
+      return response = {{class_name}}Model.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+{{/isGet}}
+{{#isPost}}
+  Future<dynamic> {{folder_name}}Api(dynamic data) async {
+    try {
+      dynamic response =
+          await _apiServices.getPostApiResponse(AppUrl.{{folder_name}}, data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+  {{/isPost}}
 }

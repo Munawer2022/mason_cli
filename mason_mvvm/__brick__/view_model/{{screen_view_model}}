@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import '/data/response/api_response.dart';
 import '/respository/{{repo_file_name}}';
+
+{{#isGet}} 
+import '../model/{{folder_name}}_model.dart';
+import '/data/response/api_response.dart';
+{{/isGet}}
+{{#isPost}}
+import '../model/token_model.dart';
 import '/resource/app_navigator.dart';
 import 'services/token_view_model.dart';
 import '/utils/routes/routes_name.dart';
 import 'package:provider/provider.dart';
-import 'services/token_view_model.dart';
+{{/isPost}}
+
 
 class {{class_name}}ViewModel with ChangeNotifier {
   final {{folder_name}}Repository = {{class_name}}Repository();
