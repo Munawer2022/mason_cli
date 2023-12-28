@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+{{#auth}}
 import '/view_model/services/splash_services.dart';
+{{/auth}}
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -9,18 +11,25 @@ class SplashView extends StatefulWidget {
 }
 
 class SplashViewState extends State<SplashView> {
+  {{#auth}}
   SplashServices splashServices = SplashServices();
+  {{/auth}}
 
   @override
   void initState() {
+    {{#auth}}
     splashServices.checkAuthentication(context);
+    {{/auth}}
+    // Future.delayed(const Duration(seconds: 2), () {
+    //   AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
+    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body:const Center(
+      body: Center(
         child: Text(
           'Splash screen',
         ),

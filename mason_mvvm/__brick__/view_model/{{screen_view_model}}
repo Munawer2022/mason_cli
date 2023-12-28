@@ -6,9 +6,11 @@ import '../model/{{folder_name}}_model.dart';
 import '/data/response/api_response.dart';
 {{/isGet}}
 {{#isPost}}
-import '../model/token_model.dart';
 import '/resource/app_navigator.dart';
+{{#auth}}
+import '../model/token_model.dart';
 import 'services/token_view_model.dart';
+{{/auth}}
 import '/utils/routes/routes_name.dart';
 import 'package:provider/provider.dart';
 {{/isPost}}
@@ -52,9 +54,11 @@ class {{class_name}}ViewModel with ChangeNotifier {
 
     {{folder_name}}Repository.{{folder_name}}Api(data).then((value) {
       set{{class_name}}Loading(false);
+      {{#auth}}
       final tokenPreference =
           Provider.of<TokenViewModel>(context, listen: false);
       tokenPreference.saveToken(TokenModel(token: value['token'].toString()));
+      {{/auth}}
       AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
     }).onError((error, stackTrace) {
       set{{class_name}}Loading(false);

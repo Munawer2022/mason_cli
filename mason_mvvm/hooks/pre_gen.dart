@@ -2,13 +2,13 @@ import 'package:mason/mason.dart';
 
 void run(HookContext context) {
   final stateManagement = context.vars['stateManagement'];
-
   context.vars['isProvider'] = stateManagement == 'provider';
   context.vars['isFlutterBloc'] = stateManagement == 'flutter_bloc';
-  final http = context.vars['http'];
 
+  final http = context.vars['http'];
   context.vars['isGet'] = http == 'get';
   context.vars['isPost'] = http == 'post';
+
   var stem = (context.vars["name"] as String? ?? "").trim().pascalCase;
   var pageName = "${stem}Page";
   final widgetFileName = "${stem.snakeCase}_widget.dart";

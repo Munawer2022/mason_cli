@@ -32,6 +32,12 @@ vars:
     default: Dash
     prompt: What is your name?
 
+  auth:
+    type: boolean
+    description: Do you want to add a AUTH section in your project?
+    default: true
+    prompt: Do you want to add a AUTH section in your project?
+
   stateManagement:
     type: enum
     description: Select the stateManagement you want to include
