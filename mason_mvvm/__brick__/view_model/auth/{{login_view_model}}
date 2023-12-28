@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/resource/app_navigator.dart';
 import '/model/token_model.dart';
-import '/respository/auth_repository.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/services/{{token_view_model}}';
+import '/respository/auth/login_repository.dart';
 
-class AuthViewModel with ChangeNotifier {
-  final authRepository = AuthRepository();
+class LoginViewModel with ChangeNotifier {
+  final loginRepository = LoginRepository();
 
   bool _loginLoading = false;
   bool get loginLoading => _loginLoading;
@@ -20,7 +20,7 @@ class AuthViewModel with ChangeNotifier {
   Future<void> loginApi(dynamic data, BuildContext context) async {
     setLoginLoading(true);
 
-    authRepository.loginApi(data).then((value) {
+    loginRepository.loginApi(data).then((value) {
       setLoginLoading(false);
       final tokenPreference = Provider.of<TokenViewModel>(context, listen: false);
       tokenPreference.saveToken(TokenModel(token: value['token'].toString()));
@@ -30,22 +30,5 @@ class AuthViewModel with ChangeNotifier {
     });
   }
 
-bool _signUpLoading = false;
-  bool get signUpLoading => _signUpLoading;
 
-  setSignUpLoading(bool value) {
-    _signUpLoading = value;
-    notifyListeners();
-  }
-
-  Future<void> signUpApi(dynamic data, BuildContext context) async {
-    setSignUpLoading(true);
-
-    authRepository.signUpApi(data).then((value) {
-      setSignUpLoading(false);
-      AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
-    }).onError((error, stackTrace) {
-      setSignUpLoading(false);
-    });
-  }
 }

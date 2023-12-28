@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import '/resource/app_navigator.dart';
+import '/utils/routes/routes_name.dart';
+import '/respository/auth/signup_repository.dart';
+
+class SignUpViewModel with ChangeNotifier {
+  final signUpRepository = SignUpRepository();
+
+
+bool _signUpLoading = false;
+  bool get signUpLoading => _signUpLoading;
+
+  setSignUpLoading(bool value) {
+    _signUpLoading = value;
+    notifyListeners();
+  }
+
+  Future<void> signUpApi(dynamic data, BuildContext context) async {
+    setSignUpLoading(true);
+
+    signUpRepository.signUpApi(data).then((value) {
+      setSignUpLoading(false);
+      AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
+    }).onError((error, stackTrace) {
+      setSignUpLoading(false);
+    });
+  }
+}

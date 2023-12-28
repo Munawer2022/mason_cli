@@ -41,6 +41,10 @@ void run(HookContext context) {
   final appCheck = "platform_app_check.dart";
   final scaffoldCheck = "platform_scaffold_check.dart";
   final theme = "app_theme.dart";
+  final loginViewModel = "login_view_model.dart";
+  final signUpViewModel = "signup_view_model.dart";
+  final loginRepository = "login_repository.dart";
+  final signUpRepository = "signup_repository.dart";
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,
@@ -74,5 +78,9 @@ void run(HookContext context) {
     "app_check": appCheck,
     "scaffold_check": scaffoldCheck,
     "theme": theme,
+    "login_view_model": loginViewModel,
+    "signup_view_model": signUpViewModel,
+    "login_repository": loginRepository,
+    "signup_repository": signUpRepository,
   };
 }

@@ -6,6 +6,10 @@ import '/utils/routes/routes_name.dart';
 import '/view_model/services/{{token_view_model}}';
 import 'package:device_preview/device_preview.dart';
 import 'resource/app_theme.dart';
+import 'view_model/auth/login_view_model.dart';
+import 'view_model/auth/signup_view_model.dart';
+// import 'view_model/auth/forgot_password_view_model.dart';
+import 'view_model/{{folder_name}}_view_model.dart';
 
 void main() {
   // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -14,8 +18,11 @@ void main() {
   //     statusBarBrightness: Brightness.light,
   //     systemStatusBarContrastEnforced: false));
   runApp(MultiProvider(providers: [
-    // ChangeNotifierProvider(create: (_) => AuthViewModel()),
     ChangeNotifierProvider(create: (_) => TokenViewModel()),
+    ChangeNotifierProvider(create: (_) => LoginViewModel()),
+    ChangeNotifierProvider(create: (_) => SignUpViewModel()),
+    // ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),
+    ChangeNotifierProvider(create: (_) => {{class_name}}ViewModel()),
   ], child: const MyApp()
    // child: DevicePreview(
       //     enabled: true, builder: (BuildContext context) => const MyApp())
