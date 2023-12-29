@@ -3,7 +3,7 @@ import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 
 Future<void> run(HookContext context) async {
-  final progress = context.logger.progress('Installing packages');
+  // final progress = context.logger.progress('Installing packages');
   final name = (context.vars['name'] as String? ?? "").trim().pascalCase;
 
   void appendAtEndOfProvidersList(String content) {
@@ -53,7 +53,7 @@ Future<void> run(HookContext context) async {
   addImportAtTop(importStatement);
 
   String providerStatement =
-      '\nChangeNotifierProvider(create: (_) => ${name}ViewModel()),';
+      'ChangeNotifierProvider(create: (_) => ${name}ViewModel()),';
 
   appendAtEndOfProvidersList(providerStatement);
 
@@ -87,4 +87,101 @@ Future<void> run(HookContext context) async {
   String sourcePath3 = '${name.snakeCase}_repository.dart';
   String destinationDirector3 = 'lib/repository';
   moveFileToDirectory(sourcePath3, destinationDirector3);
+
+  String sourcePath4 = '${name.snakeCase}_model.dart';
+  String destinationDirector4 = 'lib/model';
+  moveFileToDirectory(sourcePath4, destinationDirector4);
+
+//
+
+  void appUrl(String content) {
+    File file = File('lib/resource/app_url.dart');
+    String fileContent = file.readAsStringSync();
+
+    int runAppIndex = fileContent.indexOf('class AppUrl {');
+
+    if (runAppIndex != -1) {
+      int endProvidersIndex = fileContent.indexOf('}', runAppIndex);
+
+      if (endProvidersIndex != -1) {
+        String start = fileContent.substring(0, endProvidersIndex);
+        String end = fileContent.substring(endProvidersIndex);
+
+        String updatedContent = '$start$content\n$end';
+
+        file.writeAsStringSync(updatedContent);
+        print('Content appended at the end of providers list.');
+      } else {
+        print('End of providers list (}) not found after runApp');
+      }
+    } else {
+      print('runApp(MultiProvider(providers: { not found in the file.');
+    }
+  }
+
+  String nameUrl =
+      "static var ${name.snakeCase} = 'baseUrl/${name.snakeCase}';";
+
+  appUrl(nameUrl);
+
+//
+  void routeName(String content) {
+    File file = File('lib/utils/routes/routes_name.dart');
+    String fileContent = file.readAsStringSync();
+
+    int runAppIndex = fileContent.indexOf('class RoutesName {');
+
+    if (runAppIndex != -1) {
+      int endProvidersIndex = fileContent.indexOf('}', runAppIndex);
+
+      if (endProvidersIndex != -1) {
+        String start = fileContent.substring(0, endProvidersIndex);
+        String end = fileContent.substring(endProvidersIndex);
+
+        String updatedContent = '$start$content\n$end';
+
+        file.writeAsStringSync(updatedContent);
+        print('Content appended at the end of providers list.');
+      } else {
+        print('End of providers list (}) not found after runApp');
+      }
+    } else {
+      print('class RoutesName { not found in the file.');
+    }
+  }
+
+  String routeText =
+      "static const String ${name.snakeCase} = '${name.snakeCase}';";
+
+  routeName(routeText);
+
+//
+  void routes(String content) {
+    File file = File('lib/utils/routes/routes.dart');
+    String fileContent = file.readAsStringSync();
+
+    int runAppIndex = fileContent.indexOf('class RoutesName {');
+
+    if (runAppIndex != -1) {
+      int endProvidersIndex = fileContent.indexOf('}', runAppIndex);
+
+      if (endProvidersIndex != -1) {
+        String start = fileContent.substring(0, endProvidersIndex);
+        String end = fileContent.substring(endProvidersIndex);
+
+        String updatedContent = '$start$content\n$end';
+
+        file.writeAsStringSync(updatedContent);
+        print('Content appended at the end of providers list.');
+      } else {
+        print('End of providers list (}) not found after runApp');
+      }
+    } else {
+      print('class RoutesName { not found in the file.');
+    }
+  }
+
+  String route = "static const String ${name.snakeCase} = '${name.snakeCase}';";
+
+  routes(route);
 }
