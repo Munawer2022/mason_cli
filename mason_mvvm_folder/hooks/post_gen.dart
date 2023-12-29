@@ -6,74 +6,56 @@ Future<void> run(HookContext context) async {
   final progress = context.logger.progress('Installing packages');
   final name = (context.vars['name'] as String? ?? "").trim().pascalCase;
 
-  // void appendAtEndOfProvidersList(String content) {
-  //   File file = File('lib/main.dart');
-  //   String fileContent = file.readAsStringSync();
+  void appendAtEndOfProvidersList(String content) {
+    File file = File('lib/main.dart');
+    String fileContent = file.readAsStringSync();
 
-  //   // Find the position of runApp(MultiProvider(providers: [
-  //   int runAppIndex = fileContent.indexOf('runApp(MultiProvider(providers: [');
+    int runAppIndex = fileContent.indexOf('runApp(MultiProvider(providers: [');
 
-  //   if (runAppIndex != -1) {
-  //     int endProvidersIndex = fileContent.indexOf(']', runAppIndex);
+    if (runAppIndex != -1) {
+      int endProvidersIndex = fileContent.indexOf(']', runAppIndex);
 
-  //     if (endProvidersIndex != -1) {
-  //       String start = fileContent.substring(0, endProvidersIndex);
-  //       String end = fileContent.substring(endProvidersIndex);
+      if (endProvidersIndex != -1) {
+        String start = fileContent.substring(0, endProvidersIndex);
+        String end = fileContent.substring(endProvidersIndex);
 
-  //       String updatedContent = '$start\n$content\n$end';
+        String updatedContent = '$start$content\n$end';
 
-  //       file.writeAsStringSync(updatedContent);
-  //       print('Content appended at the end of providers list.');
-  //     } else {
-  //       print('End of providers list (]) not found after runApp');
-  //     }
-  //   } else {
-  //     print('runApp(MultiProvider(providers: [ not found in the file.');
-  //   }
-  // }
-  void addImportAndProvider(String importStatement, String providerStatement) {
+        file.writeAsStringSync(updatedContent);
+        print('Content appended at the end of providers list.');
+      } else {
+        print('End of providers list (]) not found after runApp');
+      }
+    } else {
+      print('runApp(MultiProvider(providers: [ not found in the file.');
+    }
+  }
+
+  void addImportAtTop(String importStatement) {
     File file = File('lib/main.dart');
     String fileContent = file.readAsStringSync();
 
     int importBlockIndex = fileContent.indexOf('import ');
 
     if (importBlockIndex != -1) {
-      // Find the end of the import block
-      int endOfImportBlockIndex = fileContent.indexOf(';', importBlockIndex);
-      if (endOfImportBlockIndex != -1) {
-        // Insert new import at the end of existing imports
-        String updatedContent =
-            '${fileContent.substring(0, endOfImportBlockIndex + 1)}\n$importStatement\n${fileContent.substring(endOfImportBlockIndex + 1)}';
+      String updatedContent = '$importStatement\n$fileContent';
 
-        // Find the start of runApp(MultiProvider(providers: [
-        int runAppIndex =
-            fileContent.indexOf('runApp(MultiProvider(providers: [');
-        if (runAppIndex != -1) {
-          int endProvidersIndex = fileContent.indexOf(']', runAppIndex);
-
-          if (endProvidersIndex != -1) {
-            // Append the provider statement after the existing providers
-            updatedContent =
-                '${updatedContent.substring(0, endProvidersIndex)}$providerStatement\n${updatedContent.substring(endProvidersIndex)}';
-
-            file.writeAsStringSync(updatedContent);
-            print('Import and provider added successfully.');
-            return;
-          }
-        }
-      }
+      file.writeAsStringSync(updatedContent);
+      print('Import statement added at the top of the file.');
+    } else {
+      print('Failed to find the import block.');
     }
-
-    print('Failed to add import or provider.');
   }
 
-  String importStatement = "import 'view_model/hello_view_model.dart';";
+  String importStatement =
+      "import 'view_model/${name.snakeCase}_view_model.dart';";
+
+  addImportAtTop(importStatement);
 
   String providerStatement =
       '\nChangeNotifierProvider(create: (_) => ${name}ViewModel()),';
 
-  // appendAtEndOfProvidersList(additionalContent);
-  addImportAndProvider(importStatement, providerStatement);
+  appendAtEndOfProvidersList(providerStatement);
 
 //
 
@@ -96,7 +78,13 @@ Future<void> run(HookContext context) async {
     }
   }
 
-  String sourcePath = '${name.snakeCase}_view.dart';
-  String destinationDirectory = 'lib/data';
+  String sourcePath = '${name.snakeCase}_view_model.dart';
+  String destinationDirectory = 'lib/view_model';
   moveFileToDirectory(sourcePath, destinationDirectory);
+  String sourcePath2 = '${name.snakeCase}_view.dart';
+  String destinationDirector2 = 'lib/view';
+  moveFileToDirectory(sourcePath2, destinationDirector2);
+  String sourcePath3 = '${name.snakeCase}_repository.dart';
+  String destinationDirector3 = 'lib/repository';
+  moveFileToDirectory(sourcePath3, destinationDirector3);
 }

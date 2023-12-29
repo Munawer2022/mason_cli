@@ -24,8 +24,7 @@ void main() {
     ChangeNotifierProvider(create: (_) => TokenViewModel()),
     ChangeNotifierProvider(create: (_) => LoginViewModel()),
     ChangeNotifierProvider(create: (_) => SignUpViewModel()),
-    ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),
-    {{/auth}}
+    ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),{{/auth}}
     ChangeNotifierProvider(create: (_) => {{class_name}}ViewModel()),
   ], child: const MyApp()
    // child: DevicePreview(
