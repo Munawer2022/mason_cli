@@ -18,11 +18,11 @@ class SplashViewState extends State<SplashView> {
   @override
   void initState() {
     {{#auth}}
-    splashServices.checkAuthentication(context);
+    // splashServices.checkAuthentication(context);
     {{/auth}}
-    // Future.delayed(const Duration(seconds: 2), () {
-    //   AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
-    // });
+    Future.delayed(const Duration(seconds: 2), () {
+      AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
+    });
     super.initState();
   }
 

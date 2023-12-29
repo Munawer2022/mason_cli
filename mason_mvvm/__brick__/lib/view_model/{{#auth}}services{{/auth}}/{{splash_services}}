@@ -18,10 +18,10 @@ class SplashServices {
       print(value.token.toString());
 
       if(value.token.toString() == 'null' || value.token.toString() == ''){
-        await Future.delayed(const Duration(seconds: 2));
+        // await Future.delayed(const Duration(seconds: 2));
         AppNavigator.pushNamed(context, RoutesName.login);
       }else {
-        await  Future.delayed(const Duration(seconds: 2));
+        // await  Future.delayed(const Duration(seconds: 2));
         AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
       }
 
