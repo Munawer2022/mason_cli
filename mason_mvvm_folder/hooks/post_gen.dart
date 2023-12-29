@@ -31,8 +31,8 @@ Future<void> run(HookContext context) async {
     }
   }
 
-  void addImportAtTop(String importStatement) {
-    File file = File('lib/main.dart');
+  void addImportAtTop(String importStatement, String whereToImport) {
+    File file = File(whereToImport);
     String fileContent = file.readAsStringSync();
 
     int importBlockIndex = fileContent.indexOf('import ');
@@ -50,7 +50,7 @@ Future<void> run(HookContext context) async {
   String importStatement =
       "import 'view_model/${name.snakeCase}_view_model.dart';";
 
-  addImportAtTop(importStatement);
+  addImportAtTop(importStatement, 'lib/main.dart');
 
   String providerStatement =
       'ChangeNotifierProvider(create: (_) => ${name}ViewModel()),';
@@ -156,32 +156,36 @@ Future<void> run(HookContext context) async {
   routeName(routeText);
 
 //
-  void routes(String content) {
+  void addRouteCase(String caseContent) {
     File file = File('lib/utils/routes/routes.dart');
     String fileContent = file.readAsStringSync();
 
-    int runAppIndex = fileContent.indexOf('class RoutesName {');
+    int switchIndex = fileContent.indexOf('switch (settings.name) {');
 
-    if (runAppIndex != -1) {
-      int endProvidersIndex = fileContent.indexOf('}', runAppIndex);
+    if (switchIndex != -1) {
+      int defaultIndex = fileContent.indexOf('default:', switchIndex);
 
-      if (endProvidersIndex != -1) {
-        String start = fileContent.substring(0, endProvidersIndex);
-        String end = fileContent.substring(endProvidersIndex);
+      if (defaultIndex != -1) {
+        String start = fileContent.substring(0, defaultIndex);
+        String end = fileContent.substring(defaultIndex);
 
-        String updatedContent = '$start$content\n$end';
+        String updatedContent = '$start\n$caseContent\n$end';
 
         file.writeAsStringSync(updatedContent);
-        print('Content appended at the end of providers list.');
+        print('Case statement added successfully.');
       } else {
-        print('End of providers list (}) not found after runApp');
+        print('Default case not found after the switch statement.');
       }
     } else {
-      print('class RoutesName { not found in the file.');
+      print('Switch statement not found in the file.');
     }
   }
 
-  String route = "static const String ${name.snakeCase} = '${name.snakeCase}';";
+  String route =
+      "case RoutesName.${name.snakeCase}:\nreturn pageRoute.getPageRoute(const ${name}View());";
 
-  routes(route);
+  addRouteCase(route);
+  String import = "import '/view/${name.snakeCase}_view.dart';";
+
+  addImportAtTop(import, 'lib/utils/routes/routes.dart');
 }
