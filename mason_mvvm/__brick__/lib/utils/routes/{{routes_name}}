@@ -4,6 +4,7 @@ class RoutesName {
   //auth routes name
   static const String login = 'login';
   static const String signUp = 'signup';
+  static const String forgotPassword = 'forgotPassword';
 {{/auth}}
   //home routes name
   static const String {{folder_name}} = '{{folder_name}}';

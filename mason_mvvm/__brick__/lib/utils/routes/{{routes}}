@@ -4,6 +4,7 @@ import '/view/splash_view.dart';
 {{#auth}}
 import '/view/auth/login_view.dart';
 import '/view/auth/signUp_view.dart';
+import '/view/auth/forgot_password_View.dart';
 {{/auth}}
 import '/view/{{folder_name}}_view.dart';
 
@@ -18,6 +19,8 @@ class Routes {
         return pageRoute.getPageRoute(const LoginView());
       case RoutesName.signUp:
         return pageRoute.getPageRoute(const SignUpView());
+      case RoutesName.forgotPassword:
+        return pageRoute.getPageRoute(const ForgotPasswordView());
         {{/auth}}
       case RoutesName.{{folder_name}}:
         return pageRoute.getPageRoute(const {{class_name}}View());

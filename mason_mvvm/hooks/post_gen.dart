@@ -26,5 +26,7 @@ Future<void> run(HookContext context) async {
   //     'lib',
   //     (context.vars['name'] as String).snakeCase))));
 
+  // File file = File('lib/main.dart');
+  // file.writeAsBytesSync(bytes)
   progress.complete();
 }

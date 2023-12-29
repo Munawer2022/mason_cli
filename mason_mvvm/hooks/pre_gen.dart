@@ -45,6 +45,9 @@ void run(HookContext context) {
   final signUpViewModel = "signup_view_model.dart";
   final loginRepository = "login_repository.dart";
   final signUpRepository = "signup_repository.dart";
+  final forgotPasswordRepository = "forgot_password_repository.dart";
+  final forgotPasswordViewModel = "forgot_password_view_model.dart";
+  final forgotPasswordView = "forgot_password_view.dart";
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,
@@ -82,5 +85,8 @@ void run(HookContext context) {
     "signup_view_model": signUpViewModel,
     "login_repository": loginRepository,
     "signup_repository": signUpRepository,
+    "forgot_password_repository": forgotPasswordRepository,
+    "forgot_password_view_model": forgotPasswordViewModel,
+    "forgot_password_view": forgotPasswordView,
   };
 }
