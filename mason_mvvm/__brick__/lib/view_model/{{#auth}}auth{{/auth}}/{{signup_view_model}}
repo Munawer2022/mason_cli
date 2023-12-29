@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/resource/app_navigator.dart';
 import '/utils/routes/routes_name.dart';
-import '/respository/auth/signup_repository.dart';
+import '/repository/auth/signup_repository.dart';
 
 class SignUpViewModel with ChangeNotifier {
   final signUpRepository = SignUpRepository();

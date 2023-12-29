@@ -1,59 +1,59 @@
 import 'package:flutter/material.dart';
+import '/repository/{{repo_file_name}}';
+
+{{#isGet}} 
+import '../model/{{folder_name}}_model.dart';
 import '/data/response/api_response.dart';
-import '/respository/{{repo_file_name}}';
+{{/isGet}}
+{{#isPost}}
 import '/resource/app_navigator.dart';
-import 'services/token_view_model.dart';
 import '/utils/routes/routes_name.dart';
-import 'package:provider/provider.dart';
-import 'services/token_view_model.dart';
+{{/isPost}}
+
 
 class {{class_name}}ViewModel with ChangeNotifier {
   final {{folder_name}}Repository = {{class_name}}Repository();
 
-  //   ***   this is Get api data   ***
+{{#isGet}}
+  ApiResponse<{{class_name}}Model> {{folder_name}}Model = ApiResponse.loading();
 
-  // ApiResponse<{{class_name}}Model> {{folder_name}}Model = ApiResponse.loading();
+  set{{class_name}}Loading(ApiResponse<{{class_name}}Model> response) {
+    {{folder_name}}Model = response;
+    notifyListeners();
+  }
 
-  // set{{class_name}}Loading(ApiResponse<{{class_name}}Model> response) {
-  //   {{folder_name}}Model = response;
-  //   notifyListeners();
-  // }
+  Future<void> fetch{{class_name}}Api() async {
+    set{{class_name}}Loading(ApiResponse.loading());
 
-  // Future<void> fetch{{class_name}}Api() async {
-  //   set{{class_name}}Loading(ApiResponse.loading());
+    {{folder_name}}Repository.fetch{{class_name}}Api().then((value) {
+      set{{class_name}}Loading(ApiResponse.completed(value));
+    }).onError((error, stackTrace) {
+      set{{class_name}}Loading(ApiResponse.error(error.toString()));
+    });
+  }
 
-  //   {{folder_name}}Repository.fetch{{class_name}}Api().then((value) {
-  //     set{{class_name}}Loading(ApiResponse.completed(value));
-  //   }).onError((error, stackTrace) {
-  //     set{{class_name}}Loading(ApiResponse.error(error.toString()));
-  //   });
-  // }
+{{/isGet}}
 
+{{#isPost}}
 
+  bool _{{folder_name}}Loading = false;
+  bool get {{folder_name}}Loading => _{{folder_name}}Loading;
 
+  set{{class_name}}Loading(bool value) {
+    _{{folder_name}}Loading = value;
+    notifyListeners();
+  }
 
-  //   ***   this is Post api data   ***
+  Future<void> {{folder_name}}Api(dynamic data, BuildContext context) async {
+    set{{class_name}}Loading(true);
 
-  // bool _{{folder_name}}Loading = false;
-  // bool get {{folder_name}}Loading => _{{folder_name}}Loading;
-
-  // set{{class_name}}Loading(bool value) {
-  //   _{{folder_name}}Loading = value;
-  //   notifyListeners();
-  // }
-
-  // Future<void> {{folder_name}}Api(dynamic data, BuildContext context) async {
-  //   set{{class_name}}Loading(true);
-
-  //   {{folder_name}}Repository.{{folder_name}}Api(data).then((value) {
-  //     set{{class_name}}Loading(false);
-  //     final tokenPreference =
-  //         Provider.of<TokenViewModel>(context, listen: false);
-  //     tokenPreference.saveToken(TokenModel(token: value['token'].toString()));
-  //     AppNavigator.pushNamed(context, RoutesName.munawer);
-  //   }).onError((error, stackTrace) {
-  //     set{{class_name}}Loading(false);
-  //   });
-  // }
+    {{folder_name}}Repository.{{folder_name}}Api(data).then((value) {
+      set{{class_name}}Loading(false);
+      AppNavigator.pushNamed(context, RoutesName.{{folder_name}});
+    }).onError((error, stackTrace) {
+      set{{class_name}}Loading(false);
+    });
+  }
+{{/isPost}}
 
 }

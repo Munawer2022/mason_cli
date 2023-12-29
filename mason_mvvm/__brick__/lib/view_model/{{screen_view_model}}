@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/respository/{{repo_file_name}}';
+import '/repository/{{repo_file_name}}';
 
 {{#isGet}} 
 import '../model/{{folder_name}}_model.dart';

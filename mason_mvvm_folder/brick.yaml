@@ -31,3 +31,10 @@ vars:
     description: Your name
     default: Dash
     prompt: What is your name?
+  http:
+    type: enum
+    description: Select the api you want to include
+    values:
+      - get
+      - post
+    prompt: Which api would you like to include in your application?
