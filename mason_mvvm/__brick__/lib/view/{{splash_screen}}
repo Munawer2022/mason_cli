@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../resource/app_navigator.dart';
+import '../utils/routes/routes_name.dart';
 {{#auth}}
 import '/view_model/services/splash_services.dart';
 {{/auth}}
