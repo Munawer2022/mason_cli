@@ -48,6 +48,8 @@ void run(HookContext context) {
   final forgotPasswordRepository = "forgot_password_repository.dart";
   final forgotPasswordViewModel = "forgot_password_view_model.dart";
   final forgotPasswordView = "forgot_password_view.dart";
+  final stateFileName = "${stem.snakeCase}_state.dart";
+
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,
@@ -88,5 +90,6 @@ void run(HookContext context) {
     "forgot_password_repository": forgotPasswordRepository,
     "forgot_password_view_model": forgotPasswordViewModel,
     "forgot_password_view": forgotPasswordView,
+    "state_file_name": stateFileName,
   };
 }

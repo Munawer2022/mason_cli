@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
+{{#isGet}}
+import 'package:provider/provider.dart';
+import '/data/response/status.dart';
+import '/view_model/{{folder_name}}_view_model.dart';
+{{/isGet}}
 
 class {{class_name}}View extends StatelessWidget {
   const {{class_name}}View({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(   
-      body: SizedBox()
+    return Scaffold(
+        body: 
+        {{#isGet}}
+        Consumer<{{class_name}}ViewModel>(builder: (context, value, child) {
+      switch (value.{{folder_name}}Model.status) {
+        case Status.LOADING:
+          return const CircularProgressIndicator.adaptive();
+        case Status.ERROR:
+          return Text(value.{{folder_name}}Model.message.toString());
+        case Status.COMPLETED:
+          return const SizedBox();
+        case null:
+          return const SizedBox();
+      }
+    })
+    {{/isGet}}
+    {{#isPost}}
+    SizedBox()
+    {{/isPost}}
     );
   }
 }
-

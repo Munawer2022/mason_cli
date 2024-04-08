@@ -3,7 +3,7 @@ import '/resource/app_navigator.dart';
 import '/utils/routes/routes_name.dart';
 import '/repository/auth/signup_repository.dart';
 
-class SignUpViewModel with ChangeNotifier {
+class SignUpViewModel extends ChangeNotifier {
   final signUpRepository = SignUpRepository();
 
 

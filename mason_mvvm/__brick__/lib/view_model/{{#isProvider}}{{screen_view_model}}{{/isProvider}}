@@ -10,8 +10,7 @@ import '/resource/app_navigator.dart';
 import '/utils/routes/routes_name.dart';
 {{/isPost}}
 
-
-class {{class_name}}ViewModel with ChangeNotifier {
+class {{class_name}}ViewModel extends ChangeNotifier {
   final {{folder_name}}Repository = {{class_name}}Repository();
 
 {{#isGet}}

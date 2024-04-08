@@ -18,8 +18,6 @@ Future<void> fetch{{class_name}}() async {
       emit(state.copyWith(users: r, isloading: false));
     }));
   }
-
-
 }
 
 

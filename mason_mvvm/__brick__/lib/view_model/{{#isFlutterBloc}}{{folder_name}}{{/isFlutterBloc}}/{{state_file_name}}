@@ -1,0 +1,16 @@
+import '/model/{{folder_name}}_model.dart';
+
+class {{class_name}}State {
+  {{class_name}}Model? model;
+  bool? isloading;
+  String? error;
+  {{class_name}}State({required this.model, required this.isloading, this.error});
+  factory {{class_name}}State.initial() => {{class_name}}State(model: null, isloading: false);
+  {{class_name}}State copyWith(
+          {
+          {{class_name}}Model? model, bool? isloading, String? error}) =>
+          {{class_name}}State(
+          model: model ?? this.model,
+          isloading: isloading ?? this.isloading,
+          error: error ?? this.error);
+}

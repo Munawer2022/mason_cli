@@ -6,7 +6,7 @@ import '/utils/routes/routes_name.dart';
 import '/view_model/services/{{token_view_model}}';
 import '/repository/auth/login_repository.dart';
 
-class LoginViewModel with ChangeNotifier {
+class LoginViewModel extends ChangeNotifier {
   final loginRepository = LoginRepository();
 
   bool _loginLoading = false;
@@ -29,6 +29,4 @@ class LoginViewModel with ChangeNotifier {
       setLoginLoading(false);
     });
   }
-
-
 }

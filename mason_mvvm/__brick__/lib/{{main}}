@@ -11,7 +11,7 @@ import 'view_model/auth/login_view_model.dart';
 import 'view_model/auth/signup_view_model.dart';
 import 'view_model/auth/forgot_password_view_model.dart';
 {{/auth}}
-import 'view_model/{{folder_name}}_view_model.dart';
+import 'view_model/bloc/cubit_{{folder_name}}.dart';
 
 void main() {
   // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -25,7 +25,7 @@ void main() {
     ChangeNotifierProvider(create: (_) => LoginViewModel()),
     ChangeNotifierProvider(create: (_) => SignUpViewModel()),
     ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),{{/auth}}
-    ChangeNotifierProvider(create: (_) => {{class_name}}ViewModel()),
+    ChangeNotifierProvider(create: (_) => Cubit{{class_name}}ViewModel()),
   ], child: const MyApp()
    // child: DevicePreview(
       //     enabled: true, builder: (BuildContext context) => const MyApp())
