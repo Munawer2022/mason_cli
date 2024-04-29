@@ -26,3 +26,25 @@ vars:
     description: Your name
     default: Dash
     prompt: What is your name?
+
+  auth:
+    type: boolean
+    description: Do you want to add a AUTH section in your project?
+    default: true
+    prompt: Do you want to add a AUTH section in your project?
+
+  stateManagement:
+    type: enum
+    description: Select the stateManagement you want to include
+    values:
+      - Bloc
+      - flutter_bloc
+    prompt: Which stateManagement would you like to include in your application?
+    # defaults: provider
+  http:
+    type: enum
+    description: Select the api you want to include
+    values:
+      - get
+      - post
+    prompt: Which api would you like to include in your application?

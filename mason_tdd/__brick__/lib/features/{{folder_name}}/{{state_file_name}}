@@ -1,0 +1,18 @@
+import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+import '{{folder_name}}_initial_params.dart';
+
+class {{class_name}}State {
+  final Mock{{class_name}}Model {{folder_name}};
+  final bool isloading;
+  final String? error;
+
+  {{class_name}}State({required this.{{folder_name}}, required this.isloading, this.error});
+  factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
+      {{class_name}}State({{folder_name}}: Mock{{class_name}}Model.empty(),isloading: false);
+  {{class_name}}State copyWith(
+          {Mock{{class_name}}Model? {{folder_name}}, bool? isloading, String? error}) =>
+      {{class_name}}State(
+          {{folder_name}}: {{folder_name}} ?? this.{{folder_name}},
+          isloading: isloading ?? this.isloading,
+          error: error ?? this.error);
+}

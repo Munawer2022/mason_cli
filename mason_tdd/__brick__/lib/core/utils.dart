@@ -1,10 +1,7 @@
-
 import 'package:flutter/material.dart';
 
-
-class Utils {
-
-  snackbar(text, context) {
+abstract class Utils {
+  static snackbar(text, context) {
     var snackBar = SnackBar(
       backgroundColor: Colors.green.shade300,
       content: Text(
@@ -14,7 +11,7 @@ class Utils {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  errorSnackbar(text, context) {
+  static errorSnackbar(text, context) {
     var snackBar = SnackBar(
       backgroundColor: Colors.red.shade300,
       content: Text(
@@ -24,6 +21,7 @@ class Utils {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
+
 void printWarning(text) {
   print('\x1B[33m$text\x1B[0m');
 }

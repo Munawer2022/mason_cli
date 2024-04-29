@@ -1,0 +1,31 @@
+//for complex model 
+//  factory {{class_name}}Model.fromJson(Map<String, dynamic> json) => {{class_name}}Model(
+// id: json['id'] as int? ?? 0,
+// name: json['name'] as String? ?? '',);
+import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+
+class {{class_name}}Model {
+  static fromJson(e) {}
+  Mock{{class_name}}Model toDomain() => Mock{{class_name}}Model();
+  // int id;
+  // String name;
+  
+
+  // {{class_name}}Model({
+  //   required this.id,
+  //   required this.name,
+    
+  // });
+
+  // factory {{class_name}}Model.fromJson(Map<String, dynamic> json) => {{class_name}}Model(
+  //       id: json['id'],
+  //       name: json['name'],
+        
+  //     );
+
+  // Mock{{class_name}}Model toDomain() => Mock{{class_name}}Model(
+  //       id: id,
+  //       name: name,
+        
+  //     );
+}

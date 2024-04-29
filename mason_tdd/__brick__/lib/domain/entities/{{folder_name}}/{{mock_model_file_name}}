@@ -1,0 +1,27 @@
+import 'package:equatable/equatable.dart';
+
+// - use Mock{{class_name}}Model copyWith({}) function if you have more complex api model.
+class Mock{{class_name}}Model extends Equatable {
+  @override
+  List<Object?> get props => [];
+  static empty() {}
+  // int id;
+  // String name;
+  
+  // const Mock{{class_name}}Model({
+  //   required this.id,
+  //   required this.name,
+  // });
+
+  // factory Mock{{class_name}}Model.empty() =>
+  //     Mock{{class_name}}Model(
+  //       id = 0,
+  //       name = ''
+  // );
+
+  // @override
+  // List<Object?> get props => [
+  //       id,
+  //       name,
+  //     ];
+}

@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'features/{{folder_name}}/{{page_file_name}}';
+import 'features/{{folder_name}}/{{initial_params_file_name}}';
+import '/config/theme/theme.dart';
+import 'injection_container.dart' as di;
+import 'injection_container.dart';
+
+void main() async {
+  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //     statusBarColor: Colors.transparent,
+  //     statusBarIconBrightness: Brightness.light,
+  //     systemNavigationBarColor: Colors.transparent,
+  //     systemNavigationBarIconBrightness: Brightness.light,
+  //     systemNavigationBarContrastEnforced: true,
+  //     systemStatusBarContrastEnforced: true));
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
+  runApp(
+    const MyApp(),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context)  => ScreenUtilInit(
+      designSize: const Size(430, 932),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) => MaterialApp(
+           // useInheritedMediaQuery: true,
+            // locale: DevicePreview.locale(context),
+            // builder: DevicePreview.appBuilder,
+            debugShowCheckedModeBanner: false,
+            // theme: Themes.light,
+            // initialRoute: RoutesName.splash,
+            // onGenerateRoute: Routes.generateRoute,
+        home: {{class_name}}Page(
+            cubit: getIt(param1: const {{class_name}}InitialParams()))));
+}
