@@ -8,9 +8,9 @@ class {{class_name}}Page extends StatefulWidget {
 final {{class_name}}Cubit cubit;
 
 const {{class_name}}Page({
-Key? key,
+super.key,
 required this.cubit,
-}) : super(key: key);
+});
 
 @override
 State<{{class_name}}Page> createState() => _{{class_name}}State();

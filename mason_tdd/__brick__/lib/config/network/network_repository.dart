@@ -8,7 +8,7 @@ import '/domain/failure/network_failure.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkRepository {
-  Future<Either<NetworkFailure, dynamic>> get(String url) async {
+  Future<Either<NetworkFailure, dynamic>> get({required String url}) async {
     try {
       var uri = Uri.parse(url);
       var response = await http.get(uri, headers: {
@@ -27,12 +27,14 @@ class NetworkRepository {
     }
   }
 
-  Future<Either<NetworkFailure, dynamic>> post(String url, dynamic data,
-      {Map<String, String>? headers}) async {
+  Future<Either<NetworkFailure, dynamic>> post(
+      {required String url,
+      required Map<String, dynamic> body,
+      Map<String, String>? headers}) async {
     try {
       var uri = Uri.parse(url);
       var response = await http
-          .post(uri, body: data, headers: headers)
+          .post(uri, body: body, headers: headers)
           .timeout(const Duration(seconds: 10));
       final failure = _handleStatusCode(response);
       if (failure != null) {
@@ -47,13 +49,15 @@ class NetworkRepository {
     }
   }
 
-  Future<Either<NetworkFailure, dynamic>> patch(String url, dynamic data,
-      {Map<String, String>? headers}) async {
+  Future<Either<NetworkFailure, dynamic>> patch(
+      {required String url,
+      required Map<String, dynamic> body,
+      Map<String, String>? headers}) async {
     try {
       var uri = Uri.parse(url);
       var response = await http
           .patch(uri,
-              body: data,
+              body: body,
               headers: headers ??
                   {
                     // 'Authorization': 'Bearer $token'
@@ -75,9 +79,11 @@ class NetworkRepository {
   NetworkFailure? _handleStatusCode(http.Response code) {
     if (code.statusCode == 400 ||
         code.statusCode == 401 ||
+        code.statusCode == 403 ||
         code.statusCode == 404 ||
         code.statusCode == 500) {
-      return NetworkFailure(error: code.body);
+      final Map<String, dynamic> response = jsonDecode(code.body);
+      return NetworkFailure(error: response['message']);
     }
     return null;
   }

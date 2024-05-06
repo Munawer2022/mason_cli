@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
 import '{{initial_params_file_name}}';
 import '{{navigator_file_name}}';
 import '{{state_file_name}}';
@@ -9,17 +10,21 @@ class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
 final {{class_name}}InitialParams initialParams;
 {{class_name}}Cubit(this.initialParams,this.baseApiServices,this.navigator) : super({{class_name}}State.initial(initialParams:initialParams));
 
-Future<void> fetch{{class_name}}() async {
-    emit(state.copyWith(isloading: true, error: null));
-    final {{class_name}} = await baseApiServices.get{{class_name}}();
-    {{class_name}}.fold((l) {
-      emit(state.copyWith(error: l.error));
-    }, ((r) {
-      emit(state.copyWith(users: r, isloading: false));
-    }));
+Future<void> {{folder_name}}(
+  {{#isPost}}
+  {required Map<String, dynamic> body}
+  {{/isPost}}
+) async {
+    emit(state.copyWith(isloading: true));
+    final {{folder_name}} = await baseApiServices.{{folder_name}}(
+      {{#isPost}}
+  body: body
+  {{/isPost}}
+    );
+    {{folder_name}}.fold(
+      (l) => emit(state.copyWith(error: l.error,isloading: false)),
+      ((r) =>emit(state.copyWith(success: r, isloading: false))));
   }
-
-
 }
 
 

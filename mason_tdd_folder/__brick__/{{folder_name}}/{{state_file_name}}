@@ -1,15 +1,41 @@
+{{#isGet}}
+import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+import '{{folder_name}}_initial_params.dart';
+
 class {{class_name}}State {
-  final List<Mock{{class_name}}Model> users;
+  final Mock{{class_name}}Model success;
   final bool isloading;
   final String? error;
 
-  {{class_name}}State({required this.users, required this.isloading, this.error});
-  factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) => {{class_name}}State(users: [], isloading: false);
+  {{class_name}}State({required this.success, required this.isloading, this.error});
+  factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
+      {{class_name}}State(success: Mock{{class_name}}Model.empty().copyWith(),isloading: false);
   {{class_name}}State copyWith(
-          {List<Mock{{class_name}}Model>? users, bool? isloading, String? error}) =>
+          {Mock{{class_name}}Model? success, bool? isloading, String? error}) =>
       {{class_name}}State(
-          users: users ?? this.users,
+          success: success ?? this.success,
           isloading: isloading ?? this.isloading,
           error: error ?? this.error);
 }
+{{/isGet}}
 
+{{#isPost}}
+import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_success_model.dart';
+import '{{folder_name}}_initial_params.dart';
+
+class {{class_name}}State {
+  final Mock{{class_name}}SuccessModel success;
+  final bool isloading;
+  final String? error;
+
+  {{class_name}}State({required this.success, required this.isloading, this.error});
+  factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
+      {{class_name}}State(success: Mock{{class_name}}SuccessModel.empty().copyWith(),isloading: false);
+  {{class_name}}State copyWith(
+          {Mock{{class_name}}SuccessModel? success, bool? isloading, String? error}) =>
+      {{class_name}}State(
+          success: success ?? this.success,
+          isloading: isloading ?? this.isloading,
+          error: error ?? this.error);
+}
+{{/isPost}}

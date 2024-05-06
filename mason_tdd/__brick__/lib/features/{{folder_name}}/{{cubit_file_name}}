@@ -10,12 +10,20 @@ class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
 final {{class_name}}InitialParams initialParams;
 {{class_name}}Cubit(this.initialParams,this.baseApiServices,this.navigator) : super({{class_name}}State.initial(initialParams:initialParams));
 
-Future<void> fetch{{class_name}}() async {
+Future<void> {{folder_name}}(
+  {{#isPost}}
+  {required Map<String, dynamic> body}
+  {{/isPost}}
+) async {
     emit(state.copyWith(isloading: true));
-    final {{folder_name}} = await baseApiServices.get{{class_name}}();
+    final {{folder_name}} = await baseApiServices.{{folder_name}}(
+      {{#isPost}}
+  body: body
+  {{/isPost}}
+    );
     {{folder_name}}.fold(
       (l) => emit(state.copyWith(error: l.error,isloading: false)),
-      ((r) =>emit(state.copyWith({{folder_name}}: r, isloading: false))));
+      ((r) =>emit(state.copyWith(success: r, isloading: false))));
   }
 }
 
