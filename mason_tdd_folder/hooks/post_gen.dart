@@ -51,12 +51,12 @@ Future<void> run(HookContext context) async {
 /*
 ************************ ${name.snakeCase} ************************
 */
-import 'features/${name.snakeCase}/${name.snakeCase}_cubit.dart';
-import 'features/${name.snakeCase}/${name.snakeCase}_navigator.dart';
-import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
+import 'features/${name.snakeCase}_feature/${name.snakeCase}_cubit.dart';
+import 'features/${name.snakeCase}_feature/${name.snakeCase}_navigator.dart';
+import 'features/${name.snakeCase}_feature/${name.snakeCase}_initial_params.dart';
 import 'config/navigation/app_navigator.dart';
-import 'data/repositories/${name.snakeCase}/${name.snakeCase}_repository.dart';
-import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service.dart';
+import 'data/repositories/${name.snakeCase}_repositorie/${name.snakeCase}_repository.dart';
+import 'domain/repositories/${name.snakeCase}_repositorie_base_api_service/${name.snakeCase}_repositorie_base_api_service.dart';
 ''';
 
   addImportAtTop(importStatement, 'lib/injection_container.dart');
@@ -65,7 +65,7 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
 /*
 ************************ ${name.snakeCase} ************************
 */
-  getIt.registerSingleton<${name}BaseApiService>(${name}Repository(getIt()));
+  getIt.registerSingleton<${name}RepositorieBaseApiService>(${name}Repository(getIt()));
   // getIt.registerSingleton<${name}BaseApiService>(Mock${name}Repository());
   getIt.registerSingleton<${name}Navigator>(${name}Navigator(getIt()));
   getIt.registerFactoryParam<${name}Cubit, ${name}InitialParams, dynamic>(
@@ -119,19 +119,41 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
     }
   }
 
-  String sourcePath = '${name.snakeCase}';
+  String sourcePath = '${name.snakeCase}_feature';
   String destinationDirectory = 'lib/features';
   moveFileToDirectory(sourcePath, destinationDirectory);
-  // String sourcePath2 = '${name.snakeCase}_view.dart';
-  // String destinationDirector2 = 'lib/view';
-  // moveFileToDirectory(sourcePath2, destinationDirector2);
-  // String sourcePath3 = '${name.snakeCase}_repository.dart';
-  // String destinationDirector3 = 'lib/repository';
-  // moveFileToDirectory(sourcePath3, destinationDirector3);
-
-  // String sourcePath4 = '${name.snakeCase}_model.dart';
-  // String destinationDirector4 = 'lib/model';
-  // moveFileToDirectory(sourcePath4, destinationDirector4);
+  //
+  String sourcePath2 = '${name.snakeCase}_failure';
+  String destinationDirector2 = 'lib/domain/failure';
+  moveFileToDirectory(sourcePath2, destinationDirector2);
+  //
+  String sourcePath3 = '${name.snakeCase}_repositorie_base_api_service';
+  String destinationDirector3 = 'lib/domain/repositories';
+  moveFileToDirectory(sourcePath3, destinationDirector3);
+  //
+  String sourcePath4 = '${name.snakeCase}_entitie';
+  String destinationDirector4 = 'lib/domain/entities';
+  moveFileToDirectory(sourcePath4, destinationDirector4);
+  //
+  String sourcePath5 = '${name.snakeCase}_repositorie';
+  String destinationDirector5 = 'lib/data/repositories';
+  moveFileToDirectory(sourcePath5, destinationDirector5);
+  //
+  String sourcePath6 = '${name.snakeCase}_usecase';
+  String destinationDirector6 = 'lib/domain/usecases';
+  moveFileToDirectory(sourcePath6, destinationDirector6);
+  //
+  String sourcePath7 = '${name.snakeCase}_datasource';
+  String destinationDirector7 = 'lib/data/datasources';
+  moveFileToDirectory(sourcePath7, destinationDirector7);
+  //
+  String sourcePath8 = '${name.snakeCase}_model';
+  String destinationDirector8 = 'lib/data/models';
+  moveFileToDirectory(sourcePath8, destinationDirector8);
+  //
+  String sourcePath9 = '${name.snakeCase}_repositorie';
+  String destinationDirector9 = 'lib/data/repositories';
+  moveFileToDirectory(sourcePath9, destinationDirector9);
 
 //
 

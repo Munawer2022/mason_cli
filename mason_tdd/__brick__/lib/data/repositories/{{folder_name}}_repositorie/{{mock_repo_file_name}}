@@ -1,0 +1,25 @@
+import 'package:fpdart/fpdart.dart';
+{{#isPost}}
+import '/domain/entities/{{folder_name}}_entitie/mock_{{folder_name}}_success_model.dart';
+{{/isPost}}
+{{#isGet}}
+import '/domain/entities/{{folder_name}}_entitie/mock_{{folder_name}}_model.dart';
+{{/isGet}}
+import '/domain/failure/{{folder_name}}_failure/{{folder_name}}_failure.dart';
+import '/domain/repositories/{{folder_name}}_repositorie_base_api_service/{{folder_name}}_repositorie_base_api_service.dart';
+
+class Mock{{class_name}}Repository implements {{class_name}}RepositorieBaseApiService {
+  @override
+  {{#isGet}}
+  Future<Either<{{class_name}}Failure, Mock{{class_name}}Model>> {{folder_name}}() async =>
+      right(Mock{{class_name}}Model.empty().copyWith());
+  {{/isGet}}
+  {{#isPost}}
+  Future<Either<{{class_name}}Failure, Mock{{class_name}}SuccessModel>> {{folder_name}}(
+     {required Map<String, dynamic> body}
+  ) async {
+        await Future.delayed(const Duration(seconds: 2));
+    return right(Mock{{class_name}}SuccessModel.empty().copyWith());
+  }
+      {{/isPost}}
+}

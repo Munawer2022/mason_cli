@@ -1,8 +1,0 @@
-import 'package:fpdart/fpdart.dart';
-
-import '../../entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
-import '../../failure/{{folder_name}}/{{folder_name}}_use_cases_failure.dart';
-
-class {{class_name}}UseCases {
-  Future<Either<{{class_name}}UseCasesFailure, Mock{{class_name}}Model>> execute() => throw {};
-}

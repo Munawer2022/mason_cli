@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'features/{{folder_name}}/{{page_file_name}}';
-import 'features/{{folder_name}}/{{initial_params_file_name}}';
+import 'features/{{folder_name}}_feature/{{page_file_name}}';
+import 'features/{{folder_name}}_feature/{{initial_params_file_name}}';
 import '/config/theme/theme.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';

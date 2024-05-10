@@ -8,7 +8,7 @@ import '/domain/failure/network_failure.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkRepository {
-  Future<Either<NetworkFailure, dynamic>> get({required String url}) async {
+  Future<Either<NetworkFailure, T>> get<T>({required String url}) async {
     try {
       var uri = Uri.parse(url);
       var response = await http.get(uri, headers: {
@@ -27,7 +27,7 @@ class NetworkRepository {
     }
   }
 
-  Future<Either<NetworkFailure, dynamic>> post(
+  Future<Either<NetworkFailure, T>> post<T>(
       {required String url,
       required Map<String, dynamic> body,
       Map<String, String>? headers}) async {
@@ -49,7 +49,7 @@ class NetworkRepository {
     }
   }
 
-  Future<Either<NetworkFailure, dynamic>> patch(
+  Future<Either<NetworkFailure, T>> patch<T>(
       {required String url,
       required Map<String, dynamic> body,
       Map<String, String>? headers}) async {
