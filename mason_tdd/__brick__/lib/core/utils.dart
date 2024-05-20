@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 abstract class Utils {
   static snackbar(text, context) {
@@ -45,4 +46,14 @@ extension ThemeExtension on BuildContext {
 
 extension NameSplitExtension on String {
   String get nameSplitExtension => this.split(" ").first;
+}
+void setCustomSystemUIOverlayStyle() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    systemNavigationBarContrastEnforced: true,
+    systemStatusBarContrastEnforced: true,
+  ));
 }

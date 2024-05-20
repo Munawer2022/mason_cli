@@ -1,0 +1,35 @@
+import 'package:fpdart/fpdart.dart';
+{{#isPost}}
+import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_success_model.dart';
+import '../../models/{{folder_name}}/{{folder_name}}_success_model.dart';
+{{/isPost}}
+{{#isGet}}
+import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+import '../../models/{{folder_name}}/{{folder_name}}_model.dart';
+{{/isGet}}
+import '/core/app_url.dart';
+
+import '../network/https_network_repository.dart';
+import '/domain/failure/{{folder_name}}/{{folder_name}}_failure.dart';
+import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
+
+class {{class_name}}Repository implements {{class_name}}BaseApiService {
+  final HttpsNetworkRepository _networkRepository;
+
+  {{class_name}}Repository(this._networkRepository);
+
+  @override
+  {{#isGet}}
+  Future<Either<{{class_name}}Failure, Mock{{class_name}}Model>> {{folder_name}}() =>
+      _networkRepository.get<Map<String, dynamic>>(url: AppUrl.{{folder_name}}).then(
+            (value) => value.fold((l) => left({{class_name}}Failure(error: l.error)),
+              (r) => right({{class_name}}Model.fromJson(r).toDomain())));
+  {{/isGet}}
+  {{#isPost}}
+  Future<Either<{{class_name}}Failure, Mock{{class_name}}SuccessModel>> {{folder_name}}(
+     {required Map<String, dynamic> body}) =>
+      _networkRepository.post<Map<String, dynamic>>(url:AppUrl.{{folder_name}},body:body).then(
+            (value) => value.fold((l) => left({{class_name}}Failure(error: l.error)),
+              (r) => right({{class_name}}SuccessModel.fromJson(r).toDomain())));
+  {{/isPost}}
+}

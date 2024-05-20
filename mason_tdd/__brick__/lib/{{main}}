@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'features/{{folder_name}}_feature/{{page_file_name}}';
-import 'features/{{folder_name}}_feature/{{initial_params_file_name}}';
-import '/config/theme/theme.dart';
+import 'features/{{folder_name}}/{{page_file_name}}';
+import 'features/{{folder_name}}/{{initial_params_file_name}}';
+import '/config/theme/theme_data.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
+import 'data/datasources/theme/theme_data_source.dart';
+{{#auth}}
+import 'features/splash/splash_initial_params.dart';
+import 'features/splash/splash_page.dart';
+{{/auth}}
 
 void main() async {
-  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-  //     statusBarColor: Colors.transparent,
-  //     statusBarIconBrightness: Brightness.light,
-  //     systemNavigationBarColor: Colors.transparent,
-  //     systemNavigationBarIconBrightness: Brightness.light,
-  //     systemNavigationBarContrastEnforced: true,
-  //     systemStatusBarContrastEnforced: true));
+//  setCustomSystemUIOverlayStyle();
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
   runApp(
@@ -29,14 +29,17 @@ class MyApp extends StatelessWidget {
       designSize: const Size(430, 932),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, child) => MaterialApp(
-           // useInheritedMediaQuery: true,
-            // locale: DevicePreview.locale(context),
-            // builder: DevicePreview.appBuilder,
+      builder: (_, child) => BlocBuilder(
+      bloc: getIt<ThemeDataSources>(),
+      builder: (context, state) {
+        state as bool;
+        return MaterialApp(
             debugShowCheckedModeBanner: false,
-            // theme: Themes.light,
-            // initialRoute: RoutesName.splash,
-            // onGenerateRoute: Routes.generateRoute,
-        home: {{class_name}}Page(
-            cubit: getIt(param1: const {{class_name}}InitialParams()))));
+            theme: state ? darkTheme : lightTheme,
+        // home: {{class_name}}Page(cubit: getIt(param1: const {{class_name}}InitialParams()))
+        {{#auth}}
+        home: SplashPage(cubit: getIt(param1: const SplashInitialParams()))
+        {{/auth}}
+        );
+            }));
 }
