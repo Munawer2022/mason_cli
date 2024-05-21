@@ -1,3 +1,31 @@
+{{#isGet}}
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '{{initial_params_file_name}}';
+import '{{navigator_file_name}}';
+import '{{state_file_name}}';
+import '../../domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
+
+class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
+  final {{class_name}}BaseApiService baseApiServices;
+  final {{class_name}}Navigator navigator;
+  final {{class_name}}InitialParams initialParams;
+{{class_name}}Cubit(
+  this.initialParams,
+      this.baseApiServices,
+      this.navigator)
+   : super({{class_name}}State.initial(initialParams:initialParams));
+
+Future<void> {{folder_name}}() async {
+    emit(state.copyWith(isloading: true));
+    final {{folder_name}} = await baseApiServices.{{folder_name}}();
+    {{folder_name}}.fold(
+      (l) => emit(state.copyWith(error: l.error,isloading: false)),
+      ((r) =>emit(state.copyWith(success: r, isloading: false))));
+  }
+}
+{{/isGet}}
+
+  {{#isPost}}
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '{{initial_params_file_name}}';
 import '{{navigator_file_name}}';
@@ -15,20 +43,31 @@ class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
    : super({{class_name}}State.initial(initialParams:initialParams));
 
 Future<void> {{folder_name}}(
-  {{#isPost}}
-  {required Map<String, dynamic> body}
-  {{/isPost}}
+{required Map<String, dynamic> body}
 ) async {
     emit(state.copyWith(isloading: true));
     final {{folder_name}} = await baseApiServices.{{folder_name}}(
-      {{#isPost}}
-  body: body
-  {{/isPost}}
-    );
+  body: body);
     {{folder_name}}.fold(
       (l) => emit(state.copyWith(error: l.error,isloading: false)),
       ((r) =>emit(state.copyWith(success: r, isloading: false))));
   }
 }
+  {{/isPost}}
 
+{{#isNoThing}}
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '{{initial_params_file_name}}';
+import '{{navigator_file_name}}';
+import '{{state_file_name}}';
 
+class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
+  final {{class_name}}Navigator navigator;
+  final {{class_name}}InitialParams initialParams;
+{{class_name}}Cubit(
+  this.initialParams,
+      this.navigator)
+   : super({{class_name}}State.initial(initialParams:initialParams));
+
+}
+{{/isNoThing}}

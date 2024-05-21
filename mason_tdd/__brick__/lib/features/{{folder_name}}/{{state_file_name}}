@@ -39,3 +39,15 @@ class {{class_name}}State {
           error: error ?? this.error);
 }
 {{/isPost}}
+ {{#isNoThing}}
+import '../{{folder_name}}/{{folder_name}}_initial_params.dart';
+
+class {{class_name}}State {
+
+  {{class_name}}State();
+  factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
+      {{class_name}}State();
+  {{class_name}}State copyWith() =>
+      {{class_name}}State();
+}
+{{/isNoThing}}

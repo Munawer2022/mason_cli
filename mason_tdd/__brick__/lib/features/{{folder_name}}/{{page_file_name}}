@@ -29,6 +29,7 @@ class _{{class_name}}State extends State<{{class_name}}Page> {
 @override
 Widget build(BuildContext context) {
 return Scaffold(
+  {{#isGet}}
       body: Center(
         child: BlocBuilder(
           bloc: cubit,
@@ -43,6 +44,23 @@ return Scaffold(
           },
         ),
       ),
+    {{/isGet}}
+  {{#isPost}}
+      body: Center(
+        child: BlocBuilder(
+          bloc: cubit,
+          builder: (context, state) {
+            state as {{class_name}}State;
+            if (state.error != null) {
+              return Text(state.error!);
+            }
+            return state.isloading
+                ? const CircularProgressIndicator()
+                : SizedBox();
+          },
+        ),
+      ),
+  {{/isPost}}  
     );
   }
 }

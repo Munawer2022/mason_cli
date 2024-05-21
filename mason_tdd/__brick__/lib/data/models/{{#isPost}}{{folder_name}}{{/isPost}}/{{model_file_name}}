@@ -2,12 +2,6 @@ import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
 
 class {{class_name}}Model {
   {{class_name}}Model();
-  {{#isGet}}
-  factory {{class_name}}Model.fromJson(Map<String, dynamic> json) => {{class_name}}Model();
-  //fromJson is null pass ?? ""
-  {{/isGet}}
-  {{#isPost}}
   Map<String, dynamic> toJson() => {};
-  {{/isPost}}
   Mock{{class_name}}Model toDomain() => const Mock{{class_name}}Model();
 }

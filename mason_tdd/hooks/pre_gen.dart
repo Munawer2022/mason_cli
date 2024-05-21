@@ -4,10 +4,12 @@ void run(HookContext context) {
   final stateManagement = context.vars['stateManagement'];
   context.vars['isBloc'] = stateManagement == 'Bloc';
   context.vars['isFlutterBloc'] = stateManagement == 'flutter_bloc';
+  context.vars['isNoThing'] = stateManagement == 'flutter_bloc';
 
   final http = context.vars['http'];
   context.vars['isGet'] = http == 'get';
   context.vars['isPost'] = http == 'post';
+  context.vars['isNoThing'] = http == 'noThing';
 
   // UserDetails
   var stem = (context.vars["name"] as String? ?? "").trim().pascalCase;
