@@ -1,13 +1,13 @@
 import 'package:fpdart/fpdart.dart';
 import '/domain/repositories/auth/login/login_base_api_service.dart';
-import '../../network/https_network_repository.dart';
+import '/domain/repositories/network/network_base_api_service.dart';
 import '/domain/entities/auth/login/mock_login_success_model.dart';
 import '/domain/failure/auth/login/login_failure.dart';
 import '../../../models/auth/login/login_success_model.dart';
 import '/core/app_url.dart';
 
 class LoginRepository implements LoginBaseApiService {
-  final HttpsNetworkRepository _networkRepository;
+  final NetworkBaseApiService _networkRepository;
 
   LoginRepository(this._networkRepository);
 
