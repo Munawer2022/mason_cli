@@ -4,14 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '/utils/routes/routes.dart';
 import '/utils/routes/routes_name.dart';
 import 'package:device_preview/device_preview.dart';
-import 'resource/app_theme.dart';
+import '/resource/app_theme.dart';
 {{#auth}}
 import '/view_model/services/{{token_view_model}}';
-import 'view_model/auth/login_view_model.dart';
-import 'view_model/auth/signup_view_model.dart';
-import 'view_model/auth/forgot_password_view_model.dart';
+import '/view_model/auth/login_view_model.dart';
+import '/view_model/auth/signup_view_model.dart';
+import '/view_model/auth/forgot_password_view_model.dart';
 {{/auth}}
-import 'view_model/bloc/cubit_{{folder_name}}.dart';
+import '/view_model/{{folder_name}}_view_model.dart';
 
 void main() {
   // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -25,7 +25,7 @@ void main() {
     ChangeNotifierProvider(create: (_) => LoginViewModel()),
     ChangeNotifierProvider(create: (_) => SignUpViewModel()),
     ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),{{/auth}}
-    ChangeNotifierProvider(create: (_) => Cubit{{class_name}}ViewModel()),
+    ChangeNotifierProvider(create: (_) => {{class_name}}ViewModel()),
   ], child: const MyApp()
    // child: DevicePreview(
       //     enabled: true, builder: (BuildContext context) => const MyApp())

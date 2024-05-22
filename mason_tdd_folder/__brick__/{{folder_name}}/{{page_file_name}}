@@ -29,22 +29,38 @@ class _{{class_name}}State extends State<{{class_name}}Page> {
 @override
 Widget build(BuildContext context) {
 return Scaffold(
-      appBar: AppBar(),
+  {{#isGet}}
       body: Center(
         child: BlocBuilder(
           bloc: cubit,
           builder: (context, state) {
             state as {{class_name}}State;
             if (state.error != null) {
-              return Center(child: Text(state.error!));
+              return Text(state.error!);
             }
             return state.isloading
                 ? const CircularProgressIndicator()
-                : ListView();
+                : SizedBox();
           },
         ),
       ),
+    {{/isGet}}
+  {{#isPost}}
+      body: Center(
+        child: BlocBuilder(
+          bloc: cubit,
+          builder: (context, state) {
+            state as {{class_name}}State;
+            if (state.error != null) {
+              return Text(state.error!);
+            }
+            return state.isloading
+                ? const CircularProgressIndicator()
+                : SizedBox();
+          },
+        ),
+      ),
+  {{/isPost}}  
     );
-
-}
+  }
 }

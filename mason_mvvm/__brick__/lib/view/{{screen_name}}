@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 {{#isGet}}
 import 'package:provider/provider.dart';
 import '/data/response/status.dart';
-import '/view_model/{{folder_name}}/cubit_{{folder_name}}.dart';
+import '/view_model/{{folder_name}}_view_model.dart';
 {{/isGet}}
 
 class {{class_name}}View extends StatelessWidget {
@@ -13,7 +13,7 @@ class {{class_name}}View extends StatelessWidget {
     return Scaffold(
         body: 
         {{#isGet}}
-        Consumer<Cubit{{class_name}}ViewModel>(builder: (context, value, child) {
+        Consumer<{{class_name}}ViewModel>(builder: (context, value, child) {
       switch (value.{{folder_name}}Model.status) {
         case Status.LOADING:
           return const CircularProgressIndicator.adaptive();

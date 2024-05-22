@@ -1,4 +1,4 @@
-import '../../../domain/entities/{{folder_name}}_entitie/mock_{{folder_name}}_success_model.dart';
+import '../../../domain/entities/{{folder_name}}/mock_{{folder_name}}_success_model.dart';
 
 class {{class_name}}SuccessModel {
   {{class_name}}SuccessModel({
