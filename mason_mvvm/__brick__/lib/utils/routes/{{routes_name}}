@@ -1,11 +1,18 @@
 class RoutesName {
-  static const String splash = 'splash';
 {{#auth}}
-  //auth routes name
+/*
+ ************************ Splash ************************
+*/
+  static const String splash = 'splash';
+/*
+ ************************ Auth ************************
+*/
   static const String login = 'login';
   static const String signUp = 'signup';
   static const String forgotPassword = 'forgotPassword';
 {{/auth}}
-  //home routes name
+/*
+ ************************ {{class_name}} ************************
+*/
   static const String {{folder_name}} = '{{folder_name}}';
 }

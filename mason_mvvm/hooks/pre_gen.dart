@@ -8,6 +8,7 @@ void run(HookContext context) {
   final http = context.vars['http'];
   context.vars['isGet'] = http == 'get';
   context.vars['isPost'] = http == 'post';
+  context.vars['isNoThing'] = http == 'noThing';
 
   var stem = (context.vars["name"] as String? ?? "").trim().pascalCase;
   var pageName = "${stem}Page";

@@ -52,4 +52,5 @@ vars:
     values:
       - get
       - post
+      - noThing
     prompt: Which api would you like to include in your application?

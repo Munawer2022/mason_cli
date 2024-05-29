@@ -1,0 +1,60 @@
+import 'package:provider/provider.dart';
+import 'injection_container.dart';
+{{#auth}}
+/*
+ ************************ Auth ************************
+*/
+import '../{{#auth}}local{{/auth}}/local_user_info_store_view_model.dart';
+import '../auth/forgot_password/forgot_password_view_model.dart';
+import '../auth/login/login_view_model.dart';
+import '../auth/sign_up/sign_up_view_model.dart';
+{{/auth}}
+{{#isGet}}
+/*
+ ************************ {{class_name}} ************************
+*/
+import '/view_model/{{folder_name}}/{{folder_name}}_view_model.dart';
+{{/isGet}}
+{{#isPost}}
+/*
+ ************************ {{class_name}} ************************
+*/
+import '/view_model/{{folder_name}}/{{folder_name}}_view_model.dart';
+{{/isPost}}
+
+List<ChangeNotifierProvider> multiProvidersListInjection = [
+  {{#auth}}
+   ChangeNotifierProvider<LocalUserInfoStoreViewModel>(
+    create: (_) => getIt(),
+  ),
+/*
+ ************************ Auth ************************
+*/
+  ChangeNotifierProvider<SignUpViewModel>(
+    create: (_) => getIt(),
+  ),
+  ChangeNotifierProvider<LoginViewModel>(
+    create: (_) => getIt(),
+  ),
+  ChangeNotifierProvider<ForgotPasswordViewModel>(
+    create: (_) => getIt(),
+  ),
+  {{/auth}}
+ 
+{{#isGet}}
+/*
+ ************************ {{class_name}} ************************
+*/
+  ChangeNotifierProvider<{{class_name}}ViewModel>(
+    create: (_) => getIt(),
+  ),
+{{/isGet}}
+{{#isPost}}
+/*
+ ************************ {{class_name}} ************************
+*/
+  ChangeNotifierProvider<{{class_name}}ViewModel>(
+    create: (_) => getIt(),
+  ),
+{{/isPost}}
+];

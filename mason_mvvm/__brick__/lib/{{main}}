@@ -1,41 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '/view_model/injection/injection_container.dart';
+import '/resource/app_theme.dart';
 import '/utils/routes/routes.dart';
 import '/utils/routes/routes_name.dart';
-import 'package:device_preview/device_preview.dart';
-import '/resource/app_theme.dart';
-{{#auth}}
-import '/view_model/services/{{token_view_model}}';
-import '/view_model/auth/login_view_model.dart';
-import '/view_model/auth/signup_view_model.dart';
-import '/view_model/auth/forgot_password_view_model.dart';
-{{/auth}}
-import '/view_model/{{folder_name}}_view_model.dart';
+import '/view_model/injection/multi_provider_list_injection.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() {
-  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-  //     statusBarColor: AppColors.primaryColor,
-  //     statusBarIconBrightness: Brightness.light,
-  //     statusBarBrightness: Brightness.light,
-  //     systemStatusBarContrastEnforced: false));
-  runApp(MultiProvider(providers: [
-    {{#auth}}
-    ChangeNotifierProvider(create: (_) => TokenViewModel()),
-    ChangeNotifierProvider(create: (_) => LoginViewModel()),
-    ChangeNotifierProvider(create: (_) => SignUpViewModel()),
-    ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),{{/auth}}
-    ChangeNotifierProvider(create: (_) => {{class_name}}ViewModel()),
-  ], child: const MyApp()
-   // child: DevicePreview(
-      //     enabled: true, builder: (BuildContext context) => const MyApp())
-    
-  ));
+
+void main() async {
+  // setCustomSystemUIOverlayStyle();
+  WidgetsFlutterBinding.ensureInitialized();
+  await init();
+  runApp(
+    MultiProvider(providers: multiProvidersListInjection, child: const MyApp()),
+  );
 }
 
-
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) => ScreenUtilInit(
@@ -43,13 +26,9 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) => MaterialApp(
-           // useInheritedMediaQuery: true,
-            // locale: DevicePreview.locale(context),
-            // builder: DevicePreview.appBuilder,
-            debugShowCheckedModeBanner: false,
-            theme: Themes.lightThemeData(),
-            initialRoute: RoutesName.splash,
-            onGenerateRoute: Routes.generateRoute,
-          ));
+        debugShowCheckedModeBanner: false,
+        theme: darkTheme,
+        initialRoute: RoutesName.splash,
+        onGenerateRoute: Routes.generateRoute,
+  ));
 }
-

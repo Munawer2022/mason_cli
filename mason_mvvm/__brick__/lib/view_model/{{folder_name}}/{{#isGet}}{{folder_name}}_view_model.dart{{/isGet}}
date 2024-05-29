@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+import '/utils/typedef_models.dart';
+import '/repository/{{folder_name}}/{{folder_name}}_base_api_service.dart';
+import '/data/response/api_response.dart';
+
+class {{class_name}}ViewModel extends ChangeNotifier {
+  final {{class_name}}BaseApiServices _baseApiService;
+
+  {{class_name}}ViewModel(this._baseApiService);
+
+  ApiResponse<Typedef{{class_name}}> response = ApiResponse.loading();
+
+  setLoading(ApiResponse<Typedef{{class_name}}> data) {
+    response = data;
+    notifyListeners();
+  }
+
+  Future<void> {{folder_name}}() async {
+    setLoading(ApiResponse.loading());
+
+    _baseApiService.{{folder_name}}().then((value) {
+      setLoading(ApiResponse.completed(value));
+    }).onError((error, stackTrace) {
+      setLoading(ApiResponse.error(error.toString()));
+    });
+  }
+}
