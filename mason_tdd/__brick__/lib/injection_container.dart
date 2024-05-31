@@ -89,7 +89,7 @@ Future<void> init() async {
   getIt.registerSingleton<LoginBaseApiService>(LoginRepository(getIt()));
 //   getIt.registerSingleton<LoginBaseApiService>(MockLoginRepository());
   getIt.registerSingleton<CheckForExistingUserUseCase>(
-      CheckForExistingUserUseCase(getIt(), getIt(), getIt()));
+      CheckForExistingUserUseCase(getIt(), getIt()));
   getIt.registerSingleton<LoginUseCases>(
       LoginUseCases(getIt(), getIt(), getIt()));
   getIt.registerSingleton<LoginNavigator>(LoginNavigator(getIt()));

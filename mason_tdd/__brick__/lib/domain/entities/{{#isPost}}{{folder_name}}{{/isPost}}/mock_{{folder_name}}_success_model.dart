@@ -1,31 +1,20 @@
 import 'package:equatable/equatable.dart';
 
 class Mock{{class_name}}SuccessModel extends Equatable {
-  const Mock{{class_name}}SuccessModel({
-    required this.id,
-    required this.token,
-  });
+  const Mock{{class_name}}SuccessModel();
 
-  final int id;
-  final String token;
 
-  Mock{{class_name}}SuccessModel copyWith({
-    int? id,
-    String? token,
-  }) {
-    return Mock{{class_name}}SuccessModel(
-      id: id ?? this.id,
-      token: token ?? this.token,
-    );
+
+  Mock{{class_name}}SuccessModel copyWith() {
+    return Mock{{class_name}}SuccessModel();
   }
 
   factory Mock{{class_name}}SuccessModel.empty() =>
-      const Mock{{class_name}}SuccessModel(id: 0, token: '');
+      const Mock{{class_name}}SuccessModel();
 
   @override
   List<Object?> get props => [
-        id,
-        token,
+
       ];
 }
 

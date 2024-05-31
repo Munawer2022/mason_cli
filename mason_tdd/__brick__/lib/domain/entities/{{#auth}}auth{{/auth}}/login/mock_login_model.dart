@@ -1,15 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 class MockLoginModel extends Equatable {
-  String email;
-  String password;
+  final String email;
+  final String password;
 
-  MockLoginModel({
+  const MockLoginModel({
     required this.email,
     required this.password,
   });
 
-  factory MockLoginModel.empty() => MockLoginModel(email: '', password: '');
+  factory MockLoginModel.empty() =>
+      const MockLoginModel(email: '', password: '');
 
   MockLoginModel copyWith({String? email, String? password}) => MockLoginModel(
         email: email ?? this.email,

@@ -1,17 +1,17 @@
 import 'package:fpdart/fpdart.dart';
 {{#auth}}
-import '/domain/entities/auth/login/mock_login_success_model.dart';
+import '/domain/entities/local/mock_local_user_info_store_model.dart';
+import '/domain/failure/local/remove_local_storage_failure.dart';
 {{/auth}}
 import '/domain/failure/local/get_local_storage_failure.dart';
-import '/domain/failure/local/remove_local_storage_failure.dart';
 import '/domain/failure/local/set_local_storage_failure.dart';
 
 abstract class LocalStorageRepository {
   {{#auth}}
   Future<Either<SetLocalStorageFailure, bool>> setUserData(
-      {required MockLoginSuccessModel mockLoginSuccessModel});
+      {required MockLocalUserInfoStoreModel mockLocalUserInfoStoreModel});
 
-  Future<Either<GetLocalStorageFailure, MockLoginSuccessModel>> getUserData();
+  Future<Either<GetLocalStorageFailure, MockLocalUserInfoStoreModel>> getUserData();
   Future<Either<RemoveLocalStorageFailure, bool>> removeUserData();
   {{/auth}}
 

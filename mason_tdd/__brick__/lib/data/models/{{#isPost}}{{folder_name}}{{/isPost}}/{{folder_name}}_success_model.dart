@@ -1,30 +1,15 @@
 import '../../../domain/entities/{{folder_name}}/mock_{{folder_name}}_success_model.dart';
 
 class {{class_name}}SuccessModel {
-  {{class_name}}SuccessModel({
-    required this.id,
-    required this.token,
-  });
+  {{class_name}}SuccessModel();
 
-  final int id;
-  final String token;
-
-  {{class_name}}SuccessModel copyWith({
-    int? id,
-    String? token,
-  }) {
-    return {{class_name}}SuccessModel(
-      id: id ?? this.id,
-      token: token ?? this.token,
-    );
+  {{class_name}}SuccessModel copyWith() {
+    return {{class_name}}SuccessModel();
   }
 
   factory {{class_name}}SuccessModel.fromJson(Map<String, dynamic> json) {
-    return {{class_name}}SuccessModel(
-      id: json["id"] ?? 0,
-      token: json["token"] ?? "",
-    );
+    return {{class_name}}SuccessModel();
   }
   Mock{{class_name}}SuccessModel toDomain() =>
-      Mock{{class_name}}SuccessModel(id: id, token: token);
+      Mock{{class_name}}SuccessModel();
 }

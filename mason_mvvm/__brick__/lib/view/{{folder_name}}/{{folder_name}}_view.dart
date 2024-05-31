@@ -30,7 +30,6 @@ class {{class_name}}View extends StatelessWidget {
       {{#isPost}}
       SizedBox()
       {{/isPost}}
-      SizedBox()
     );
   }
 }
