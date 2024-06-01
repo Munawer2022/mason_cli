@@ -83,7 +83,7 @@ Future<void> init() async {
 {{/auth}}
 {{#isGet}}
 /*
-************************ Test ************************
+************************ {{class_name}} ************************
 */
   getIt.registerSingleton<{{class_name}}BaseApiServices>({{class_name}}Repository(getIt()));
   getIt.registerSingleton<{{class_name}}ViewModel>(
@@ -95,7 +95,7 @@ Future<void> init() async {
 {{/isGet}}
 {{#isPost}}
 /*
-************************ Test ************************
+************************ {{class_name}} ************************
 */
   getIt.registerSingleton<{{class_name}}BaseApiServices>({{class_name}}Repository(getIt()));
   getIt.registerSingleton<{{class_name}}ViewModel>(

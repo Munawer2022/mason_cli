@@ -18,8 +18,7 @@ class {{class_name}}ViewModel extends ChangeNotifier {
       {required Map<String, dynamic> body,
       required BuildContext context}) async {
     setLoading(true);
-    _baseApiService.{{folder_name}}(body: body).then((value) {
-      setLoading(false);
-    }).onError((error, stackTrace) => setLoading(false));
+    _baseApiService.{{folder_name}}(body: body).then((value) =>
+      setLoading(false)).onError((error, stackTrace) => setLoading(false));
   }
 }

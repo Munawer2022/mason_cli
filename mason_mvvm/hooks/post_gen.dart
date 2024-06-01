@@ -7,6 +7,8 @@ Future<void> run(HookContext context) async {
   // // Run `flutter packages get` after generation.
   // await Process.runSync('flutter', ['pub', 'add', 'provider'],
   //     runInShell: true);
+  // await Process.runSync('flutter', ['pub', 'add', 'get_it'], runInShell: true);
+
   // await Process.runSync('flutter', ['pub', 'add', 'device_preview'],
   //     runInShell: true);
   // await Process.runSync('flutter', ['pub', 'add', 'flutter_screenutil'],

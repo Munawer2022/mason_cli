@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class LocalUserInfoStoreModel extends Equatable {
+class LocalUserInfoStoreModel {
   const LocalUserInfoStoreModel({
     required this.token,
   });
@@ -24,9 +22,4 @@ class LocalUserInfoStoreModel extends Equatable {
       };
   factory LocalUserInfoStoreModel.empty() =>
       const LocalUserInfoStoreModel(token: '');
-
-  @override
-  List<Object?> get props => [
-        token,
-      ];
 }

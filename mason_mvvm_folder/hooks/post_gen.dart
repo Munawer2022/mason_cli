@@ -216,9 +216,6 @@ typedef Typedef$name = ${name}Model;
   String typeDefAddImportAtTopVar;
   if (isPost || isGet) {
     typeDefAddImportAtTopVar = '''
-/*
- ************************ $name ************************
-*/
 import '/model/${name.snakeCase}/${name.snakeCase}_model.dart';
 ''';
   } else {

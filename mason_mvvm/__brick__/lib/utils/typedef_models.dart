@@ -1,19 +1,10 @@
 {{#auth}}
-/*
-************************ Auth ************************
-*/
 import '/model/local/local_user_info_store_model.dart';
 {{/auth}}
 {{#isGet}}
-/*
-************************ Test ************************
-*/
 import '/model/{{folder_name}}/{{folder_name}}_model.dart';
 {{/isGet}}
 {{#isPost}}
-/*
-************************ Test ************************
-*/
 import '/model/{{folder_name}}/{{folder_name}}_model.dart';
 {{/isPost}}
 
@@ -27,13 +18,13 @@ typedef TypedefForgotPassword = LocalUserInfoStoreModel;
 {{/auth}}
 {{#isGet}}
 /*
-************************ Test ************************
+************************ {{class_name}} ************************
 */
 typedef Typedef{{class_name}} = {{class_name}}Model;
 {{/isGet}}
 {{#isPost}}
 /*
-************************ Test ************************
+************************ {{class_name}} ************************
 */
 typedef Typedef{{class_name}} = {{class_name}}Model;
 {{/isPost}}

@@ -18,10 +18,8 @@ class {{class_name}}ViewModel extends ChangeNotifier {
   Future<void> {{folder_name}}() async {
     setLoading(ApiResponse.loading());
 
-    _baseApiService.{{folder_name}}().then((value) {
-      setLoading(ApiResponse.completed(value));
-    }).onError((error, stackTrace) {
-      setLoading(ApiResponse.error(error.toString()));
-    });
+    _baseApiService.{{folder_name}}().then((value) =>
+      setLoading(ApiResponse.completed(value))).onError((error, stackTrace) =>
+      setLoading(ApiResponse.error(error.toString())));
   }
 }
