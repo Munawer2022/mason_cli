@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+import '/repository/{{folder_name}}/{{folder_name}}_base_api_service.dart';
+
+class {{class_name}}ViewModel extends ChangeNotifier {
+  final {{class_name}}BaseApiServices _baseApiService;
+
+  {{class_name}}ViewModel(this._baseApiService);
+
+  bool _loading = false;
+  bool get loading => _loading;
+
+  setLoading(bool value) {
+    _loading = value;
+    notifyListeners();
+  }
+
+  Future<void> {{folder_name}}(
+      {required Map<String, dynamic> body,
+      required BuildContext context}) async {
+    setLoading(true);
+    _baseApiService.{{folder_name}}(body: body).then((value) {
+      setLoading(false);
+    }).onError((error, stackTrace) => setLoading(false));
+  }
+}

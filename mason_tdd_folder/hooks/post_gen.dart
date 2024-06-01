@@ -5,6 +5,8 @@ import 'package:path/path.dart' as path;
 Future<void> run(HookContext context) async {
   // final progress = context.logger.progress('Installing packages');
   final name = (context.vars['name'] as String? ?? "").trim().pascalCase;
+  final isPost = context.vars['isPost'] as bool? ?? false;
+  final isGet = context.vars['isGet'] as bool? ?? false;
 
   void appendAtEndOfProvidersList(String content) {
     File file = File('lib/injection_container.dart');
@@ -178,8 +180,12 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
     }
   }
 
-  String nameUrl =
-      "static var ${name.snakeCase} = 'baseUrl/${name.snakeCase}';";
+  String nameUrl;
+  if (isPost || isGet) {
+    nameUrl = "static var ${name.snakeCase} = 'baseUrl/${name.snakeCase}';";
+  } else {
+    nameUrl = '';
+  }
 
   appUrl(nameUrl);
 

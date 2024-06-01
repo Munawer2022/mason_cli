@@ -5,5 +5,10 @@ class AppUrl {
   static var signUp = '$baseUrl/signUp';
   static var forgotPassword = '$baseUrl/forgotPassword';
   {{/auth}}
+{{#isGet}}
   static var {{folder_name}} = '$baseUrl/{{folder_name}}';
+{{/isGet}}
+{{#isPost}}
+  static var {{folder_name}} = '$baseUrl/{{folder_name}}';
+{{/isPost}}
 }

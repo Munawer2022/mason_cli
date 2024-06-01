@@ -1,9 +1,14 @@
 import 'package:mason/mason.dart';
 
 void run(HookContext context) {
+  final stateManagement = context.vars['stateManagement'];
+  context.vars['isProvider'] = stateManagement == 'provider';
+  context.vars['isFlutterBloc'] = stateManagement == 'flutter_bloc';
+
   final http = context.vars['http'];
   context.vars['isGet'] = http == 'get';
   context.vars['isPost'] = http == 'post';
+  context.vars['isNoThing'] = http == 'noThing';
 
   var stem = (context.vars["name"] as String? ?? "").trim().pascalCase;
   var pageName = "${stem}Page";
@@ -37,6 +42,15 @@ void run(HookContext context) {
   final appCheck = "platform_app_check.dart";
   final scaffoldCheck = "platform_scaffold_check.dart";
   final theme = "app_theme.dart";
+  final loginViewModel = "login_view_model.dart";
+  final signUpViewModel = "signup_view_model.dart";
+  final loginRepository = "login_repository.dart";
+  final signUpRepository = "signup_repository.dart";
+  final forgotPasswordRepository = "forgot_password_repository.dart";
+  final forgotPasswordViewModel = "forgot_password_view_model.dart";
+  final forgotPasswordView = "forgot_password_view.dart";
+  final stateFileName = "${stem.snakeCase}_state.dart";
+
   context.vars = {
     ...context.vars,
     "page_file_name": pageFileName,
@@ -70,5 +84,13 @@ void run(HookContext context) {
     "app_check": appCheck,
     "scaffold_check": scaffoldCheck,
     "theme": theme,
+    "login_view_model": loginViewModel,
+    "signup_view_model": signUpViewModel,
+    "login_repository": loginRepository,
+    "signup_repository": signUpRepository,
+    "forgot_password_repository": forgotPasswordRepository,
+    "forgot_password_view_model": forgotPasswordViewModel,
+    "forgot_password_view": forgotPasswordView,
+    "state_file_name": stateFileName,
   };
 }
