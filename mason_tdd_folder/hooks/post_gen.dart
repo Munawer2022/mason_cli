@@ -49,7 +49,9 @@ Future<void> run(HookContext context) async {
     }
   }
 
-  String importStatement = '''
+  String importStatement;
+  if (isPost || isGet) {
+    importStatement = '''
 /*
 ************************ ${name.snakeCase} ************************
 */
@@ -60,10 +62,22 @@ import 'config/navigation/app_navigator.dart';
 import 'data/repositories/${name.snakeCase}/${name.snakeCase}_repository.dart';
 import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service.dart';
 ''';
-
+  } else {
+    importStatement = '''
+/*
+************************ ${name.snakeCase} ************************
+*/
+import 'features/${name.snakeCase}/${name.snakeCase}_cubit.dart';
+import 'features/${name.snakeCase}/${name.snakeCase}_navigator.dart';
+import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
+import 'config/navigation/app_navigator.dart';
+''';
+  }
   addImportAtTop(importStatement, 'lib/injection_container.dart');
 
-  String providerStatement = '''
+  String providerStatement;
+  if (isPost || isGet) {
+    providerStatement = '''
 /*
 ************************ ${name.snakeCase} ************************
 */
@@ -72,9 +86,19 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
   getIt.registerSingleton<${name}Navigator>(${name}Navigator(getIt()));
   getIt.registerFactoryParam<${name}Cubit, ${name}InitialParams, dynamic>(
       (params, _) => ${name}Cubit(params, getIt(), getIt())
-      ..${name.snakeCase}()
+      ${isGet ? '..${name.snakeCase}()' : ''}
       );
 ''';
+  } else {
+    providerStatement = '''
+/*
+************************ ${name.snakeCase} ************************
+*/
+  getIt.registerSingleton<${name}Navigator>(${name}Navigator(getIt()));
+  getIt.registerFactoryParam<${name}Cubit, ${name}InitialParams, dynamic>(
+      (params, _) => ${name}Cubit(params, getIt()));
+''';
+  }
 
   appendAtEndOfProvidersList(providerStatement);
 
