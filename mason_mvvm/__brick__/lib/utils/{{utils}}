@@ -11,6 +11,27 @@ extension EmptySpace on num {
 }
 
 class Utils {
+void showErrorBanner(String text) {
+  var materialBanner = MaterialBanner(
+    elevation: 1,
+    backgroundColor: Colors.grey.shade200,
+    content: Text(text),
+    actions: [
+      TextButton(
+        onPressed: () {
+          MyApp.scaffoldMessengerKey.currentState!.hideCurrentMaterialBanner();
+        },
+        child: Text('Dismiss'),
+      ),
+    ],
+  );
+
+  // Use the ScaffoldMessengerKey to hide any current MaterialBanner and show a new one
+  MyApp.scaffoldMessengerKey.currentState!
+    ..hideCurrentMaterialBanner()
+    ..showMaterialBanner(materialBanner);
+}
+
 // snackbar(text, context) {
 //   var snackBar = SnackBar(
 //     backgroundColor: Colors.green.shade300,

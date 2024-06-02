@@ -2,6 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 abstract class Utils {
+  void showErrorBanner(String text) {
+    var materialBanner = MaterialBanner(
+      elevation: 1,
+      backgroundColor: Colors.grey.shade200,
+      content: Text(text),
+      actions: [
+        TextButton(
+          onPressed: () {
+            MyApp.scaffoldMessengerKey.currentState!
+                .hideCurrentMaterialBanner();
+          },
+          child: Text('Dismiss'),
+        ),
+      ],
+    );
+
+    // Use the ScaffoldMessengerKey to hide any current MaterialBanner and show a new one
+    MyApp.scaffoldMessengerKey.currentState!
+      ..hideCurrentMaterialBanner()
+      ..showMaterialBanner(materialBanner);
+  }
+
   static snackbar(text, context) {
     var snackBar = SnackBar(
       backgroundColor: Colors.green.shade300,
@@ -47,6 +69,7 @@ extension ThemeExtension on BuildContext {
 extension NameSplitExtension on String {
   String get nameSplitExtension => this.split(" ").first;
 }
+
 void setCustomSystemUIOverlayStyle() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,

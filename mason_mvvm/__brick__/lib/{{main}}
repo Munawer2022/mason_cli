@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       builder: (_, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: darkTheme,
+        // scaffoldMessengerKey: scaffoldMessengerKey,
         initialRoute: RoutesName.splash,
         onGenerateRoute: Routes.generateRoute,
   ));
