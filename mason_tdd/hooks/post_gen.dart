@@ -19,6 +19,8 @@ Future<void> run(HookContext context) async {
   //     runInShell: true);
   // await Process.runSync('flutter', ['pub', 'add', 'fpdart'],
   //     runInShell: true);
+  // await Process.runSync('flutter', ['pub', 'add', 'shimmer'],
+  //     runInShell: true);
   // await Process.runSync('flutter', ['pub', 'get'], runInShell: true);
 
   // progress.complete();

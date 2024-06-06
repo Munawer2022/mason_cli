@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/data/models/auth/login/login_model.dart';
+import '../../data/models/login/login_model.dart';
 import 'login_cubit.dart';
 import 'login_state.dart';
 
@@ -28,7 +28,6 @@ class _LoginState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Center(
         child: BlocBuilder(
           bloc: cubit,
@@ -43,9 +42,10 @@ class _LoginState extends State<LoginPage> {
 
             return Column(
               children: [
-                state.isloading
+                state.isLoading
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
+                        style: Theme.of(context).elevatedButtonTheme.style,
                         onPressed: () => cubit.postLogin(
                             body: LoginModel(email: '', password: '').toJson()),
                         child: const Text('Post API')),

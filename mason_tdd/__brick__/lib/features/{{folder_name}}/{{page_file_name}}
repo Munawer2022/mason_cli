@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '{{cubit_file_name}}';
 import '{{state_file_name}}';
-
+import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+import '{{state_file_name}}';
+import 'package:test123/core/status_switcher.dart';
 
 class {{class_name}}Page extends StatefulWidget {
 final {{class_name}}Cubit cubit;
@@ -30,36 +32,25 @@ class _{{class_name}}State extends State<{{class_name}}Page> {
 Widget build(BuildContext context) {
 return Scaffold(
   {{#isGet}}
-      body: Center(
+      body: RefreshIndicator.adaptive(
+        onRefresh: cubit.refresh,
         child: BlocBuilder(
           bloc: cubit,
           builder: (context, state) {
             state as {{class_name}}State;
-            if (state.error != null) {
-              return Text(state.error!);
-            }
-            return state.isloading
-                ? const CircularProgressIndicator()
-                : SizedBox();
+            return StatusSwitcher<Mock{{class_name}}Model>(
+                response: state.response,
+                onLoading: (context) => const CircularProgressIndicator.adaptive(),
+                onError: (context, message) => Center(
+                    child: Text(message,
+                        style: Theme.of(context).textTheme.titleMedium)),
+                onCompleted: (context, data) => const SizedBox());
           },
         ),
       ),
     {{/isGet}}
   {{#isPost}}
-      body: Center(
-        child: BlocBuilder(
-          bloc: cubit,
-          builder: (context, state) {
-            state as {{class_name}}State;
-            if (state.error != null) {
-              return Text(state.error!);
-            }
-            return state.isloading
-                ? const CircularProgressIndicator()
-                : SizedBox();
-          },
-        ),
-      ),
+      body: const SizedBox()
   {{/isPost}}  
     );
   }

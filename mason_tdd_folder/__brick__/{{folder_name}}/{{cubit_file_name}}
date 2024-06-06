@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '{{initial_params_file_name}}';
 import '{{navigator_file_name}}';
 import '{{state_file_name}}';
-import '../../domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
+import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
+import '/config/response/api_response.dart';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
   final {{class_name}}BaseApiService baseApiServices;
@@ -16,11 +17,14 @@ class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
    : super({{class_name}}State.initial(initialParams:initialParams));
 
 Future<void> {{folder_name}}() async {
-    emit(state.copyWith(isloading: true));
+    emit(state.copyWith(response: ApiResponse.loading()));
     final {{folder_name}} = await baseApiServices.{{folder_name}}();
     {{folder_name}}.fold(
-      (l) => emit(state.copyWith(error: l.error,isloading: false)),
-      ((r) =>emit(state.copyWith(success: r, isloading: false))));
+      (l) => emit(state.copyWith(response: ApiResponse.error(l.error))),
+      ((r) =>emit(state.copyWith(response: ApiResponse.completed(r)))));
+  }
+  Future<void> refresh() async {
+    await {{folder_name}}();
   }
 }
 {{/isGet}}
@@ -31,6 +35,7 @@ import '{{initial_params_file_name}}';
 import '{{navigator_file_name}}';
 import '{{state_file_name}}';
 import '../../domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
+import '/config/response/api_response.dart';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
   final {{class_name}}BaseApiService baseApiServices;
@@ -45,12 +50,12 @@ class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
 Future<void> {{folder_name}}(
 {required Map<String, dynamic> body}
 ) async {
-    emit(state.copyWith(isloading: true));
+    emit(state.copyWith(response: ApiResponse.loading()));
     final {{folder_name}} = await baseApiServices.{{folder_name}}(
   body: body);
     {{folder_name}}.fold(
-      (l) => emit(state.copyWith(error: l.error,isloading: false)),
-      ((r) =>emit(state.copyWith(success: r, isloading: false))));
+      (l) => emit(state.copyWith(response: ApiResponse.error(l.error))),
+      ((r) =>emit(state.copyWith(response: ApiResponse.completed(r)))));
   }
 }
   {{/isPost}}

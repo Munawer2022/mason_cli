@@ -4,20 +4,20 @@ import 'login_initial_params.dart';
 
 class LoginState {
   final MockLocalUserInfoStoreModel success;
-  final bool isloading;
+  final bool isLoading;
   final String? error;
 
-  LoginState({required this.success, required this.isloading, this.error});
+  LoginState({required this.success, required this.isLoading, this.error});
   factory LoginState.initial({required LoginInitialParams initialParams}) =>
       LoginState(
           success: MockLocalUserInfoStoreModel.empty().copyWith(),
-          isloading: false);
+          isLoading: false);
   LoginState copyWith(
           {MockLocalUserInfoStoreModel? success,
-          bool? isloading,
+          bool? isLoading,
           String? error}) =>
       LoginState(
           success: success ?? this.success,
-          isloading: isloading ?? this.isloading,
+          isLoading: isLoading ?? this.isLoading,
           error: error ?? this.error);
 }
