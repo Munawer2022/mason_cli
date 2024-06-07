@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '/utils/routes/routes_name.dart';
+{{#isFlutterBloc}}
+import '/view_model/injection/injection_container.dart';
+{{/isFlutterBloc}}
+
 {{#auth}}
 /*
  ************************ Auth ************************
@@ -29,7 +33,11 @@ class Routes {
         return pageRoute.getPageRoute(const ForgotPasswordView());
         {{/auth}}
       case RoutesName.{{folder_name}}:
-        return pageRoute.getPageRoute(const {{class_name}}View());
+        return pageRoute.getPageRoute({{class_name}}View(
+          {{#isFlutterBloc}}
+          cubit: getIt()
+          {{/isFlutterBloc}}
+          ));
       default:
         return pageRoute.getDefaultRoute();
     }

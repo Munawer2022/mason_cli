@@ -4,17 +4,24 @@ import '/view_model/injection/injection_container.dart';
 import '/resource/app_theme.dart';
 import '/utils/routes/routes.dart';
 import '/utils/routes/routes_name.dart';
-import '/view_model/injection/multi_provider_list_injection.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+{{#isProvider}}
+import '/view_model/injection/multi_provider_list_injection.dart';
+{{/isProvider}}
 
 
 void main() async {
   // setCustomSystemUIOverlayStyle();
   WidgetsFlutterBinding.ensureInitialized();
   await init();
+  {{#isProvider}}
   runApp(
     MultiProvider(providers: multiProvidersListInjection, child: const MyApp()),
   );
+  {{/isProvider}}
+  {{#isFlutterBloc}}
+  runApp(const MyApp());
+  {{/isFlutterBloc}}
 }
 
 class MyApp extends StatelessWidget {

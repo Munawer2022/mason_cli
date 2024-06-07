@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '{{cubit_file_name}}';
 import '{{state_file_name}}';
-import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
 import '{{state_file_name}}';
-import 'package:test123/core/status_switcher.dart';
+import '/core/status_switcher.dart';
+{{#isGet}}
+import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+{{/isGet}}
+{{#isPost}}
+import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+{{/isPost}}
 
 class {{class_name}}Page extends StatefulWidget {
 final {{class_name}}Cubit cubit;

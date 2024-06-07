@@ -38,6 +38,12 @@ import '/repository/{{folder_name}}/{{folder_name}}_base_api_service.dart';
 import '/repository/{{folder_name}}/{{folder_name}}_repository.dart';
 import '/view_model/{{folder_name}}/{{folder_name}}_view_model.dart';
 {{/isPost}}
+{{#isNoThing}}
+/*
+ ************************ {{class_name}} ************************
+*/
+import '/view_model/{{folder_name}}/{{folder_name}}_view_model.dart';
+{{/isNoThing}}
 
 final getIt = GetIt.instance;
 
@@ -105,4 +111,11 @@ Future<void> init() async {
       {{/isGet}}
       );
 {{/isPost}}
+{{#isNoThing}}
+/*
+************************ {{class_name}} ************************
+*/
+  getIt.registerSingleton<{{class_name}}ViewModel>(
+      {{class_name}}ViewModel());
+{{/isNoThing}}
 }
