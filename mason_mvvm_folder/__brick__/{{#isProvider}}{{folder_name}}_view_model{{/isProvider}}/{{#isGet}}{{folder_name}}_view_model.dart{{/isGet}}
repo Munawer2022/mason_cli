@@ -22,4 +22,7 @@ class {{class_name}}ViewModel extends ChangeNotifier {
       setLoading(ApiResponse.completed(value))).onError((error, stackTrace) =>
       setLoading(ApiResponse.error(error.toString())));
   }
+  Future<void> refresh() async {
+    await {{folder_name}}();
+  }
 }

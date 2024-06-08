@@ -7,6 +7,9 @@ Future<void> run(HookContext context) async {
   final name = (context.vars['name'] as String? ?? "").trim().pascalCase;
   final isPost = context.vars['isPost'] as bool? ?? false;
   final isGet = context.vars['isGet'] as bool? ?? false;
+  final isFlutterBloc = context.vars['isFlutterBloc'] as bool? ?? false;
+  final isProvider = context.vars['isProvider'] as bool? ?? false;
+  final isNoThing = context.vars['isNoThing'] as bool? ?? false;
 
   void appendAtEndOfProvidersList(String content) {
     File file =
@@ -62,9 +65,10 @@ import '/view_model/${name.snakeCase}/${name.snakeCase}_view_model.dart';
   } else {
     importStatement = "";
   }
-
-  addImportAtTop(importStatement,
-      'lib/view_model/injection/multi_provider_list_injection.dart');
+  if (isProvider) {
+    addImportAtTop(importStatement,
+        'lib/view_model/injection/multi_provider_list_injection.dart');
+  }
 
   String providerStatement;
   if (isPost || isGet) {
@@ -80,28 +84,94 @@ import '/view_model/${name.snakeCase}/${name.snakeCase}_view_model.dart';
     providerStatement = "";
   }
 
-  appendAtEndOfProvidersList(providerStatement);
+  if (isProvider) {
+    appendAtEndOfProvidersList(providerStatement);
+  }
 
-//
+  //------------------------------------------------------------------------------------------------------------
 
-  // void moveFileToDirectory(String sourcePath, String destinationDirectory) {
-  //   File sourceFile = File(sourcePath);
+  String importStatement2;
+  if (isPost || isGet) {
+    importStatement2 = '''
+/*
+ ************************ $name ************************
+*/
+import '/repository/${name.snakeCase}/${name.snakeCase}_base_api_service.dart';
+import '/repository/${name.snakeCase}/${name.snakeCase}_repository.dart';
+import '/view_model/${name.snakeCase}/${name.snakeCase}_view_model.dart';
+''';
+  } else if (isNoThing) {
+    importStatement2 = '''
+/*
+ ************************ $name ************************
+*/
+import '/view_model/${name.snakeCase}/${name.snakeCase}_view_model.dart';
+''';
+  } else {
+    importStatement2 = "";
+  }
+  addImportAtTop(
+      importStatement2, 'lib/view_model/injection/injection_container.dart');
 
-  //   if (sourceFile.existsSync()) {
-  //     Directory(destinationDirectory).createSync(recursive: true);
-  //     String destinationPath =
-  //         '$destinationDirectory/${sourceFile.path.split('/').last}';
+  void appendAtEndOfInjectionContainer(String content) {
+    File file = File('lib/view_model/injection/injection_container.dart');
+    String fileContent = file.readAsStringSync();
 
-  //     sourceFile.copy(destinationPath).then((_) {
-  //       sourceFile
-  //           .delete()
-  //           .then((_) => print('File moved successfully.'))
-  //           .catchError((error) => print('Error deleting source file: $error'));
-  //     }).catchError((error) => print('Error copying file: $error'));
-  //   } else {
-  //     print('Source file does not exist.');
-  //   }
-  // }
+    int runAppIndex = fileContent.indexOf('Future<void> init() async {');
+
+    if (runAppIndex != -1) {
+      int endProvidersIndex = fileContent.indexOf('}', runAppIndex);
+
+      if (endProvidersIndex != -1) {
+        String start = fileContent.substring(0, endProvidersIndex);
+        String end = fileContent.substring(endProvidersIndex);
+
+        String updatedContent = '$start$content\n$end';
+
+        file.writeAsStringSync(updatedContent);
+        print('Content appended at the end of providers list.');
+      } else {
+        print('End of providers list (]) not found after runApp');
+      }
+    } else {
+      print('Future<void> init() async { not found in the file.');
+    }
+  }
+
+  String addInjectionContainer;
+  if (isGet) {
+    addInjectionContainer = '''
+/*
+************************ $name ************************
+*/
+  getIt.registerSingleton<${name}BaseApiServices>(${name}Repository(getIt()));
+  getIt.registerSingleton<${name}ViewModel>(
+      ${name}ViewModel(getIt())..${name.snakeCase}()
+      );
+''';
+  } else if (isPost) {
+    addInjectionContainer = '''
+/*
+************************ $name ************************
+*/
+  getIt.registerSingleton<${name}BaseApiServices>(${name}Repository(getIt()));
+  getIt.registerSingleton<${name}ViewModel>(
+      ${name}ViewModel(getIt())
+      );
+''';
+  } else if (isNoThing) {
+    addInjectionContainer = '''
+/*
+************************ $name ************************
+*/
+  getIt.registerSingleton<${name}ViewModel>(
+      ${name}ViewModel());
+''';
+  } else {
+    addInjectionContainer = "";
+  }
+
+  appendAtEndOfInjectionContainer(addInjectionContainer);
   void moveFileToDirectory(String sourcePath, String destinationDirectory) {
     Directory sourceDir = Directory(sourcePath);
 
@@ -282,8 +352,16 @@ import '/model/${name.snakeCase}/${name.snakeCase}_model.dart';
     }
   }
 
-  String route =
-      "case RoutesName.${name.snakeCase}:\nreturn pageRoute.getPageRoute(const ${name}View());";
+  // String route =
+  //     "case RoutesName.${name.snakeCase}:\nreturn pageRoute.getPageRoute(const ${name}View());";
+  String route;
+  if (isFlutterBloc) {
+    route =
+        "case RoutesName.${name.snakeCase}:\nreturn pageRoute.getPageRoute(${name}View(cubit: getIt()));";
+  } else {
+    route =
+        "case RoutesName.${name.snakeCase}:\nreturn pageRoute.getPageRoute(const ${name}View());";
+  }
 
   addRouteCase(route);
   String import =
