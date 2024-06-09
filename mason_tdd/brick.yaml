@@ -37,7 +37,7 @@ vars:
     type: enum
     description: Select the stateManagement you want to include
     values:
-      - Bloc
+      - Bloc (Coming Soon)
       - flutter_bloc
     prompt: Which stateManagement would you like to include in your application?
     # defaults: provider
