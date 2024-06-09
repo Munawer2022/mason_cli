@@ -24,9 +24,11 @@ import '/view_model/{{folder_name}}/{{folder_name}}_view_model.dart';
 
 List<ChangeNotifierProvider> multiProvidersListInjection = [
   {{#auth}}
+  {{#isProvider}}
    ChangeNotifierProvider<LocalUserInfoStoreViewModel>(
     create: (_) => getIt(),
   ),
+  {{/isProvider}}
 /*
  ************************ Auth ************************
 */

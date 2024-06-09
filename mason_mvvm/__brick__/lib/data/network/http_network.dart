@@ -13,28 +13,23 @@ class HttpNetwork implements NetworkBaseApiServices {
   {{#auth}}
   final LocalUserInfoStoreViewModel _userInfoDataSources;
   HttpNetwork(this._userInfoDataSources);
-
-  Future<String> _getToken() async {
-    while (_userInfoDataSources.userInfo.token.isEmpty) {
-      await Future.delayed(Duration.zero);
-    }
-    return _userInfoDataSources.userInfo.token;
-  }
   {{/auth}}
 
   @override
   Future<T> getApi<T>({required String url}) async {
-    {{#auth}}
-    String token = await _getToken();
-    print("Using token: $token");
-    {{/auth}}
-
     T responseJson;
     try {
       final response = await http.get(
         Uri.parse(url),
         {{#auth}}
-        headers: {'Authorization': 'Bearer $token'},
+        headers: {
+          {{#isProvider}}
+          'Authorization': 'Bearer ${_userInfoDataSources.userInfo.token}'
+          {{/isProvider}}
+          {{#isFlutterBloc}}
+          'Authorization': 'Bearer ${_userInfoDataSources.state.token}'
+          {{/isFlutterBloc}}
+          },
         {{/auth}}
       ).timeout(const Duration(seconds: 10));
       responseJson = returnResponse<T>(response);
@@ -75,10 +70,7 @@ class HttpNetwork implements NetworkBaseApiServices {
       {required String url,
       required Map<String, dynamic> body,
       Map<String, String>? headers}) async {
-        {{#auth}}
-    String token = await _getToken();
-    print("Using token: $token");
-        {{/auth}}
+        
     T responseJson;
     try {
       Response response = await patch(
@@ -87,8 +79,14 @@ class HttpNetwork implements NetworkBaseApiServices {
         headers: headers 
         {{#auth}}
         ??
-            // {'Authorization': 'Bearer ${_userInfoDataSources.userInfo.token}'},
-            {'Authorization': 'Bearer $token'},
+            {
+              {{#isProvider}}
+          'Authorization': 'Bearer ${_userInfoDataSources.userInfo.token}'
+          {{/isProvider}}
+          {{#isFlutterBloc}}
+          'Authorization': 'Bearer ${_userInfoDataSources.state.token}'
+          {{/isFlutterBloc}}
+            },
         {{/auth}}
       ).timeout(const Duration(seconds: 10));
 

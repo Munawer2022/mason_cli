@@ -6,12 +6,13 @@ import '/view_model/local/local_user_info_store_view_model.dart';
 import '/repository/auth/login/login_base_api_service.dart';
 import '/resource/app_navigator.dart';
 import '/utils/routes/routes_name.dart';
-
+import '/view_model/{{folder_name}}/{{folder_name}}_cubit.dart';
 class LoginViewModel extends Cubit<LoginState> {
   final LoginBaseApiServices _baseApiService;
   final InsecureLocalStorage _userInfo;
   final AppNavigator _navigator;
   final LocalUserInfoStoreViewModel _userInfoDataSources;
+  final {{class_name}}ViewModel _viewModel;
 
   LoginViewModel(this._baseApiService, this._userInfo, this._navigator,
       this._userInfoDataSources)
@@ -26,7 +27,9 @@ class LoginViewModel extends Cubit<LoginState> {
       _userInfo.saveUserInfo(userInfo: userInfo).then((value) {
         _userInfoDataSources
             .setUserInfoDataSources(userInfo: userInfo)
-            .then((value) => _navigator.pushNamed(context, RoutesName.{{folder_name}}));
+            .then((value) => _viewModel.{{folder_name}}().then((value) =>
+            _navigator.pushNamed(context, RoutesName.{{folder_name}})
+            ));
       });
     }).onError((error, stackTrace) {
       emit(state.copyWith(isLoading: false, error: error.toString()));

@@ -4,12 +4,15 @@ import '/resource/app_navigator.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/local/insecure_local_storage.dart';
 import '/view_model/local/local_user_info_store_view_model.dart';
+import '/view_model/{{folder_name}}/{{folder_name}}_view_model.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   final SignUpBaseApiServices _baseApiService;
   final InsecureLocalStorage _userInfo;
   final AppNavigator _navigator;
   final LocalUserInfoStoreViewModel _userInfoDataSources;
+    final {{class_name}}ViewModel _viewModel;
+
 
   SignUpViewModel(this._baseApiService, this._userInfo, this._navigator,
       this._userInfoDataSources);
@@ -29,8 +32,11 @@ class SignUpViewModel extends ChangeNotifier {
     _baseApiService.signUp(body: body).then((userInfo) {
       setLoading(false);
       _userInfo.saveUserInfo(userInfo: userInfo).then((value) {
-        _userInfoDataSources.setUserInfoDataSources(userInfo: userInfo);
-        _navigator.pushNamed(context, RoutesName.{{folder_name}});
+        _userInfoDataSources
+            .setUserInfoDataSources(userInfo: userInfo)
+            .then((value) => _viewModel.{{folder_name}}().then((value) =>
+            _navigator.pushNamed(context, RoutesName.{{folder_name}})
+            ));
       });
     }).onError((error, stackTrace) => setLoading(false));
   }

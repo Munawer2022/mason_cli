@@ -59,34 +59,6 @@ Future<void> init() async {
     getIt()
     {{/auth}}
     ));
-{{#auth}}
-/*
-************************ Splash ************************
-*/
-  getIt.registerSingleton<SplashViewModel>(
-      SplashViewModel(getIt(), getIt(), getIt()));
-
-/*
-************************ Login ************************
-*/
-  getIt.registerSingleton<LoginBaseApiServices>(LoginRepository(getIt()));
-  getIt.registerSingleton<LoginViewModel>(
-      LoginViewModel(getIt(), getIt(), getIt(), getIt()));
-
-/*
-************************ SignUp ************************
-*/
-  getIt.registerSingleton<SignUpBaseApiServices>(SignUpRepository(getIt()));
-  getIt.registerSingleton<SignUpViewModel>(
-      SignUpViewModel(getIt(), getIt(), getIt(), getIt()));
-/*
-************************ ForgotPassword ************************
-*/
-  getIt.registerSingleton<ForgotPasswordBaseApiServices>(
-      ForgotPasswordRepository(getIt()));
-  getIt.registerSingleton<ForgotPasswordViewModel>(
-      ForgotPasswordViewModel(getIt(), getIt(), getIt(), getIt()));
-{{/auth}}
 {{#isGet}}
 /*
 ************************ {{class_name}} ************************
@@ -94,9 +66,6 @@ Future<void> init() async {
   getIt.registerSingleton<{{class_name}}BaseApiServices>({{class_name}}Repository(getIt()));
   getIt.registerSingleton<{{class_name}}ViewModel>(
       {{class_name}}ViewModel(getIt())
-      {{#isGet}}
-      ..{{folder_name}}()
-      {{/isGet}}
       );
 {{/isGet}}
 {{#isPost}}
@@ -106,9 +75,6 @@ Future<void> init() async {
   getIt.registerSingleton<{{class_name}}BaseApiServices>({{class_name}}Repository(getIt()));
   getIt.registerSingleton<{{class_name}}ViewModel>(
       {{class_name}}ViewModel(getIt())
-      {{#isGet}}
-      ..{{folder_name}}()
-      {{/isGet}}
       );
 {{/isPost}}
 {{#isNoThing}}
@@ -118,4 +84,32 @@ Future<void> init() async {
   getIt.registerSingleton<{{class_name}}ViewModel>(
       {{class_name}}ViewModel());
 {{/isNoThing}}
+{{#auth}}
+/*
+************************ Splash ************************
+*/
+  getIt.registerSingleton<SplashViewModel>(
+      SplashViewModel(getIt(), getIt(), getIt(), getIt()));
+
+/*
+************************ Login ************************
+*/
+  getIt.registerSingleton<LoginBaseApiServices>(LoginRepository(getIt()));
+  getIt.registerSingleton<LoginViewModel>(
+      LoginViewModel(getIt(), getIt(), getIt(), getIt(), getIt()));
+
+/*
+************************ SignUp ************************
+*/
+  getIt.registerSingleton<SignUpBaseApiServices>(SignUpRepository(getIt()));
+  getIt.registerSingleton<SignUpViewModel>(
+      SignUpViewModel(getIt(), getIt(), getIt(), getIt(), getIt()));
+/*
+************************ ForgotPassword ************************
+*/
+  getIt.registerSingleton<ForgotPasswordBaseApiServices>(
+      ForgotPasswordRepository(getIt()));
+  getIt.registerSingleton<ForgotPasswordViewModel>(
+      ForgotPasswordViewModel(getIt(), getIt(), getIt(), getIt()));
+{{/auth}}
 }
