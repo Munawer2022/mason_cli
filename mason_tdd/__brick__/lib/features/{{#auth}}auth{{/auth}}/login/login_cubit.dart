@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/domain/usecases/login/login_use_cases.dart';
 import '/features/{{folder_name}}/{{folder_name}}_initial_params.dart';
 import 'login_initial_params.dart';
 import 'login_navigator.dart';
 import 'login_state.dart';
+import '/domain/usecases/auth/login/login_use_cases.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final LoginInitialParams _initialParams;

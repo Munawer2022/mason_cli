@@ -4,6 +4,7 @@ import 'login_initial_params.dart';
 import 'login_page.dart';
 import '/config/navigation/app_navigator.dart';
 import '/injection_container.dart';
+import '/config/navigation/transition_type.dart';
 
 // is page say navigate kr nay ky liya
 class LoginNavigator with {{class_name}}Route{
