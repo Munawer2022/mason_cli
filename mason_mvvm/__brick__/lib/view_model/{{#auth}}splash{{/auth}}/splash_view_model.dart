@@ -3,16 +3,9 @@ import '/utils/routes/routes_name.dart';
 import '/resource/navigation/app_navigator.dart';
 import '/view_model/local/insecure_local_storage.dart';
 import '/view_model/local/local_user_info_store_view_model.dart';
-{{#isFlutterBloc}}
-{{#isGet}}
-import '/view_model/{{folder_name}}/{{folder_name}}_cubit.dart';
-{{/isGet}}
-{{/isFlutterBloc}}
-{{#isProvider}}
 {{#isGet}}
 import '/view_model/{{folder_name}}/{{folder_name}}_view_model.dart';
 {{/isGet}}
-{{/isProvider}}
 
 class SplashViewModel {
   final AppNavigator _navigator;

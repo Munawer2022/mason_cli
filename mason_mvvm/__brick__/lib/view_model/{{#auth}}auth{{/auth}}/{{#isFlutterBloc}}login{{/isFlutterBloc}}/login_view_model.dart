@@ -7,7 +7,7 @@ import '/repository/auth/login/login_base_api_service.dart';
 import '/resource/navigation/app_navigator.dart';
 import '/utils/routes/routes_name.dart';
 {{#isGet}}
-import '/view_model/{{folder_name}}/{{folder_name}}_cubit.dart';
+import '/view_model/{{folder_name}}/{{folder_name}}_view_model.dart';
 {{/isGet}}class LoginViewModel extends Cubit<LoginState> {
   final LoginBaseApiServices _baseApiService;
   final InsecureLocalStorage _userInfo;

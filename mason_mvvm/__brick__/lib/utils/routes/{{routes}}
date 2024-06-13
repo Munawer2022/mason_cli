@@ -34,7 +34,7 @@ class Routes extends PageRoute with DefaultPageRoute {
         return getPageRoute(const ForgotPasswordView());
         {{/auth}}
       case RoutesName.{{folder_name}}:
-        return getPageRoute(const {{class_name}}View(
+        return getPageRoute({{class_name}}View(
           {{#isFlutterBloc}}
           cubit: getIt()
           {{/isFlutterBloc}}

@@ -7,7 +7,7 @@ import '/view_model/local/local_user_info_store_view_model.dart';
 import '/resource/navigation/app_navigator.dart';
 import '/utils/routes/routes_name.dart';
 {{#isGet}}
-import '/view_model/{{folder_name}}/{{folder_name}}_cubit.dart';
+import '/view_model/{{folder_name}}/{{folder_name}}_view_model.dart';
 {{/isGet}}
 class SignUpViewModel extends Cubit<SignUpState> {
   final SignUpBaseApiServices _baseApiService;
