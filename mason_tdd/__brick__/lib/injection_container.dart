@@ -7,6 +7,9 @@ import 'data/repositories/local/insecure_local_storage_repository.dart';
 import 'data/datasources/theme/theme_data_source.dart';
 import 'domain/usecases/theme/get_theme_use_case.dart';
 import 'domain/usecases/theme/update_theme_use_case.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'core/show/show_error/show_errors.dart';
+import 'features/internet_connectivity_checker_view_model.dart';
 
 {{#auth}}
 /*
@@ -73,6 +76,11 @@ Future<void> init() async {
       getIt(),
     ),
   );
+ getIt.registerSingleton<Connectivity>(Connectivity());
+  getIt.registerSingleton<ShowError>(ShowError());
+
+  getIt.registerSingleton<InternetConnectivityCheckerViewModel>(
+      InternetConnectivityCheckerViewModel(getIt(), getIt()));  
 /*
   ************************  ************************
 */

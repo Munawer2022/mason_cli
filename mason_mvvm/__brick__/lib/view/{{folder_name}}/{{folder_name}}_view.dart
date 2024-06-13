@@ -29,7 +29,7 @@ class {{class_name}}View extends StatelessWidget {
               onError: (context, message) => Center(
                   child: Text(message,
                       style: Theme.of(context).textTheme.titleMedium)),
-              onCompleted: (context, data) => const SizedBox());
+              onCompleted: (context, data) => const SizedBox())
        ],
         ),
       );

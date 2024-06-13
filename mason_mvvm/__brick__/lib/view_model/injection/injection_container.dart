@@ -1,10 +1,13 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
-import '/resource/app_navigator.dart';
+import '/resource/navigation/app_navigator.dart';
+import '/utils/show/show_error/show_errors.dart';
+import '/view_model/internet_connectivity_checker_view_model.dart';
 import '/data/network/http_network.dart';
 import '/data/network/network_base_api_services.dart';
 {{#auth}}
 import '/view_model/local/local_user_info_store_view_model.dart';
-import '../{{#auth}}local{{/auth}}/insecure_local_storage.dart';
+import '/view_model/local/insecure_local_storage.dart';
 /*
  ************************ Splash ************************
 */
@@ -60,6 +63,11 @@ Future<void> init() async {
     {{/auth}}
     ));
 {{#isGet}}
+  getIt.registerSingleton<Connectivity>(Connectivity());
+  getIt.registerSingleton<ShowError>(ShowError());
+
+  getIt.registerSingleton<InternetConnectivityCheckerViewModel>(
+      InternetConnectivityCheckerViewModel(getIt(), getIt()));
 /*
 ************************ {{class_name}} ************************
 */
@@ -89,21 +97,33 @@ Future<void> init() async {
 ************************ Splash ************************
 */
   getIt.registerSingleton<SplashViewModel>(
-      SplashViewModel(getIt(), getIt(), getIt(), getIt()));
+      SplashViewModel(getIt(), getIt(), getIt()
+      {{#isGet}}
+      , getIt()
+      {{/isGet}}
+      ));
 
 /*
 ************************ Login ************************
 */
   getIt.registerSingleton<LoginBaseApiServices>(LoginRepository(getIt()));
   getIt.registerSingleton<LoginViewModel>(
-      LoginViewModel(getIt(), getIt(), getIt(), getIt(), getIt()));
+      LoginViewModel(getIt(), getIt(), getIt(), getIt()
+      {{#isGet}}
+      , getIt()
+      {{/isGet}}
+      ));
 
 /*
 ************************ SignUp ************************
 */
   getIt.registerSingleton<SignUpBaseApiServices>(SignUpRepository(getIt()));
   getIt.registerSingleton<SignUpViewModel>(
-      SignUpViewModel(getIt(), getIt(), getIt(), getIt(), getIt()));
+      SignUpViewModel(getIt(), getIt(), getIt(), getIt()
+      {{#isGet}}
+      , getIt()
+      {{/isGet}}
+      ));
 /*
 ************************ ForgotPassword ************************
 */

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/repository/auth/forgot_password/forgot_password_base_api_service.dart';
-import '/resource/app_navigator.dart';
+import '/resource/navigation/app_navigator.dart';
 import '/utils/routes/routes_name.dart';
 import '/view_model/local/insecure_local_storage.dart';
 import '/view_model/local/local_user_info_store_view_model.dart';
@@ -29,8 +29,9 @@ class ForgotPasswordViewModel extends ChangeNotifier {
     _baseApiService.forgotPassword(body: body).then((userInfo) {
       setLoading(false);
       _userInfo.saveUserInfo(userInfo: userInfo).then((value) {
-        _userInfoDataSources.setUserInfoDataSources(userInfo: userInfo);
-        _navigator.pushNamed(context, RoutesName.login);
+        _userInfoDataSources.setUserInfoDataSources(userInfo: userInfo).then(
+            (value) => _navigator.pushNamed(
+                context: context, routeName: RoutesName.login));
       });
     }).onError((error, stackTrace) => setLoading(false));
   }

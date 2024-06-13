@@ -7,18 +7,18 @@ import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.da
 import '/config/response/api_response.dart';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
-  final {{class_name}}BaseApiService baseApiServices;
+  final {{class_name}}BaseApiService _baseApiServices;
   final {{class_name}}Navigator navigator;
-  final {{class_name}}InitialParams initialParams;
+  final {{class_name}}InitialParams _initialParams;
 {{class_name}}Cubit(
-  this.initialParams,
-      this.baseApiServices,
+  this._initialParams,
+      this._baseApiServices,
       this.navigator)
-   : super({{class_name}}State.initial(initialParams:initialParams));
+   : super({{class_name}}State.initial(initialParams:_initialParams));
 
 Future<void> {{folder_name}}() async {
     emit(state.copyWith(response: ApiResponse.loading()));
-    final {{folder_name}} = await baseApiServices.{{folder_name}}();
+    final {{folder_name}} = await _baseApiServices.{{folder_name}}();
     {{folder_name}}.fold(
       (l) => emit(state.copyWith(response: ApiResponse.error(l.error))),
       ((r) =>emit(state.copyWith(response: ApiResponse.completed(r)))));
@@ -38,20 +38,20 @@ import '../../domain/repositories/{{folder_name}}/{{folder_name}}_base_api_servi
 import '/config/response/api_response.dart';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
-  final {{class_name}}BaseApiService baseApiServices;
+  final {{class_name}}BaseApiService _baseApiServices;
   final {{class_name}}Navigator navigator;
-  final {{class_name}}InitialParams initialParams;
+  final {{class_name}}InitialParams _initialParams;
 {{class_name}}Cubit(
-  this.initialParams,
-      this.baseApiServices,
+  this._initialParams,
+      this._baseApiServices,
       this.navigator)
-   : super({{class_name}}State.initial(initialParams:initialParams));
+   : super({{class_name}}State.initial(initialParams:_initialParams));
 
 Future<void> {{folder_name}}(
 {required Map<String, dynamic> body}
 ) async {
     emit(state.copyWith(response: ApiResponse.loading()));
-    final {{folder_name}} = await baseApiServices.{{folder_name}}(
+    final {{folder_name}} = await _baseApiServices.{{folder_name}}(
   body: body);
     {{folder_name}}.fold(
       (l) => emit(state.copyWith(response: ApiResponse.error(l.error))),
@@ -68,11 +68,11 @@ import '{{state_file_name}}';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
   final {{class_name}}Navigator navigator;
-  final {{class_name}}InitialParams initialParams;
+  final {{class_name}}InitialParams _initialParams;
 {{class_name}}Cubit(
-  this.initialParams,
+  this._initialParams,
       this.navigator)
-   : super({{class_name}}State.initial(initialParams:initialParams));
+   : super({{class_name}}State.initial(initialParams:_initialParams));
 
 }
 {{/isNoThing}}

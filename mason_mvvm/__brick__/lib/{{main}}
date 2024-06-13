@@ -8,6 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 {{#isProvider}}
 import '/view_model/injection/multi_provider_list_injection.dart';
 {{/isProvider}}
+import '/utils/show/checker_navigator_observer.dart';
+import '/resource/global.dart';
+
 
 
 void main() async {
@@ -34,9 +37,11 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: darkTheme,
-        // scaffoldMessengerKey: scaffoldMessengerKey,
-        initialRoute: RoutesName.splash,
-        onGenerateRoute: Routes.generateRoute,
+        navigatorKey: navigatorKey,
+          scaffoldMessengerKey: scaffoldMessengerKey,
+          navigatorObservers: [CheckerNavigatorObserver()],
+          theme: lightTheme,
+          initialRoute: RoutesName.splash,
+          onGenerateRoute: Routes().generateRoute,
   ));
 }

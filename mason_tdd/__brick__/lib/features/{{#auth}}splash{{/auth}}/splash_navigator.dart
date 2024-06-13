@@ -19,7 +19,9 @@ class SplashNavigator with {{class_name}}Route, LoginRoute {
 //is page pr navigate pr nay ky liya
 mixin SplashRoute {
   openLogin(SplashInitialParams initialParams) {
-    navigator.push(context, SplashPage(cubit: getIt(param1: initialParams)));
+    navigator.push(
+      context: context,
+        routeName: SplashPage(cubit: getIt(param1: initialParams)));
   }
 
   AppNavigator get navigator;

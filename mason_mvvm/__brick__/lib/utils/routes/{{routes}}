@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '/utils/routes/routes_name.dart';
+import '/resource/navigation/transition_type.dart';
+import '/resource/navigation/transition_type_checker.dart';
 {{#isFlutterBloc}}
 import '/view_model/injection/injection_container.dart';
 {{/isFlutterBloc}}
@@ -11,51 +13,52 @@ import '/view_model/injection/injection_container.dart';
 import '/view/splash/splash_view.dart';
 import '/view/auth/login/login_view.dart';
 import '/view/auth/sign_up/sign_up_view.dart';
-import '/view/auth/forgot_password/forgot_password_View.dart';
+import '/view/auth/forgot_password/forgot_password_view.dart';
 {{/auth}}
 /*
  ************************ {{class_name}} ************************
 */
 import '/view/{{folder_name}}/{{folder_name}}_view.dart';
 
-class Routes {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    PageRoute pageRoute = PageRoute();
+class Routes extends PageRoute with DefaultPageRoute {
+   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
         {{#auth}}
       case RoutesName.splash:
-        return pageRoute.getPageRoute(const SplashView());
+        return getPageRoute(const SplashView());
       case RoutesName.login:
-        return pageRoute.getPageRoute(const LoginView());
+        return getPageRoute(const LoginView());
       case RoutesName.signUp:
-        return pageRoute.getPageRoute(const SignUpView());
+        return getPageRoute(const SignUpView());
       case RoutesName.forgotPassword:
-        return pageRoute.getPageRoute(const ForgotPasswordView());
+        return getPageRoute(const ForgotPasswordView());
         {{/auth}}
       case RoutesName.{{folder_name}}:
-        return pageRoute.getPageRoute({{class_name}}View(
+        return getPageRoute(const {{class_name}}View(
           {{#isFlutterBloc}}
           cubit: getIt()
           {{/isFlutterBloc}}
           ));
       default:
-        return pageRoute.getDefaultRoute();
+        return getDefaultRoute();
     }
   }
 }
 
-class PageRoute extends DefaultPageRoute {
-  Route getPageRoute(page) => MaterialPageRoute(
-        builder: (BuildContext context) => page,
-      );
+class PageRoute with TransitionTypeChecker {
+  Route getPageRoute(Widget routeName,
+      {TransitionType transitionType = TransitionType.slideFromRight}) {
+    final route = transitionTypeChecker(routeName, transitionType);
+    return route;
+  }
 }
 
-class DefaultPageRoute {
-  Route getDefaultRoute() => MaterialPageRoute(builder: (_) {
-        return const Scaffold(
-          body: Center(
-            child: Text('No route defined'),
-          ),
-        );
-      });
+mixin DefaultPageRoute {
+  Route getDefaultRoute() => MaterialPageRoute(
+      builder: (_) => const Scaffold(
+            body: Center(
+              child: Text('No route defined'),
+              
+            ),
+          ));
 }
