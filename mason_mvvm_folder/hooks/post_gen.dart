@@ -357,10 +357,10 @@ import '/model/${name.snakeCase}/${name.snakeCase}_model.dart';
   String route;
   if (isFlutterBloc) {
     route =
-        "case RoutesName.${name.snakeCase}:\nreturn pageRoute.getPageRoute(${name}View(cubit: getIt()));";
+        "case RoutesName.${name.snakeCase}:\nreturn getPageRoute(${name}View(cubit: getIt()));";
   } else {
     route =
-        "case RoutesName.${name.snakeCase}:\nreturn pageRoute.getPageRoute(const ${name}View());";
+        "case RoutesName.${name.snakeCase}:\nreturn getPageRoute(const ${name}View());";
   }
 
   addRouteCase(route);

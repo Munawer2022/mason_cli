@@ -1,6 +1,6 @@
 {{#isGet}}
 import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
-import '../{{folder_name}}/{{folder_name}}_initial_params.dart';
+import '{{folder_name}}_initial_params.dart';
 import '/config/response/api_response.dart';
 
 class {{class_name}}State {
@@ -18,23 +18,30 @@ class {{class_name}}State {
 
 {{#isPost}}
 import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_success_model.dart';
-import '../{{folder_name}}/{{folder_name}}_initial_params.dart';
-import '/config/response/api_response.dart';
+import '{{folder_name}}_initial_params.dart';
 
 class {{class_name}}State {
-  final ApiResponse<Mock{{class_name}}SuccessModel> response;
+  final Mock{{class_name}}SuccessModel success;
+  final bool isLoading;
+  final String? error;
 
-  {{class_name}}State({required this.response});
+  {{class_name}}State({required this.success, required this.isLoading, this.error});
   factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
-      {{class_name}}State(response: ApiResponse.initial(Mock{{class_name}}SuccessModel.empty().copyWith()));
-  {{class_name}}State copyWith(
-          {ApiResponse<Mock{{class_name}}SuccessModel>? response}) =>
       {{class_name}}State(
-          response: response ?? this.response);
+          success: Mock{{class_name}}SuccessModel.empty().copyWith(),
+          isLoading: false);
+  {{class_name}}State copyWith(
+          {Mock{{class_name}}SuccessModel? success,
+          bool? isLoading,
+          String? error}) =>
+      {{class_name}}State(
+          success: success ?? this.success,
+          isLoading: isLoading ?? this.isLoading,
+          error: error ?? this.error);
 }
 {{/isPost}}
  {{#isNoThing}}
-import '../{{folder_name}}/{{folder_name}}_initial_params.dart';
+import '{{folder_name}}_initial_params.dart';
 
 class {{class_name}}State {
 
