@@ -6,13 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '/core/global.dart';
 import '/core/show/show_error/show_errors.dart';
 
-class InternetConnectivityCheckerViewModel extends Cubit<bool> {
+class InternetConnectivityCheckerDataSources extends Cubit<bool> {
   final Connectivity _connectivity;
   final ShowError _showError;
 
   late final StreamSubscription<List<ConnectivityResult>> _subscription;
 
-  InternetConnectivityCheckerViewModel(this._connectivity, this._showError)
+  InternetConnectivityCheckerDataSources(this._connectivity, this._showError)
       : super(false) {
     _subscription = _connectivity.onConnectivityChanged.listen((event) => event
                 .first ==
