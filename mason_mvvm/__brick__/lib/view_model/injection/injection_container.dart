@@ -5,6 +5,9 @@ import '/utils/show/show_error/show_errors.dart';
 import '/view_model/internet_connectivity_checker_view_model.dart';
 import '/data/network/http_network.dart';
 import '/data/network/network_base_api_services.dart';
+import '/view_model/theme/get_theme.dart';
+import '/view_model/theme/theme_view_model.dart';
+import '/view_model/theme/update_theme.dart';
 {{#auth}}
 import '/view_model/local/local_user_info_store_view_model.dart';
 import '/view_model/local/insecure_local_storage.dart';
@@ -68,6 +71,9 @@ Future<void> init() async {
 
   getIt.registerSingleton<InternetConnectivityCheckerViewModel>(
       InternetConnectivityCheckerViewModel(getIt(), getIt()));
+  getIt.registerSingleton<ThemeViewModel>(ThemeViewModel());
+  getIt.registerSingleton<UpdateTheme>(UpdateTheme(getIt(), getIt()));
+  getIt.registerSingleton<GetTheme>(GetTheme(getIt(), getIt()));
 /*
 ************************ {{class_name}} ************************
 */
@@ -97,7 +103,7 @@ Future<void> init() async {
 ************************ Splash ************************
 */
   getIt.registerSingleton<SplashViewModel>(
-      SplashViewModel(getIt(), getIt(), getIt()
+      SplashViewModel(getIt(), getIt(), getIt(), getIt()
       {{#isGet}}
       , getIt()
       {{/isGet}}
