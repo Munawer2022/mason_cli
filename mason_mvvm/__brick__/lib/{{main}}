@@ -10,8 +10,8 @@ import '/view_model/injection/multi_provider_list_injection.dart';
 {{/isProvider}}
 import '/utils/show/checker_navigator_observer.dart';
 import '/resource/global.dart';
-
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '/view_model/theme/theme_view_model.dart';
 
 void main() async {
   // setCustomSystemUIOverlayStyle();
@@ -35,13 +35,20 @@ class MyApp extends StatelessWidget {
       designSize: const Size(430, 932),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, child) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey,
-          scaffoldMessengerKey: scaffoldMessengerKey,
-          navigatorObservers: [CheckerNavigatorObserver()],
-          theme: lightTheme,
-          initialRoute: RoutesName.splash,
-          onGenerateRoute: Routes().generateRoute,
-  ));
+      builder: (_, child) => BlocBuilder(
+          bloc: getIt<ThemeViewModel>(),
+          builder: (context, state) {
+            state as bool;
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              navigatorKey: navigatorKey,
+                scaffoldMessengerKey: scaffoldMessengerKey,
+                navigatorObservers: [CheckerNavigatorObserver()],
+                theme: state ? darkTheme : lightTheme,
+                // theme: lightTheme,
+                initialRoute: RoutesName.splash,
+                onGenerateRoute: Routes().generateRoute,
+        );
+        },
+      ));
 }
