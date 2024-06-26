@@ -44,6 +44,7 @@ vars:
     values:
       - provider
       - flutter_bloc
+      - Bloc
     prompt: Which stateManagement would you like to include in your application?
     # defaults: provider
   http:

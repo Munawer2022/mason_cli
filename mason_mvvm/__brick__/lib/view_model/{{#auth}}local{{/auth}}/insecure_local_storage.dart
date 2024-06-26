@@ -1,15 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '/model/local/local_user_info_store_model.dart';
 
-class InsecureLocalStorage extends ChangeNotifier {
+class InsecureLocalStorage {
   Future<bool> saveUserInfo({required LocalUserInfoStoreModel userInfo}) async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     String userJson = jsonEncode(userInfo.toJson());
-    sp.setString('user_info', userJson);
-    notifyListeners();
+    await sp.setString('user_info', userJson);
     return true;
   }
 
@@ -17,17 +15,16 @@ class InsecureLocalStorage extends ChangeNotifier {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     String? userJson = sp.getString('user_info');
     if (userJson == null) {
-      return LocalUserInfoStoreModel.empty();
+      return LocalUserInfoStoreModel.empty().copyWith();
+    } else {
+      Map<String, dynamic> userMap = jsonDecode(userJson);
+      return LocalUserInfoStoreModel.fromJson(userMap);
     }
-
-    Map<String, dynamic> userMap = jsonDecode(userJson);
-    return LocalUserInfoStoreModel.fromJson(userMap);
   }
 
   Future<bool> removeUserInfo() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     await sp.remove('user_info');
-    notifyListeners();
     return true;
   }
 

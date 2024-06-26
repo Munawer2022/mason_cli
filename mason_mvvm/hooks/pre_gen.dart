@@ -4,6 +4,7 @@ void run(HookContext context) {
   final stateManagement = context.vars['stateManagement'];
   context.vars['isProvider'] = stateManagement == 'provider';
   context.vars['isFlutterBloc'] = stateManagement == 'flutter_bloc';
+  context.vars['isBloc'] = stateManagement == 'Bloc';
 
   final http = context.vars['http'];
   context.vars['isGet'] = http == 'get';

@@ -2,7 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import '/resource/navigation/app_navigator.dart';
 import '/utils/show/show_error/show_errors.dart';
-import '/view_model/internet_connectivity_checker_view_model.dart';
+import '/view_model/internet_connectivity/internet_connectivity_checker_view_model.dart';
 import '/data/network/http_network.dart';
 import '/data/network/network_base_api_services.dart';
 import '/view_model/theme/get_theme.dart';
