@@ -14,6 +14,11 @@ class GetTheme {
   );
 
   Future<void> getTheme() async => _localStorage.getBool(key: themeKey).then(
+    {{#isFlutterBloc}}
         (isDarkTheme) => _theme.setTheme(isDarkTheme),
+    {{/isFlutterBloc}}
+        {{#isBloc}}
+        (isDarkTheme) => _theme.add(SetTheme(isDarkTheme: isDarkTheme)),
+        {{/isBloc}}
       );
 }
