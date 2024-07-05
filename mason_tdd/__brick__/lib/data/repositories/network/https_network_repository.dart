@@ -23,7 +23,15 @@ class HttpsNetworkRepository implements NetworkBaseApiService{
       var response = await http.get(uri, headers: {
         // 'Authorization': 'Bearer $token'
         {{#auth}}
-        'Authorization': 'Bearer ${_loginDataSources.state.token}'
+        {{#isBloc}}
+        'Authorization': 'Bearer ${_loginDataSources.state.mockLoginSuccessModel.token}'
+        {{/isBloc}}
+        {{#isFlutterBloc}}
+        'Authorization': 'Bearer ${_loginDataSources.state.mockLoginSuccessModel.token}'
+        {{/isFlutterBloc}}
+        {{#isProvider}}
+        'Authorization': 'Bearer ${_loginDataSources.mockLoginSuccessModel.token}'
+        {{/isProvider}}
         {{/auth}}
       }).timeout(const Duration(seconds: 10));
       final failure = _handleStatusCode(response);
@@ -73,8 +81,16 @@ class HttpsNetworkRepository implements NetworkBaseApiService{
               headers: headers ??
                   {
                     // 'Authorization': 'Bearer $token'
-                    {{#auth}}
-        'Authorization': 'Bearer ${_loginDataSources.state.token}'
+                   {{#auth}}
+        {{#isBloc}}
+        'Authorization': 'Bearer ${_loginDataSources.state.mockLoginSuccessModel.token}'
+        {{/isBloc}}
+        {{#isFlutterBloc}}
+        'Authorization': 'Bearer ${_loginDataSources.state.mockLoginSuccessModel.token}'
+        {{/isFlutterBloc}}
+        {{#isProvider}}
+        'Authorization': 'Bearer ${_loginDataSources.mockLoginSuccessModel.token}'
+        {{/isProvider}}
         {{/auth}}
                   })
           .timeout(const Duration(seconds: 10));
