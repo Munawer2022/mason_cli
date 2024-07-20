@@ -9,17 +9,7 @@ class {{class_name}}Repository implements {{class_name}}BaseApiServices {
   {{class_name}}Repository(this._baseApiServices);
 
   @override
-  Future<Typedef{{class_name}}> {{folder_name}}(
-  ) async {
-    try {
-      var response =
-          await _baseApiServices.getApi
-          <Map<String, dynamic>>(url: AppUrl.{{folder_name}}
-          
-          );
-      return {{class_name}}Model.fromJson(response);
-    } catch (e) {
-      rethrow;
-    }
-  }
+  Future<Typedef{{class_name}}> {{folder_name}}() async => await _baseApiServices
+      .getApi<Map<String, dynamic>>(url: AppUrl.{{folder_name}})
+      .then((response) => {{class_name}}Model.fromJson(response));
 }

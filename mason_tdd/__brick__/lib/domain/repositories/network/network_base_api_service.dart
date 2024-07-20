@@ -1,6 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-
-import '../../failure/network/network_failure.dart';
+import '/domain/failure/network_failure.dart';
 
 abstract class NetworkBaseApiService {
   Future<Either<NetworkFailure, T>> get<T>({required String url});

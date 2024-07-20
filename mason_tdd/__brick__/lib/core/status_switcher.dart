@@ -8,13 +8,12 @@ class StatusSwitcher<T> extends StatelessWidget {
   final Widget Function(BuildContext context, String message) onError;
   final Widget Function(BuildContext context, T data) onCompleted;
 
-  const StatusSwitcher({
-    super.key,
-    required this.response,
-    required this.onLoading,
-    required this.onError,
-    required this.onCompleted,
-  });
+  const StatusSwitcher(
+      {super.key,
+      required this.response,
+      required this.onLoading,
+      required this.onError,
+      required this.onCompleted});
 
   @override
   Widget build(BuildContext context) {

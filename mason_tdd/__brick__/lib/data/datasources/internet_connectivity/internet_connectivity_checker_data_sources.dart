@@ -47,14 +47,15 @@ class InternetConnectivityCheckerDataSources extends Cubit<bool> {
 
   InternetConnectivityCheckerDataSources(this._connectivity, this._showError)
       : super(false) {
-    _subscription = _connectivity.onConnectivityChanged.listen((event) =>
-        event.first == ConnectivityResult.none
-            ? _showError.showNoInternetConnectionMaterialBanner(
-                'No Internet Connection')
-            : navigatorKey.currentContext != null
-                ? ScaffoldMessenger.of(navigatorKey.currentContext!)
-                    .hideCurrentMaterialBanner()
-                : null);
+    _subscription = _connectivity.onConnectivityChanged.listen((event) => event
+                .first ==
+            ConnectivityResult.none
+        ? _showError
+            .showNoInternetConnectionMaterialBanner('No Internet Connection')
+        : GlobalConstants.navigatorKey.currentContext != null
+            ? ScaffoldMessenger.of(GlobalConstants.navigatorKey.currentContext!)
+                .hideCurrentMaterialBanner()
+            : null);
   }
 
   @override

@@ -5,8 +5,3 @@ class ThemeDataSources extends Cubit<bool> {
 
   void setTheme(bool isDarkTheme) => emit(isDarkTheme);
 }
-
-// enum ThemeType {
-//   dark,
-//   light,
-// }

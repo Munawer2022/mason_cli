@@ -4,10 +4,11 @@ import '/data/datasources/login/login_data_sources_state.dart';
 import '/domain/entities/local/mock_local_user_info_store_model.dart';
 
 {{#isFlutterBloc}}
-class LoginDataSources extends Cubit<LoginDataSourcesState> {
-  LoginDataSources() : super(LoginDataSourcesState.initial().copyWith());
-  setLoginDataSources({required MockLocalUserInfoStoreModel mockLoginSuccessModel}) =>
-      emit(state.copyWith(mockLoginSuccessModel: mockLoginSuccessModel));
+class LoginDataSources extends Cubit<MockLocalUserInfoStoreModel> {
+  LoginDataSources() : super(MockLocalUserInfoStoreModel.empty().copyWith());
+  setLoginDataSources(
+          {required MockLocalUserInfoStoreModel mockLoginSuccessModel}) =>
+      emit(mockLoginSuccessModel);
 }
 {{/isFlutterBloc}}
 

@@ -5,17 +5,17 @@ import '/core/global.dart';
 mixin ShowMaterialBannerError {
   void showErrorMaterialBanner(String message) {
     var materialBanner = MaterialBanner(
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-      content: Text(message, style: const TextStyle(color: Colors.white)),
-      backgroundColor: Colors.red,
-      actions: [
-        TextButton(
-          onPressed: () => GlobalConstants.scaffoldMessengerKey.currentState!
-              .hideCurrentMaterialBanner(),
-          child: const Text('DISMISS', style: TextStyle(color: Colors.white)),
-        ),
-      ],
-    );
+        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+        content: Text(message, style: const TextStyle(color: Colors.white)),
+        backgroundColor: Colors.red,
+        actions: [
+          TextButton(
+              onPressed: () => GlobalConstants
+                  .scaffoldMessengerKey.currentState!
+                  .hideCurrentMaterialBanner(),
+              child:
+                  const Text('DISMISS', style: TextStyle(color: Colors.white)))
+        ]);
 
     GlobalConstants.scaffoldMessengerKey.currentState!
       ..hideCurrentMaterialBanner()
@@ -24,17 +24,16 @@ mixin ShowMaterialBannerError {
 
   void showNoInternetConnectionMaterialBanner(String message) {
     final materialBanner = MaterialBanner(
-      content: Text(message, style: const TextStyle(color: Colors.white)),
-      backgroundColor: Colors.red,
-      actions: [
-        TextButton(
-          onPressed: () =>
-              ScaffoldMessenger.of(GlobalConstants.navigatorKey.currentContext!)
+        content: Text(message, style: const TextStyle(color: Colors.white)),
+        backgroundColor: Colors.red,
+        actions: [
+          TextButton(
+              onPressed: () => ScaffoldMessenger.of(
+                      GlobalConstants.navigatorKey.currentContext!)
                   .hideCurrentMaterialBanner(),
-          child: const Text('DISMISS', style: TextStyle(color: Colors.white)),
-        ),
-      ],
-    );
+              child:
+                  const Text('DISMISS', style: TextStyle(color: Colors.white)))
+        ]);
 
     ScaffoldMessenger.of(GlobalConstants.navigatorKey.currentContext!)
       ..hideCurrentMaterialBanner()

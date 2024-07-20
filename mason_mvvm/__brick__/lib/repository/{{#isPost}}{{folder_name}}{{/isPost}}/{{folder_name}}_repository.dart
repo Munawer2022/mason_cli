@@ -8,16 +8,8 @@ class {{class_name}}Repository implements {{class_name}}BaseApiServices {
   final NetworkBaseApiServices _baseApiServices;
   {{class_name}}Repository(this._baseApiServices);
 
-  @override
-  Future<Typedef{{class_name}}> {{folder_name}}(
-    {required Map<String, dynamic> body}
-  ) async {
-    try {
-      var response = await _baseApiServices.postApi
-          <Map<String, dynamic>>(url: AppUrl.{{folder_name}}, body: body);
-      return {{class_name}}Model.fromJson(response);
-    } catch (e) {
-      rethrow;
-    }
-  }
+@override
+  Future<Typedef{{class_name}}> {{folder_name}}({required Map<String, dynamic> body}) async => await _baseApiServices
+      .getApi<Map<String, dynamic>>(url: AppUrl.{{folder_name}}, body: body)
+      .then((response) => {{class_name}}Model.fromJson(response));
 }

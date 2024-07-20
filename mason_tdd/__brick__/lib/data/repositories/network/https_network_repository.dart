@@ -27,7 +27,7 @@ class HttpsNetworkRepository implements NetworkBaseApiService{
         'Authorization': 'Bearer ${_loginDataSources.state.mockLoginSuccessModel.token}'
         {{/isBloc}}
         {{#isFlutterBloc}}
-        'Authorization': 'Bearer ${_loginDataSources.state.mockLoginSuccessModel.token}'
+        'Authorization': 'Bearer ${_loginDataSources.state.token}'
         {{/isFlutterBloc}}
         {{#isProvider}}
         'Authorization': 'Bearer ${_loginDataSources.mockLoginSuccessModel.token}'
@@ -86,7 +86,7 @@ class HttpsNetworkRepository implements NetworkBaseApiService{
         'Authorization': 'Bearer ${_loginDataSources.state.mockLoginSuccessModel.token}'
         {{/isBloc}}
         {{#isFlutterBloc}}
-        'Authorization': 'Bearer ${_loginDataSources.state.mockLoginSuccessModel.token}'
+        'Authorization': 'Bearer ${_loginDataSources.state.token}'
         {{/isFlutterBloc}}
         {{#isProvider}}
         'Authorization': 'Bearer ${_loginDataSources.mockLoginSuccessModel.token}'
