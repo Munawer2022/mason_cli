@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:fpdart/fpdart.dart';
 
-import '/domain/failure/network/network_failure.dart';
+import '/domain/failures/network/network_failure.dart';
 import 'package:http/http.dart' as http;
 {{#auth}}
 import '/data/datasources/auth/login_data_sources.dart';

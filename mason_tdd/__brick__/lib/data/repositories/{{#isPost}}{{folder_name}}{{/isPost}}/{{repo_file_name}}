@@ -4,7 +4,7 @@ import '/data/models/{{folder_name}}/{{folder_name}}_success_model.dart';
 import '/core/app_url.dart';
 
 import '/domain/repositories/network/network_base_api_service.dart';
-import '/domain/failure/{{folder_name}}/{{folder_name}}_failure.dart';
+import '/domain/failures/{{folder_name}}/{{folder_name}}_failure.dart';
 import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
 
 class {{class_name}}Repository implements {{class_name}}BaseApiService {

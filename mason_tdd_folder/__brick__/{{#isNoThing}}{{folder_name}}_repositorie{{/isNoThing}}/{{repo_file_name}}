@@ -13,7 +13,5 @@ class {{class_name}}Repository implements {{class_name}}BaseApiService {
 
   @override
   Future<Either<{{class_name}}Failure, Mock{{class_name}}Model>> {{folder_name}}() =>
-      _networkRepository.get<Map<String, dynamic>>(url: AppUrl.{{folder_name}}).then(
-            (value) => value.fold((l) => left({{class_name}}Failure(error: l.error)),
-              (r) => right({{class_name}}Model.fromJson(r).toDomain())));
+      throw UnimplementedError();
 }

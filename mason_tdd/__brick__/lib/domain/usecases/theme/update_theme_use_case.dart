@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import '/core/global.dart';
-import '/domain/failure/theme/update_theme_failure.dart';
+import '/domain/failures/theme/update_theme_failure.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
 import '/data/datasources/theme/theme_data_source.dart';
 

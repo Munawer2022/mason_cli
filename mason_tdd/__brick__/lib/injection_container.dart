@@ -32,16 +32,10 @@ import '/domain/usecases/local/check_for_existing_user_use_case.dart';
 
 {{/auth}}
 /*
-************************ {{folder_name}} ************************
+************************ {{class_name}} ************************
 */
-{{#isGet}}
 import 'domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
 import 'data/repositories/{{folder_name}}/{{repo_file_name}}';
-{{/isGet}}
-{{#isPost}}
-import 'domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
-import 'data/repositories/{{folder_name}}/{{repo_file_name}}';
-{{/isPost}}
 import 'features/{{folder_name}}/{{navigator_file_name}}';
 import 'features/{{folder_name}}/{{cubit_file_name}}';
 import 'features/{{folder_name}}/{{initial_params_file_name}}';
@@ -65,25 +59,14 @@ Future<void> init() async {
       InsecureLocalStorageRepository());
   getIt.registerSingleton<ThemeDataSources>(ThemeDataSources());
   getIt.registerSingleton<GetThemeUseCase>(
-    GetThemeUseCase(
-      getIt(),
-      getIt(),
-    ),
-  );
+    GetThemeUseCase( getIt(), getIt()));
   getIt.registerSingleton<UpdateThemeUseCase>(
-    UpdateThemeUseCase(
-      getIt(),
-      getIt(),
-    ),
-  );
+    UpdateThemeUseCase(getIt(), getIt()));
  getIt.registerSingleton<Connectivity>(Connectivity());
   getIt.registerSingleton<ShowError>(ShowError());
 
   getIt.registerSingleton<InternetConnectivityCheckerDataSources>(
-      InternetConnectivityCheckerDataSources(getIt(), getIt()));  
-/*
-  ************************  ************************
-*/
+      InternetConnectivityCheckerDataSources(getIt(), getIt()));
  {{#auth}}
 /*
 ************************ Splash ************************
@@ -105,23 +88,18 @@ Future<void> init() async {
       (params, _) => LoginCubit(params, getIt(), getIt()));
       {{/auth}}
 /*
-************************ {{folder_name}} ************************
+************************ {{class_name}} ************************
 */
-{{#isGet}}
   getIt.registerSingleton<{{class_name}}BaseApiService>({{class_name}}Repository(getIt()));
-{{/isGet}}
-  {{#isPost}}
-  getIt.registerSingleton<{{class_name}}BaseApiService>({{class_name}}Repository(getIt()));
-  {{/isPost}}
   // getIt.registerSingleton<{{class_name}}BaseApiService>(Mock{{class_name}}Repository());
   getIt.registerSingleton<{{class_name}}Navigator>({{class_name}}Navigator(getIt()));
   getIt.registerFactoryParam<{{class_name}}Cubit, {{class_name}}InitialParams, dynamic>(
-      (params, _) => {{class_name}}Cubit(params, getIt(),
+      (params, _) => {{class_name}}Cubit(params, getIt()
       {{#isGet}}
-       getIt()
+       , getIt()
       {{/isGet}}
       {{#isPost}}
-       getIt()
+       , getIt()
       {{/isPost}}
       )
       {{#isGet}}

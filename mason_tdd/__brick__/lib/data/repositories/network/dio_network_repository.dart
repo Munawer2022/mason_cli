@@ -5,7 +5,7 @@
 // import 'package:fpdart/fpdart.dart';
 // import 'package:dio/dio.dart';
 
-// import '/domain/failure/network/network_failure.dart';
+// import '/domain/failures/network/network_failure.dart';
 // import '/data/datasources/auth/login_data_sources.dart';
 // import '/domain/repositories/network/network_base_api_service.dart';
 

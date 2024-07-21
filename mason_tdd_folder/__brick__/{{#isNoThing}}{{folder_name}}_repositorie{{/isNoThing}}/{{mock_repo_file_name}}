@@ -2,12 +2,9 @@ import 'package:fpdart/fpdart.dart';
 import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
 import '/domain/failures/{{folder_name}}/{{folder_name}}_failure.dart';
 import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
-import '/core/global.dart';
 
 class Mock{{class_name}}Repository implements {{class_name}}BaseApiService {
   @override
-  Future<Either<{{class_name}}Failure, Mock{{class_name}}Model>> {{folder_name}}() async {
-    await GlobalConstants.mockRepoTime;
-    return right(Mock{{class_name}}Model.empty().copyWith());
-  }    
+  Future<Either<{{class_name}}Failure, Mock{{class_name}}Model>> {{folder_name}}() =>
+      throw UnimplementedError();    
 }

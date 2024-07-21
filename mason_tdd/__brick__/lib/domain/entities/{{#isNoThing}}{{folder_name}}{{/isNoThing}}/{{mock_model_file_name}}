@@ -1,0 +1,9 @@
+import 'package:equatable/equatable.dart';
+
+class Mock{{class_name}}Model extends Equatable {
+ const Mock{{class_name}}Model();
+  factory Mock{{class_name}}Model.empty() => const Mock{{class_name}}Model();
+  Mock{{class_name}}Model copyWith() => const Mock{{class_name}}Model();
+  @override
+  List<Object?> get props => [];
+}

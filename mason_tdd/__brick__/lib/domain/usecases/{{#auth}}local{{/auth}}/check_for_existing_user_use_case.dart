@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import '/data/datasources/auth/login_data_sources.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
 import '/domain/entities/local/mock_local_user_info_store_model.dart';
-import '/domain/failure/local/existing_user_failure.dart';
+import '/domain/failures/local/existing_user_failure.dart';
 
 class CheckForExistingUserUseCase {
   final LoginDataSources _loginDataSources;
