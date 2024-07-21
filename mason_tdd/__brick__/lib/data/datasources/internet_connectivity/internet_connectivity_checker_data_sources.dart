@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import '/utils/show/show_error/show_errors.dart';
-import '/resource/global.dart';
+import '/core/show/show_error/show_errors.dart';
+import '/core/global.dart';
 {{#isFlutterBloc}}
 import 'package:flutter_bloc/flutter_bloc.dart';
 {{/isFlutterBloc}}
@@ -37,7 +37,7 @@ class InternetConnectivityCheckerDataSources extends Bloc<
   }
 }
 
-{{#isBloc}}
+{{/isBloc}}
 {{#isFlutterBloc}}
 class InternetConnectivityCheckerDataSources extends Cubit<bool> {
   final Connectivity _connectivity;

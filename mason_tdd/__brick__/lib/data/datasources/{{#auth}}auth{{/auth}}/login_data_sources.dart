@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+{{#isBloc}}
 import '/data/datasources/login/login_data_sources_event.dart';
 import '/data/datasources/login/login_data_sources_state.dart';
+{{/isBloc}}
 import '/domain/entities/local/mock_local_user_info_store_model.dart';
 
 {{#isFlutterBloc}}
