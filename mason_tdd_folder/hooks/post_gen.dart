@@ -72,7 +72,8 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
   getIt.registerSingleton<${name}Navigator>(${name}Navigator(getIt()));
   getIt.registerFactoryParam<${name}Cubit, ${name}InitialParams, dynamic>(
       (params, _) => ${name}Cubit(params, getIt()
-      ${isGet && isPost ? ', getIt()' : ''}
+      ${isGet ? ', getIt()' : ''}
+      ${isPost ? ', getIt()' : ''}
       )
       ${isGet ? '..${name.snakeCase}()' : ''}
       );
@@ -153,6 +154,39 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
   String sourcePath8 = '${name.snakeCase}_model';
   String destinationDirector8 = 'lib/data/models';
   moveFileToDirectory(sourcePath8, destinationDirector8);
+
+  //test
+  String testSource = "${name.snakeCase}_test";
+  String testDestinationDirectory = 'test/features';
+  moveFileToDirectory(testSource, testDestinationDirectory);
+  //
+  String testSource1 = '${name.snakeCase}_entitie_test';
+  String testDestinationDirectory4 = 'test/domain/entities';
+  moveFileToDirectory(testSource1, testDestinationDirectory4);
+
+  String testSource2 = '${name.snakeCase}_failure_test';
+  String testDestinationDirectory2 = 'test/domain/failures';
+  moveFileToDirectory(testSource2, testDestinationDirectory2);
+  //
+  String testSource3 = '${name.snakeCase}_base_api_service_test';
+  String testDestinationDirectory3 = 'test/domain/repositories';
+  moveFileToDirectory(testSource3, testDestinationDirectory3);
+  //
+  String testSource6 = '${name.snakeCase}_usecase_test';
+  String testDestinationDirectory6 = 'test/domain/usecases';
+  moveFileToDirectory(testSource6, testDestinationDirectory6);
+
+  String testSource5 = '${name.snakeCase}_repositorie_test';
+  String testDestinationDirectory5 = 'test/data/repositories';
+  moveFileToDirectory(testSource5, testDestinationDirectory5);
+  //
+  String testSource7 = '${name.snakeCase}_datasource_test';
+  String testDestinationDirectory7 = 'test/data/datasources';
+  moveFileToDirectory(testSource7, testDestinationDirectory7);
+  //
+  String testSource8 = '${name.snakeCase}_model_test';
+  String testDestinationDirectory8 = 'test/data/models';
+  moveFileToDirectory(testSource8, testDestinationDirectory8);
 
 //
 
