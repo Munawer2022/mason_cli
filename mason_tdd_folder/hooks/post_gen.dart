@@ -71,7 +71,9 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
   // getIt.registerSingleton<${name}BaseApiService>(Mock${name}Repository());
   getIt.registerSingleton<${name}Navigator>(${name}Navigator(getIt()));
   getIt.registerFactoryParam<${name}Cubit, ${name}InitialParams, dynamic>(
-      (params, _) => ${name}Cubit(params, getIt(), getIt())
+      (params, _) => ${name}Cubit(params, getIt()
+      ${isGet && isPost ? ', getIt()' : ''}
+      )
       ${isGet ? '..${name.snakeCase}()' : ''}
       );
 ''';
