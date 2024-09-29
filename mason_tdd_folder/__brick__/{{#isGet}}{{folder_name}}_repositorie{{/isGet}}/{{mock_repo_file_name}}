@@ -6,7 +6,7 @@ import '/core/global.dart';
 
 class Mock{{class_name}}Repository implements {{class_name}}BaseApiService {
   @override
-  Future<Either<{{class_name}}Failure, Mock{{class_name}}Model>> {{folder_name}}() async {
+  Future<Either<{{class_name}}Failure, Mock{{class_name}}Model>> {{folder_name_camelCase}}() async {
     await GlobalConstants.mockRepoTime;
     return right(Mock{{class_name}}Model.empty().copyWith());
   }    

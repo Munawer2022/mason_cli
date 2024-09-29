@@ -5,6 +5,6 @@ import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.da
 
 class Mock{{class_name}}Repository implements {{class_name}}BaseApiService {
   @override
-  Future<Either<{{class_name}}Failure, Mock{{class_name}}Model>> {{folder_name}}() =>
+  Future<Either<{{class_name}}Failure, Mock{{class_name}}Model>> {{folder_name_camelCase}}() =>
       throw UnimplementedError();    
 }

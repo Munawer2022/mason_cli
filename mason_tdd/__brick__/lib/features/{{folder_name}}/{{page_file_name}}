@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '{{cubit_file_name}}';
 import '{{state_file_name}}';
-import '{{state_file_name}}';
 import '/core/status_switcher.dart';
 {{#isGet}}
 import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';

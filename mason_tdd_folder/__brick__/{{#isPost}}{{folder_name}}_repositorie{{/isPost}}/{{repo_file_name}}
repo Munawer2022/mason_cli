@@ -13,9 +13,9 @@ class {{class_name}}Repository implements {{class_name}}BaseApiService {
   {{class_name}}Repository(this._networkRepository);
 
   @override
-  Future<Either<{{class_name}}Failure, Mock{{class_name}}SuccessModel>> {{folder_name}}(
+  Future<Either<{{class_name}}Failure, Mock{{class_name}}SuccessModel>> {{folder_name_camelCase}}(
      {required Map<String, dynamic> body}) =>
-      _networkRepository.post<Map<String, dynamic>>(url:AppUrl.{{folder_name}},body:body).then(
+      _networkRepository.post<Map<String, dynamic>>(url:AppUrl.{{folder_name_camelCase}},body:body).then(
             (value) => value.fold((l) => left({{class_name}}Failure(error: l.error)),
               (r) => right({{class_name}}SuccessModel.fromJson(r).toDomain())));
 }

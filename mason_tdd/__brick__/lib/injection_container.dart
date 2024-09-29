@@ -103,7 +103,7 @@ Future<void> init() async {
       {{/isPost}}
       )
       {{#isGet}}
-      ..{{folder_name}}()
+      ..{{folder_name_camelCase}}()
       {{/isGet}}
       );
 }

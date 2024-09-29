@@ -4,7 +4,6 @@ import '{{page_file_name}}';
 import '/config/navigation/app_navigator.dart';
 import '/injection_container.dart';
 
-// is page say navigate kr nay ky liya 
 class {{class_name}}Navigator {
   {{class_name}}Navigator(this.navigator);
   @override
@@ -14,7 +13,6 @@ class {{class_name}}Navigator {
   AppNavigator navigator;
 }
 
-//is page pr navigate pr nay ky liya
 mixin {{class_name}}Route {
 open{{class_name}}({{class_name}}InitialParams initialParams) {
 navigator.push(

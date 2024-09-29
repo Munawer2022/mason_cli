@@ -19,6 +19,7 @@ Future<void> run(HookContext context) async {
     'get_it',
     'flutter_screenutil',
     'http',
+    'http_interceptor',
     'shared_preferences',
     'equatable',
     'fpdart',

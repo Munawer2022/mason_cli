@@ -27,6 +27,7 @@ void run(HookContext context) {
   final mockModelFileName = "mock_${stem.snakeCase}_model.dart";
   final modelFileName = "${stem.snakeCase}_model.dart";
   final folderName = "${stem.snakeCase}";
+  final folderNameCamelCase = "${stem.camelCase}";
   final failureName = "${stem.snakeCase}_failure.dart";
   final useCasesName = "${stem.snakeCase}_use_cases.dart";
   final dataSourcesName = "${stem.snakeCase}_data_sources.dart";
@@ -48,6 +49,7 @@ void run(HookContext context) {
     "mock_model_file_name": mockModelFileName,
     "model_file_name": modelFileName,
     "folder_name": folderName,
+    "folder_name_camelCase": folderNameCamelCase,
     "failure_name": failureName,
     "use_cases_name": useCasesName,
     "data_sources_name": dataSourcesName,

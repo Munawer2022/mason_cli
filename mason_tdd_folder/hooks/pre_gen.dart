@@ -26,6 +26,7 @@ void run(HookContext context) {
   final mockModelFileName = "mock_${stem.snakeCase}_model.dart";
   final modelFileName = "${stem.snakeCase}_model.dart";
   final folderName = "${stem.snakeCase}";
+  final folderNameCamelCase = "${stem.camelCase}";
   final failureName = "${stem.snakeCase}_failure.dart";
   final useCasesName = "${stem.snakeCase}_use_cases.dart";
   final dataSourcesName = "${stem.snakeCase}_data_sources.dart";
@@ -44,6 +45,7 @@ void run(HookContext context) {
     "base_api_service_file_name": baseApiServiceFileName,
     "mock_model_file_name": mockModelFileName,
     "model_file_name": modelFileName,
+    "folder_name_camelCase": folderNameCamelCase,
     "folder_name": folderName,
     "failure_name": failureName,
     "use_cases_name": useCasesName,

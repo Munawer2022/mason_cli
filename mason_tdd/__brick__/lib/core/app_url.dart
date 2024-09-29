@@ -6,5 +6,5 @@ abstract class AppUrl {
   static var forgotPassword = '$baseUrl/forgotPassword';
   {{/auth}}
 
-  static var {{folder_name}} = '$baseUrl/{{folder_name}}';
+  static var {{folder_name_camelCase}} = '$baseUrl/{{folder_name_camelCase}}';
 }

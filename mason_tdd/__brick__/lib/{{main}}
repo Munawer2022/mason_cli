@@ -9,6 +9,7 @@ import '/injection_container.dart';
 import '/data/datasources/theme/theme_data_source.dart';
 import '/core/global.dart';
 import '/core/show/checker_navigator_observer.dart';
+import 'package:device_preview/device_preview.dart';
 {{#auth}}
 import '/features/splash/splash_initial_params.dart';
 import '/features/splash/splash_page.dart';
@@ -18,9 +19,11 @@ void main() async {
 //  setCustomSystemUIOverlayStyle();
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
-  runApp(
-    const MyApp(),
-  );
+  runApp(DevicePreview(
+      enabled: false,
+      builder: (context) {
+        return const MyApp();
+      }));
 }
 
 class MyApp extends StatelessWidget {
@@ -36,6 +39,9 @@ class MyApp extends StatelessWidget {
       builder: (context, state) {
         state as bool;
         return MaterialApp(
+          // useInheritedMediaQuery: true,
+                locale: DevicePreview.locale(context),
+                builder: DevicePreview.appBuilder,
           navigatorKey: GlobalConstants.navigatorKey,
                   scaffoldMessengerKey: GlobalConstants.scaffoldMessengerKey,
                   navigatorObservers: [CheckerNavigatorObserver()],

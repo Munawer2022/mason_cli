@@ -75,7 +75,7 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
       ${isGet ? ', getIt()' : ''}
       ${isPost ? ', getIt()' : ''}
       )
-      ${isGet ? '..${name.snakeCase}()' : ''}
+      ${isGet ? '..${name.camelCase}()' : ''}
       );
 ''';
   appendAtEndOfProvidersList(providerStatement);
@@ -217,7 +217,7 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
 
   String nameUrl;
   if (isPost || isGet) {
-    nameUrl = "static var ${name.snakeCase} = 'baseUrl/${name.snakeCase}';";
+    nameUrl = "static var ${name.camelCase} = 'baseUrl/${name.camelCase}';";
   } else {
     nameUrl = '';
   }

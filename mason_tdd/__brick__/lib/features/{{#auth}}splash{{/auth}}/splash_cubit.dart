@@ -9,20 +9,20 @@ import 'splash_initial_params.dart';
 import 'splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
-  final SplashInitialParams _initialParams;
+  final SplashInitialParams initialParams;
   final SplashNavigator navigator;
-  final CheckForExistingUserUseCase _checkForExistingUserUseCase;
-  final GetThemeUseCase _getThemeUseCase;
+  final CheckForExistingUserUseCase checkForExistingUserUseCase;
+  final GetThemeUseCase getThemeUseCase;
 
-  SplashCubit(this._initialParams, this.navigator,
-      this._checkForExistingUserUseCase, this._getThemeUseCase)
-      : super(SplashState.initial(initialParams: _initialParams));
+  SplashCubit(this.initialParams, this.navigator,
+      this.checkForExistingUserUseCase, this.getThemeUseCase)
+      : super(SplashState.initial(initialParams: initialParams));
 
   checkUser() {
-    _getThemeUseCase.execute();
+    getThemeUseCase.execute();
 
     emit(state.copyWith(isloading: true));
-    _checkForExistingUserUseCase.execute().then(
+    checkForExistingUserUseCase.execute().then(
           (value) => value.fold(
             (l) {
               emit(state.copyWith(isloading: false));

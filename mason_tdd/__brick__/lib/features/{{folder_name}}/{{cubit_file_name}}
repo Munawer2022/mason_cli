@@ -7,25 +7,24 @@ import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.da
 import '/config/response/api_response.dart';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
-  final {{class_name}}BaseApiService _baseApiServices;
+  final {{class_name}}BaseApiService baseApiServices;
   final {{class_name}}Navigator navigator;
-  final {{class_name}}InitialParams _initialParams;
+  final {{class_name}}InitialParams initialParams;
 {{class_name}}Cubit(
-  this._initialParams,
-      this._baseApiServices,
+  this.initialParams,
+      this.baseApiServices,
       this.navigator)
-   : super({{class_name}}State.initial(initialParams:_initialParams));
+   : super({{class_name}}State.initial(initialParams:initialParams));
 
-Future<void> {{folder_name}}() async {
+Future<void> {{folder_name_camelCase}}() async {
     emit(state.copyWith(response: ApiResponse.loading()));
-    final {{folder_name}} = await _baseApiServices.{{folder_name}}();
-    {{folder_name}}.fold(
+    final {{folder_name_camelCase}} = await baseApiServices.{{folder_name_camelCase}}();
+    {{folder_name_camelCase}}.fold(
       (l) => emit(state.copyWith(response: ApiResponse.error(l.error))),
       ((r) =>emit(state.copyWith(response: ApiResponse.completed(r)))));
   }
-  Future<void> refresh() async {
-    await {{folder_name}}();
-  }
+  Future<void> refresh() async => await {{folder_name_camelCase}}();
+  
 }
 {{/isGet}}
 
@@ -37,22 +36,22 @@ import '{{state_file_name}}';
 import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
-  final {{class_name}}BaseApiService _baseApiServices;
+  final {{class_name}}BaseApiService baseApiServices;
   final {{class_name}}Navigator navigator;
-  final {{class_name}}InitialParams _initialParams;
+  final {{class_name}}InitialParams initialParams;
 {{class_name}}Cubit(
-  this._initialParams,
-      this._baseApiServices,
+  this.initialParams,
+      this.baseApiServices,
       this.navigator)
-   : super({{class_name}}State.initial(initialParams:_initialParams));
+   : super({{class_name}}State.initial(initialParams:initialParams));
 
-Future<void> {{folder_name}}(
+Future<void> {{folder_name_camelCase}}(
 {required Map<String, dynamic> body}
 ) async {
     emit(state.copyWith(isLoading: true));
-    final {{folder_name}} = await _baseApiServices.{{folder_name}}(
+    final {{folder_name_camelCase}} = await baseApiServices.{{folder_name_camelCase}}(
   body: body);
-    {{folder_name}}.fold(
+    {{folder_name_camelCase}}.fold(
       (l) => emit(state.copyWith(isLoading: false, error: l.error)),
       ((r) =>emit(state.copyWith(success: r, isLoading: false))));
   }
@@ -67,11 +66,11 @@ import '{{state_file_name}}';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
   final {{class_name}}Navigator navigator;
-  final {{class_name}}InitialParams _initialParams;
+  final {{class_name}}InitialParams initialParams;
 {{class_name}}Cubit(
-  this._initialParams,
+  this.initialParams,
       this.navigator)
-   : super({{class_name}}State.initial(initialParams:_initialParams));
+   : super({{class_name}}State.initial(initialParams:initialParams));
 
 }
 {{/isNoThing}}

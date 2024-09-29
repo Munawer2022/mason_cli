@@ -6,7 +6,6 @@ import '/config/navigation/app_navigator.dart';
 import '/injection_container.dart';
 import 'splash_initial_params.dart';
 
-// is page say navigate kr nay ky liya
 class SplashNavigator with {{class_name}}Route, LoginRoute {
   SplashNavigator(this.navigator);
   @override
@@ -16,7 +15,6 @@ class SplashNavigator with {{class_name}}Route, LoginRoute {
   AppNavigator navigator;
 }
 
-//is page pr navigate pr nay ky liya
 mixin SplashRoute {
   openLogin(SplashInitialParams initialParams) {
     navigator.push(

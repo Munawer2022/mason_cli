@@ -6,7 +6,7 @@ import '/core/global.dart';
 
 class Mock{{class_name}}Repository implements {{class_name}}BaseApiService {
   @override
-  Future<Either<{{class_name}}Failure, Mock{{class_name}}SuccessModel>> {{folder_name}}(
+  Future<Either<{{class_name}}Failure, Mock{{class_name}}SuccessModel>> {{folder_name_camelCase}}(
      {required Map<String, dynamic> body}
   ) async {
     await GlobalConstants.mockRepoTime;
