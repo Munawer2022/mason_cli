@@ -8,7 +8,7 @@ import 'data/datasources/theme/theme_data_source.dart';
 import 'domain/usecases/theme/get_theme_use_case.dart';
 import 'domain/usecases/theme/update_theme_use_case.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'core/show/show_error/show_errors.dart';
+import 'core/show/show/show.dart';
 import '/data/datasources/internet_connectivity/internet_connectivity_checker_data_sources.dart';
 
 {{#auth}}
@@ -63,7 +63,7 @@ Future<void> init() async {
   getIt.registerSingleton<UpdateThemeUseCase>(
     UpdateThemeUseCase(getIt(), getIt()));
  getIt.registerSingleton<Connectivity>(Connectivity());
-  getIt.registerSingleton<ShowError>(ShowError());
+  getIt.registerSingleton<Show>(Show());
 
   getIt.registerSingleton<InternetConnectivityCheckerDataSources>(
       InternetConnectivityCheckerDataSources(getIt(), getIt()));

@@ -109,8 +109,12 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
         destinationDir.createSync(recursive: true);
       }
 
-      String destinationPath =
-          '${destinationDir.path}/${sourceDir.path.split(Platform.pathSeparator).last}';
+      // Get the last segment of the source path and remove "_text" if it exists.
+      String sourceName = sourceDir.path.split(Platform.pathSeparator).last;
+      String cleanedSourceName =
+          sourceName.split('_').first; // Removes the text after the first '_'
+
+      String destinationPath = '${destinationDir.path}/$cleanedSourceName';
 
       try {
         sourceDir.renameSync(destinationPath);

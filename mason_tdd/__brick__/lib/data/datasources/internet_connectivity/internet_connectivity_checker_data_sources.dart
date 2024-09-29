@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import '/core/show/show_error/show_errors.dart';
+import '/core/show/show/show.dart';
 import '/core/global.dart';
 {{#isFlutterBloc}}
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,15 +14,15 @@ import 'internet_connectivity_checker_event.dart';
 class InternetConnectivityCheckerDataSources extends Bloc<
     InternetConnectivityCheckerEvent, InternetConnectivityCheckerState> {
   final Connectivity _connectivity;
-  final ShowError _showError;
+  final Show _show;
 
   late final StreamSubscription<List<ConnectivityResult>> _subscription;
 
-  InternetConnectivityCheckerDataSources(this._connectivity, this._showError)
+  InternetConnectivityCheckerDataSources(this._connectivity, this._show)
       : super(InternetConnectivityCheckerState.initial()) {
     _subscription = _connectivity.onConnectivityChanged.listen((event) =>
         event.first == ConnectivityResult.none
-            ? _showError.showNoInternetConnectionMaterialBanner(
+            ? _show.showNoInternetConnectionMaterialBanner(
                 'No Internet Connection')
             : navigatorKey.currentContext != null
                 ? ScaffoldMessenger.of(navigatorKey.currentContext!)
@@ -41,16 +41,16 @@ class InternetConnectivityCheckerDataSources extends Bloc<
 {{#isFlutterBloc}}
 class InternetConnectivityCheckerDataSources extends Cubit<bool> {
   final Connectivity _connectivity;
-  final ShowError _showError;
+  final Show _show;
 
   late final StreamSubscription<List<ConnectivityResult>> _subscription;
 
-  InternetConnectivityCheckerDataSources(this._connectivity, this._showError)
+  InternetConnectivityCheckerDataSources(this._connectivity, this._show)
       : super(false) {
     _subscription = _connectivity.onConnectivityChanged.listen((event) => event
                 .first ==
             ConnectivityResult.none
-        ? _showError
+        ? _show
             .showNoInternetConnectionMaterialBanner('No Internet Connection')
         : GlobalConstants.navigatorKey.currentContext != null
             ? ScaffoldMessenger.of(GlobalConstants.navigatorKey.currentContext!)

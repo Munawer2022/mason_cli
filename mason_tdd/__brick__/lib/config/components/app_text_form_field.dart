@@ -1,4 +1,3 @@
-import '/config/theme/theme_data.dart';
 import '/core/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -64,10 +63,8 @@ abstract class AppTextFormField {
             filled: true,
             prefixIcon: prefixIcon,
             hintText: hintText,
-            hintStyle: context.textTheme.bodyLarge?.copyWith(
-                fontFamily: fontFamilyMontserrat,
-                fontSize: 14.sp,
-                color: const Color(0xffA9A9A9))),
+            hintStyle: context.textTheme.bodyLarge
+                ?.copyWith(fontSize: 14.sp, color: const Color(0xffA9A9A9))),
         controller: controller);
   }
 }
