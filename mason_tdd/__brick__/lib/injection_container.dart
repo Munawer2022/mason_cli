@@ -78,7 +78,6 @@ Future<void> init() async {
 ************************ login ************************
 */
   getIt.registerSingleton<LoginBaseApiService>(LoginRepository(getIt()));
-//   getIt.registerSingleton<LoginBaseApiService>(MockLoginRepository());
   getIt.registerSingleton<CheckForExistingUserUseCase>(
       CheckForExistingUserUseCase(getIt(), getIt()));
   getIt.registerSingleton<LoginUseCases>(
@@ -91,7 +90,6 @@ Future<void> init() async {
 ************************ {{class_name}} ************************
 */
   getIt.registerSingleton<{{class_name}}BaseApiService>({{class_name}}Repository(getIt()));
-  // getIt.registerSingleton<{{class_name}}BaseApiService>(Mock{{class_name}}Repository());
   getIt.registerSingleton<{{class_name}}Navigator>({{class_name}}Navigator(getIt()));
   getIt.registerFactoryParam<{{class_name}}Cubit, {{class_name}}InitialParams, dynamic>(
       (params, _) => {{class_name}}Cubit(params, getIt()

@@ -68,7 +68,6 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
 ************************ ${name} ************************
 */
   getIt.registerSingleton<${name}BaseApiService>(${name}Repository(getIt()));
-  // getIt.registerSingleton<${name}BaseApiService>(Mock${name}Repository());
   getIt.registerSingleton<${name}Navigator>(${name}Navigator(getIt()));
   getIt.registerFactoryParam<${name}Cubit, ${name}InitialParams, dynamic>(
       (params, _) => ${name}Cubit(params, getIt()
