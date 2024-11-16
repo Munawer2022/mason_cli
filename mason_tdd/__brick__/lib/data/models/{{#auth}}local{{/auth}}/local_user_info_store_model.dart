@@ -1,5 +1,3 @@
-import '/domain/entities/local/mock_local_user_info_store_model.dart';
-
 class LocalUserInfoStoreModel {
   LocalUserInfoStoreModel({required this.token});
 
@@ -10,9 +8,7 @@ class LocalUserInfoStoreModel {
 
   factory LocalUserInfoStoreModel.fromJson(Map<String, dynamic> json) =>
       LocalUserInfoStoreModel(token: json["token"] ?? "");
+  factory LocalUserInfoStoreModel.empty() => LocalUserInfoStoreModel(token: "");
 
   Map<String, dynamic> toJson() => {"token": token};
-
-  MockLocalUserInfoStoreModel toDomain() =>
-      MockLocalUserInfoStoreModel(token: token);
 }

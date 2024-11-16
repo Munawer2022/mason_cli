@@ -16,5 +16,5 @@ class LoginRepository implements LoginBaseApiService {
       _networkRepository
           .post<Map<String, dynamic>>(url: AppUrl.login, body: body)
           .then((value) => value.fold((l) => left(LoginFailure(error: l.error)),
-              (r) => right(LocalUserInfoStoreModel.fromJson(r).toDomain())));
+              (r) => right(LocalUserInfoStoreModel.fromJson(r))));
 }

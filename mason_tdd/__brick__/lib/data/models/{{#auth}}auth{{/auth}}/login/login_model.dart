@@ -1,5 +1,3 @@
-import '/domain/entities/auth/login/mock_login_model.dart';
-
 class LoginModel {
   String email;
   String password;
@@ -10,6 +8,4 @@ class LoginModel {
   });
 
   Map<String, dynamic> toJson() => {"email": email, "password": password};
-
-  MockLoginModel toDomain() => MockLoginModel(email: email, password: password);
 }

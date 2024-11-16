@@ -14,5 +14,5 @@ class {{class_name}}Repository implements {{class_name}}BaseApiService {
   Future<Either<{{class_name}}Failure, {{class_name}}Model>> {{folder_name_camelCase}}() =>
       _networkRepository.get<Map<String, dynamic>>(url: AppUrl.{{folder_name_camelCase}}).then(
             (value) => value.fold((l) => left({{class_name}}Failure(error: l.error)),
-              (r) => right({{class_name}}Model.fromJson(r).toDomain())));
+              (r) => right({{class_name}}Model.fromJson(r))));
 }

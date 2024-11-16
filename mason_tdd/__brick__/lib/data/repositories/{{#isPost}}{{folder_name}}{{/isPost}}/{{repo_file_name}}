@@ -16,5 +16,5 @@ class {{class_name}}Repository implements {{class_name}}BaseApiService {
      {required Map<String, dynamic> body}) =>
       _networkRepository.post<Map<String, dynamic>>(url:AppUrl.{{folder_name_camelCase}},body:body).then(
             (value) => value.fold((l) => left({{class_name}}Failure(error: l.error)),
-              (r) => right({{class_name}}SuccessModel.fromJson(r).toDomain())));
+              (r) => right({{class_name}}SuccessModel.fromJson(r))));
 }
