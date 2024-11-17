@@ -44,14 +44,10 @@ return Scaffold(
             state as {{class_name}}State;
             return StatusSwitcher<{{class_name}}Model>(
                 response: state.response,
-                onLoading: (context) => const CircularProgressIndicator.adaptive(),
-                onError: (context, message) => Center(
-                    child: Text(message,
-                        style: Theme.of(context).textTheme.titleMedium)),
                 onCompleted: (context, data) => const SizedBox());
-          },
-        ),
-      ),
+          }
+        )
+      )
     {{/isGet}}
   {{#isPost}}
       body: const SizedBox()
