@@ -36,9 +36,9 @@ Future<void> run(HookContext context) async {
   }
 
   final dev_dependencies = [
-    'bloc_test',
-    'mockito',
-    'mocktail',
+    // 'bloc_test',
+    // 'mockito',
+    // 'mocktail',
     'device_preview',
   ];
 

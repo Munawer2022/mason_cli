@@ -47,16 +47,18 @@ Future<void> init() async {
   {{#auth}}
   getIt.registerSingleton<LoginDataSources>(LoginDataSources());
   {{/auth}}
+    getIt.registerSingleton<LocalStorageRepository>(
+      InsecureLocalStorageRepository());
   getIt.registerSingleton<NetworkBaseApiService>(HttpsNetworkRepository(
     {{#auth}}
+    getIt(),
     getIt()
     {{/auth}}
     ));
 /*
 ************************ Theme ************************
 */
-  getIt.registerSingleton<LocalStorageRepository>(
-      InsecureLocalStorageRepository());
+
   getIt.registerSingleton<ThemeDataSources>(ThemeDataSources());
   getIt.registerSingleton<GetThemeUseCase>(
     GetThemeUseCase( getIt(), getIt()));
