@@ -1,37 +1,37 @@
 {{#isGet}}
-import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+import '/data/models/{{folder_name}}/{{folder_name}}_model.dart';
 import '{{folder_name}}_initial_params.dart';
 import '/config/response/api_response.dart';
 
 class {{class_name}}State {
-  final ApiResponse<Mock{{class_name}}Model> response;
+  final ApiResponse<{{class_name}}Model> response;
 
   {{class_name}}State({required this.response});
   factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
-      {{class_name}}State(response: ApiResponse.initial(Mock{{class_name}}Model.empty().copyWith()));
+      {{class_name}}State(response: ApiResponse.initial({{class_name}}Model.empty()));
   {{class_name}}State copyWith(
-          {ApiResponse<Mock{{class_name}}Model>? response}) =>
+          {ApiResponse<{{class_name}}Model>? response}) =>
       {{class_name}}State(
           response: response ?? this.response);
 }
 {{/isGet}}
 
 {{#isPost}}
-import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_success_model.dart';
+import '/data/models/{{folder_name}}/{{folder_name}}_success_model.dart';
 import '{{folder_name}}_initial_params.dart';
 
 class {{class_name}}State {
-  final Mock{{class_name}}SuccessModel success;
+  final {{class_name}}SuccessModel success;
   final bool isLoading;
   final String? error;
 
   {{class_name}}State({required this.success, required this.isLoading, this.error});
   factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
       {{class_name}}State(
-          success: Mock{{class_name}}SuccessModel.empty().copyWith(),
+          success: {{class_name}}SuccessModel.empty(),
           isLoading: false);
-  {{class_name}}State copyWith(
-          {Mock{{class_name}}SuccessModel? success,
+  {{class_name}}State copyWith({
+            {{class_name}}SuccessModel? success,
           bool? isLoading,
           String? error}) =>
       {{class_name}}State(

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '{{cubit_file_name}}';
 import '{{state_file_name}}';
-import '{{state_file_name}}';
 import '/core/status_switcher.dart';
 {{#isGet}}
-import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+import '/data/models/{{folder_name}}/{{folder_name}}_model.dart';
 {{/isGet}}
 {{#isPost}}
-import '/domain/entities/{{folder_name}}/mock_{{folder_name}}_model.dart';
+import '/data/models/{{folder_name}}/{{folder_name}}_model.dart';
 {{/isPost}}
 
 class {{class_name}}Page extends StatefulWidget {
@@ -43,7 +42,7 @@ return Scaffold(
           bloc: cubit,
           builder: (context, state) {
             state as {{class_name}}State;
-            return StatusSwitcher<Mock{{class_name}}Model>(
+            return StatusSwitcher<{{class_name}}Model>(
                 response: state.response,
                 onLoading: (context) => const CircularProgressIndicator.adaptive(),
                 onError: (context, message) => Center(

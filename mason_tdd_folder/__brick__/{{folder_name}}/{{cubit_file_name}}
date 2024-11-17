@@ -23,8 +23,7 @@ Future<void> {{folder_name_camelCase}}() async {
       (l) => emit(state.copyWith(response: ApiResponse.error(l.error))),
       ((r) =>emit(state.copyWith(response: ApiResponse.completed(r)))));
   }
-  Future<void> refresh() async =>
-     {{folder_name_camelCase}}();
+  Future<void> refresh() async => await {{folder_name_camelCase}}();
   
 }
 {{/isGet}}

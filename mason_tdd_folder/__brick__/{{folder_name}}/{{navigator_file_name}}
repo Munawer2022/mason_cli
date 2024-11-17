@@ -8,7 +8,6 @@ class {{class_name}}Navigator {
   {{class_name}}Navigator(this.navigator);
   @override
   late BuildContext context;
-
   @override
   AppNavigator navigator;
 }
