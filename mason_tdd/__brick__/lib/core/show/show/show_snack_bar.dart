@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/core/global.dart';
+import '/core/constants/global.dart';
 
 mixin ShowSnackBarSuccess {
   void showSuccessSnackBar(String message) {

@@ -3,7 +3,7 @@ import '/domain/repositories/auth/login/login_base_api_service.dart';
 import '/domain/repositories/network/network_base_api_service.dart';
 import '/domain/failures/auth/login/login_failure.dart';
 import '/data/models/local/local_user_info_store_model.dart';
-import '/core/app_url.dart';
+import '/core/utils/app_url.dart';
 
 class LoginRepository implements LoginBaseApiService {
   final NetworkBaseApiService _networkRepository;

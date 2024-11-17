@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import '/core/global.dart';
+import '/core/constants/global.dart';
 import '/domain/failures/theme/get_theme_failure.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
 import '/data/datasources/theme/theme_data_source.dart';

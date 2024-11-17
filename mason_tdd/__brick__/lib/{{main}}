@@ -7,7 +7,7 @@ import '/config/theme/theme_data.dart';
 import '/injection_container.dart' as di;
 import '/injection_container.dart';
 import '/data/datasources/theme/theme_data_source.dart';
-import '/core/global.dart';
+import '/core/constants/global.dart';
 import '/core/show/checker_navigator_observer.dart';
 import 'package:device_preview/device_preview.dart';
 {{#auth}}

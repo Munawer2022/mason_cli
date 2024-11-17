@@ -1,7 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import '/data/models/{{folder_name}}/{{folder_name}}_success_model.dart';
-import '/core/app_url.dart';
-
+import '/core/utils/app_url.dart';
 import '/domain/repositories/network/network_base_api_service.dart';
 import '/domain/failures/{{folder_name}}/{{folder_name}}_failure.dart';
 import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';

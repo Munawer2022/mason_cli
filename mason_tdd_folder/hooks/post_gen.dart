@@ -194,7 +194,7 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
 //
 
   void appUrl(String content) {
-    File file = File('lib/core/app_url.dart');
+    File file = File('lib/core/utils/app_url.dart');
     String fileContent = file.readAsStringSync();
 
     int runAppIndex = fileContent.indexOf('abstract class AppUrl {');

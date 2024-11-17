@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '/core/global.dart';
+import '/core/constants/global.dart';
 
 mixin ShowMaterialBannerSuccess {
   void showSuccessMaterialBanner(String message) {

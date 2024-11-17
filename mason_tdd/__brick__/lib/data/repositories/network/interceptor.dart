@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:fpdart/fpdart.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:http/http.dart' as http;
-import '/core/app_url.dart';
+import '/core/utils/app_url.dart';
 import '/data/models/local/local_user_info_store_model.dart';
 import '/domain/failures/network/network_failure.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
