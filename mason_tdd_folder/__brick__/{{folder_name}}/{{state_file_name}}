@@ -8,7 +8,7 @@ class {{class_name}}State {
 
   {{class_name}}State({required this.response});
   factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
-      {{class_name}}State(response: ApiResponse.initial({{class_name}}Model.empty()));
+      {{class_name}}State(response: ApiResponse.initial({{class_name}}Model.fromJson({})));
   {{class_name}}State copyWith(
           {ApiResponse<{{class_name}}Model>? response}) =>
       {{class_name}}State(
@@ -28,7 +28,7 @@ class {{class_name}}State {
   {{class_name}}State({required this.success, required this.isLoading, this.error});
   factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
       {{class_name}}State(
-          success: {{class_name}}SuccessModel.empty(),
+          success: {{class_name}}SuccessModel.fromJson({}),
           isLoading: false);
   {{class_name}}State copyWith({
             {{class_name}}SuccessModel? success,
