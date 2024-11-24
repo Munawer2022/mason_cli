@@ -53,7 +53,7 @@ Future<void> {{folder_name_camelCase}}(
   body: body);
     {{folder_name_camelCase}}.fold(
       (l) => emit(state.copyWith(isLoading: false, error: l.error)),
-      ((r) =>emit(state.copyWith(success: r, isLoading: false))));
+      ((r) =>emit(state.copyWith(isLoading: false))));
   }
 }
   {{/isPost}}

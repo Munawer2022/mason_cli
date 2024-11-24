@@ -17,25 +17,20 @@ class {{class_name}}State {
 {{/isGet}}
 
 {{#isPost}}
-import '/data/models/{{folder_name}}/{{folder_name}}_success_model.dart';
 import '{{folder_name}}_initial_params.dart';
 
 class {{class_name}}State {
-  final {{class_name}}SuccessModel success;
   final bool isLoading;
   final String? error;
 
-  {{class_name}}State({required this.success, required this.isLoading, this.error});
+  {{class_name}}State({required this.isLoading, this.error});
   factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
       {{class_name}}State(
-          success: {{class_name}}SuccessModel.fromJson({}),
           isLoading: false);
   {{class_name}}State copyWith({
-            {{class_name}}SuccessModel? success,
           bool? isLoading,
           String? error}) =>
       {{class_name}}State(
-          success: success ?? this.success,
           isLoading: isLoading ?? this.isLoading,
           error: error ?? this.error);
 }
