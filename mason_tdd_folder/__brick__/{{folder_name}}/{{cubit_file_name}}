@@ -50,10 +50,10 @@ class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
    : super({{class_name}}State.initial(initialParams:initialParams));
 
 Future<void> {{folder_name_camelCase}}(
-{required Map<String, dynamic> body}
+{required {{class_name}}Model body}
 ) async {
     emit(state.copyWith(isLoading: true));
-    final {{folder_name_camelCase}} = await networkRepository.post<Map<String, dynamic>>(url:AppUrl.{{folder_name_camelCase}},body:body);
+    final {{folder_name_camelCase}} = await networkRepository.post<Map<String, dynamic>>(url:AppUrl.{{folder_name_camelCase}},body:body.toJson());
     {{folder_name_camelCase}}.fold(
       (l) => emit(state.copyWith(isLoading: false, error: l.error)),
       ((r) =>emit(state.copyWith(isLoading: false))));

@@ -47,7 +47,7 @@ class _LoginState extends State<LoginPage> {
                     : ElevatedButton(
                         style: Theme.of(context).elevatedButtonTheme.style,
                         onPressed: () => cubit.postLogin(
-                            body: LoginModel(email: '', password: '').toJson()),
+                            body: LoginModel(email: '', password: '')),
                         child: const Text('Post API')),
                 Text(state.success.token,
                     style: Theme.of(context).textTheme.titleMedium)

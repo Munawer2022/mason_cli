@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '/data/models/{{#auth}}auth{{/auth}}/login/login_model.dart';
 import '/features/{{folder_name}}/{{folder_name}}_initial_params.dart';
 import 'login_initial_params.dart';
 import 'login_navigator.dart';
@@ -13,9 +14,9 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this.initialParams, this.useCases, this.navigator)
       : super(LoginState.initial(initialParams: initialParams));
 
-  void postLogin({required Map<String, dynamic> body}) {
+  void postLogin({required LoginModel body}) {
     emit(state.copyWith(isLoading: true));
-    useCases.execute(body: body).then((value) => value
+    useCases.execute(body: body.toJson()).then((value) => value
             .fold((l) => emit(state.copyWith(error: l.error, isLoading: false)),
                 ((r) {
           emit(state.copyWith(success: r, isLoading: false));
