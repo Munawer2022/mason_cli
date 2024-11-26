@@ -19,7 +19,7 @@ class LoginCubit extends Cubit<LoginState> {
     useCases.execute(body: body.toJson()).then((value) => value
             .fold((l) => emit(state.copyWith(error: l.error, isLoading: false)),
                 ((r) {
-          emit(state.copyWith(success: r, isLoading: false));
+          emit(state.copyWith(isLoading: false));
           return navigator.open{{class_name}}({{class_name}}InitialParams());
         })));
   }

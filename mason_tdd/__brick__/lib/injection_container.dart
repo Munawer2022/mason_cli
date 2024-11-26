@@ -23,8 +23,6 @@ import 'features/splash/splash_navigator.dart';
 */
 import 'data/datasources/auth/login_data_sources.dart';
 import 'domain/usecases/auth/login/login_use_cases.dart';
-import 'domain/repositories/auth/login/login_base_api_service.dart';
-import 'data/repositories/auth/login/login_repository.dart';
 import 'features/auth/login/login_navigator.dart';
 import 'features/auth/login/login_cubit.dart';
 import 'features/auth/login/login_initial_params.dart';
@@ -77,7 +75,6 @@ Future<void> init() async {
 /*
 ************************ login ************************
 */
-  getIt.registerSingleton<LoginBaseApiService>(LoginRepository(getIt()));
   getIt.registerSingleton<CheckForExistingUserUseCase>(
       CheckForExistingUserUseCase(getIt(), getIt()));
   getIt.registerSingleton<LoginUseCases>(
