@@ -69,7 +69,7 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
   getIt.registerFactoryParam<${name}Cubit, ${name}InitialParams, dynamic>(
       (params, _) => ${name}Cubit(params, getIt()
       ${isGet ? ', getIt()' : ''}
-      ${isPost ? ', getIt()' : ''}
+      ${isPost ? ', getIt(), getIt()' : ''}
       )
       ${isGet ? '..${name.camelCase}()' : ''}
       );

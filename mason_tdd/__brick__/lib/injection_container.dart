@@ -81,7 +81,7 @@ Future<void> init() async {
       LoginUseCases(getIt(), getIt(), getIt()));
   getIt.registerSingleton<LoginNavigator>(LoginNavigator(getIt()));
   getIt.registerFactoryParam<LoginCubit, LoginInitialParams, dynamic>(
-      (params, _) => LoginCubit(params, getIt(), getIt()));
+      (params, _) => LoginCubit(params, getIt(), getIt(), getIt()));
       {{/auth}}
 /*
 ************************ {{class_name}} ************************
@@ -93,6 +93,7 @@ Future<void> init() async {
        , getIt()
       {{/isGet}}
       {{#isPost}}
+       , getIt()
        , getIt()
       {{/isPost}}
       )

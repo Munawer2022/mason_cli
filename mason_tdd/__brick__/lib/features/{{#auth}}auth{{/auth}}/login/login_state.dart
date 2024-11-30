@@ -2,11 +2,10 @@ import 'login_initial_params.dart';
 
 class LoginState {
   final bool isLoading;
-  final String? error;
 
-  LoginState({required this.isLoading, this.error});
+  LoginState({required this.isLoading});
   factory LoginState.initial({required LoginInitialParams initialParams}) =>
       LoginState(isLoading: false);
-  LoginState copyWith({bool? isLoading, String? error}) => LoginState(
-      isLoading: isLoading ?? this.isLoading, error: error ?? this.error);
+  LoginState copyWith({bool? isLoading}) =>
+      LoginState(isLoading: isLoading ?? this.isLoading);
 }
