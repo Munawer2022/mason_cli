@@ -15,7 +15,7 @@ final {{class_name}}Cubit cubit;
 
 const {{class_name}}Page({
 super.key,
-required this.cubit,
+required this.cubit
 });
 
 @override

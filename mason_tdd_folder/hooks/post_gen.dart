@@ -57,8 +57,6 @@ Future<void> run(HookContext context) async {
 import 'features/${name.snakeCase}/${name.snakeCase}_cubit.dart';
 import 'features/${name.snakeCase}/${name.snakeCase}_navigator.dart';
 import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
-import 'data/repositories/${name.snakeCase}/${name.snakeCase}_repository.dart';
-import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service.dart';
 ''';
   addImportAtTop(importStatement, 'lib/injection_container.dart');
 
@@ -67,12 +65,11 @@ import 'domain/repositories/${name.snakeCase}/${name.snakeCase}_base_api_service
 /*
 ************************ ${name} ************************
 */
-  getIt.registerSingleton<${name}BaseApiService>(${name}Repository(getIt()));
   getIt.registerSingleton<${name}Navigator>(${name}Navigator(getIt()));
   getIt.registerFactoryParam<${name}Cubit, ${name}InitialParams, dynamic>(
       (params, _) => ${name}Cubit(params, getIt()
       ${isGet ? ', getIt()' : ''}
-      ${isPost ? ', getIt()' : ''}
+      ${isPost ? ', getIt(), getIt()' : ''}
       )
       ${isGet ? '..${name.camelCase}()' : ''}
       );

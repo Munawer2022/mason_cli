@@ -3,25 +3,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '{{initial_params_file_name}}';
 import '{{navigator_file_name}}';
 import '{{state_file_name}}';
-import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
+import '/data/models/{{folder_name}}/{{folder_name}}_model.dart';
+import '/domain/repositories/network/network_base_api_service.dart';
 import '/config/response/api_response.dart';
+import '/core/utils/app_url.dart';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
-  final {{class_name}}BaseApiService baseApiServices;
+  final NetworkBaseApiService networkRepository;
   final {{class_name}}Navigator navigator;
   final {{class_name}}InitialParams initialParams;
 {{class_name}}Cubit(
   this.initialParams,
-      this.baseApiServices,
+      this.networkRepository,
       this.navigator)
    : super({{class_name}}State.initial(initialParams:initialParams));
 
 Future<void> {{folder_name_camelCase}}() async {
     emit(state.copyWith(response: ApiResponse.loading()));
-    final {{folder_name_camelCase}} = await baseApiServices.{{folder_name_camelCase}}();
+    final {{folder_name_camelCase}} = await networkRepository.get<Map<String, dynamic>>(url: AppUrl.{{folder_name_camelCase}});
     {{folder_name_camelCase}}.fold(
       (l) => emit(state.copyWith(response: ApiResponse.error(l.error))),
-      ((r) =>emit(state.copyWith(response: ApiResponse.completed(r)))));
+      ((r) =>emit(state.copyWith(response: ApiResponse.completed({{class_name}}Model.fromJson(r))))));
   }
   Future<void> refresh() async => await {{folder_name_camelCase}}();
   
@@ -33,26 +35,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '{{initial_params_file_name}}';
 import '{{navigator_file_name}}';
 import '{{state_file_name}}';
-import '/domain/repositories/{{folder_name}}/{{folder_name}}_base_api_service.dart';
+import '/data/models/{{folder_name}}/{{folder_name}}_model.dart';
+import '/domain/repositories/network/network_base_api_service.dart';
+import '/core/utils/app_url.dart';
+import '/core/show/show/show.dart';
 
 class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
-  final {{class_name}}BaseApiService baseApiServices;
+  final NetworkBaseApiService networkRepository;
   final {{class_name}}Navigator navigator;
   final {{class_name}}InitialParams initialParams;
+  final Show show;
 {{class_name}}Cubit(
   this.initialParams,
-      this.baseApiServices,
-      this.navigator)
+      this.networkRepository,
+      this.navigator, this.show)
    : super({{class_name}}State.initial(initialParams:initialParams));
 
 Future<void> {{folder_name_camelCase}}(
-{required Map<String, dynamic> body}
+{required {{class_name}}Model body}
 ) async {
     emit(state.copyWith(isLoading: true));
-    final {{folder_name_camelCase}} = await baseApiServices.{{folder_name_camelCase}}(
-  body: body);
+    final {{folder_name_camelCase}} = await networkRepository.post<Map<String, dynamic>>(url:AppUrl.{{folder_name_camelCase}},body:body.toJson());
     {{folder_name_camelCase}}.fold(
-      (l) => emit(state.copyWith(isLoading: false, error: l.error)),
+      (l) { 
+        emit(state.copyWith(isLoading: false));
+            return show.showErrorSnackBar(l.error);
+      },
       ((r) =>emit(state.copyWith(isLoading: false))));
   }
 }

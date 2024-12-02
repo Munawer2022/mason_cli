@@ -21,18 +21,15 @@ import '{{folder_name}}_initial_params.dart';
 
 class {{class_name}}State {
   final bool isLoading;
-  final String? error;
 
-  {{class_name}}State({required this.isLoading, this.error});
+  {{class_name}}State({required this.isLoading});
   factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
       {{class_name}}State(
           isLoading: false);
   {{class_name}}State copyWith({
-          bool? isLoading,
-          String? error}) =>
+          bool? isLoading}) =>
       {{class_name}}State(
-          isLoading: isLoading ?? this.isLoading,
-          error: error ?? this.error);
+          isLoading: isLoading ?? this.isLoading);
 }
 {{/isPost}}
  {{#isNoThing}}

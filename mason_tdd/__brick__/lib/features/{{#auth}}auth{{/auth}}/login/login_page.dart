@@ -7,10 +7,7 @@ import '/data/models/auth/login/login_model.dart';
 class LoginPage extends StatefulWidget {
   final LoginCubit cubit;
 
-  const LoginPage({
-    Key? key,
-    required this.cubit,
-  }) : super(key: key);
+  const LoginPage({Key? key, required this.cubit}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginState();
@@ -27,35 +24,6 @@ class _LoginState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: BlocBuilder(
-          bloc: cubit,
-          builder: (context, state) {
-            state as LoginState;
-            if (state.error != null) {
-              return Text(
-                state.error!,
-                textAlign: TextAlign.center,
-              );
-            }
-
-            return Column(
-              children: [
-                state.isLoading
-                    ? const CircularProgressIndicator()
-                    : ElevatedButton(
-                        style: Theme.of(context).elevatedButtonTheme.style,
-                        onPressed: () => cubit.postLogin(
-                            body: LoginModel(email: '', password: '').toJson()),
-                        child: const Text('Post API')),
-                Text(state.success.token,
-                    style: Theme.of(context).textTheme.titleMedium)
-              ],
-            );
-          },
-        ),
-      ),
-    );
+    return Scaffold(body: SizedBox());
   }
 }
