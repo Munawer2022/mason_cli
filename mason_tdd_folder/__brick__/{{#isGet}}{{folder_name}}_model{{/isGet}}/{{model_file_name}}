@@ -1,0 +1,6 @@
+
+class {{class_name}}Model {
+  {{class_name}}Model();
+  factory {{class_name}}Model.fromJson(Map<String, dynamic> json) => {{class_name}}Model();
+
+}

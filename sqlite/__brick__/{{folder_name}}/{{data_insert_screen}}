@@ -1,0 +1,54 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '{{db_file_name}}';
+
+class {{class_name}}DataInsertScreen extends StatefulWidget {
+  {{class_name}}DataInsertScreen({super.key});
+
+  @override
+  State<{{class_name}}DataInsertScreen> createState() => _{{class_name}}DataInsertScreenState();
+}
+
+class _{{class_name}}DataInsertScreenState extends State<{{class_name}}DataInsertScreen> {
+  TextEditingController textEditingController = TextEditingController();
+
+  {{class_name}}DB instance = {{class_name}}DB();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: textEditingController,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                   child: Text('Elevated Button'),
+               onPressed:   () {
+            //        Navigator.of(context)
+            // .push(MaterialPageRoute(builder: (context) => const NewScreen())),
+                    instance
+                        ?.insert({{class_name}}Model(name: textEditingController.text))
+                        .then((value) => print('save'))
+                        .onError(
+                            (error, stackTrace) => print('not save $error'));
+                    // print(loadData());
+                  },
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,46 @@
+{{#isGet}}
+import '/data/models/{{folder_name}}/{{folder_name}}_model.dart';
+import '{{folder_name}}_initial_params.dart';
+import '/config/response/api_response.dart';
+
+class {{class_name}}State {
+  final ApiResponse<{{class_name}}Model> response;
+
+  {{class_name}}State({required this.response});
+  factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
+      {{class_name}}State(response: ApiResponse.initial({{class_name}}Model.fromJson({})));
+  {{class_name}}State copyWith(
+          {ApiResponse<{{class_name}}Model>? response}) =>
+      {{class_name}}State(
+          response: response ?? this.response);
+}
+{{/isGet}}
+
+{{#isPost}}
+import '{{folder_name}}_initial_params.dart';
+
+class {{class_name}}State {
+  final bool isLoading;
+
+  {{class_name}}State({required this.isLoading});
+  factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
+      {{class_name}}State(
+          isLoading: false);
+  {{class_name}}State copyWith({
+          bool? isLoading}) =>
+      {{class_name}}State(
+          isLoading: isLoading ?? this.isLoading);
+}
+{{/isPost}}
+ {{#isNoThing}}
+import '{{folder_name}}_initial_params.dart';
+
+class {{class_name}}State {
+
+  {{class_name}}State();
+  factory {{class_name}}State.initial({required {{class_name}}InitialParams initialParams}) =>
+      {{class_name}}State();
+  {{class_name}}State copyWith() =>
+      {{class_name}}State();
+}
+{{/isNoThing}}

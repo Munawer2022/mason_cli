@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '{{cubit_file_name}}';
+import '{{state_file_name}}';
+import '/core/constants/status_switcher.dart';
+{{#isGet}}
+import '/data/models/{{folder_name}}/{{folder_name}}_model.dart';
+{{/isGet}}
+{{#isPost}}
+import '/data/models/{{folder_name}}/{{folder_name}}_model.dart';
+{{/isPost}}
+
+class {{class_name}}Page extends StatefulWidget {
+final {{class_name}}Cubit cubit;
+
+const {{class_name}}Page({
+super.key,
+required this.cubit
+});
+
+@override
+State<{{class_name}}Page> createState() => _{{class_name}}State();
+}
+
+class _{{class_name}}State extends State<{{class_name}}Page> {
+
+{{class_name}}Cubit get cubit => widget.cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit.navigator.context = context;
+  }
+
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+  {{#isGet}}
+      body: RefreshIndicator.adaptive(
+        onRefresh: cubit.refresh,
+        child: BlocBuilder(
+          bloc: cubit,
+          builder: (context, state) {
+            state as {{class_name}}State;
+            return StatusSwitcher<{{class_name}}Model>(
+                response: state.response,
+                onCompleted: (context, data) => const SizedBox());
+          }
+        )
+      )
+    {{/isGet}}
+  {{#isPost}}
+      body: const SizedBox()
+  {{/isPost}}  
+    );
+  }
+}

@@ -1,0 +1,20 @@
+class {{class_name}}Model {
+  final int? id;
+  final String name;
+
+  {{class_name}}Model({
+    this.id,
+    required this.name,
+  });
+
+  {{class_name}}Model.fromMap(Map<String, dynamic> json)
+      : id = json['id'],
+        name = json['name'];
+
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
+}

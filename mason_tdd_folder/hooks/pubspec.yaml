@@ -1,0 +1,8 @@
+name: mason_tdd_folder_hooks
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  # mason: ">=0.1.0-dev.60 <0.1.0"
+  mason: ^0.1.0
