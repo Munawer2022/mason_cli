@@ -40,9 +40,8 @@ abstract class CustomAppBar {
                       ?.resolve({}),
                 ),
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  Icons.arrow_back_ios_new,
+                icon: Image.asset(
+                  AppImages.arrowBack,
                   color: context.theme.iconTheme.color,
                   height: 14.h,
                   width: 14.w,
@@ -53,6 +52,8 @@ abstract class CustomAppBar {
         titleWidget ??
         Text(
           title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: context.textTheme.bodyLarge?.copyWith(
             fontSize: 24.sp,
             fontWeight: FontWeight.w600,
