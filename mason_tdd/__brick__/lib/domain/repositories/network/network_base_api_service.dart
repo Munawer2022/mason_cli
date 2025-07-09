@@ -12,7 +12,7 @@ abstract class NetworkBaseApiService {
     required String url,
     required Map<String, dynamic> body,
     Map<String, String>? headers,
-    Map<String, dynamic>? queryParams,
+    // Map<String, dynamic>? queryParams,
     // bool isFormData = false
   });
 
@@ -26,7 +26,7 @@ abstract class NetworkBaseApiService {
     required String url,
     Map<String, dynamic>? body,
     Map<String, String>? headers,
-    Map<String, dynamic>? queryParams,
+    // Map<String, dynamic>? queryParams,
     // Map<String, File>? files
     // bool isFormData = false
   });

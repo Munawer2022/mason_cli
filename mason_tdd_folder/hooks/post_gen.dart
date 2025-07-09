@@ -1,15 +1,34 @@
 import 'dart:io';
+
 import 'package:mason/mason.dart';
-import 'package:path/path.dart' as path;
 
 Future<void> run(HookContext context) async {
-  // final progress = context.logger.progress('Installing packages');
+  final progress = context.logger.progress('🧱 Setting up feature folder');
+
+  // Display detected versions
+  final flutterVersion = context.vars['flutter_version'] ?? 'Unknown';
+  final dartVersion = context.vars['dart_version'] ?? 'Unknown';
+  final javaVersion = context.vars['java_version'] ?? 'Unknown';
+
+  context.logger.info('📋 Detected Versions:');
+  context.logger.info('   Flutter: $flutterVersion');
+  context.logger.info('   Dart: $dartVersion');
+  context.logger.info('   Java: $javaVersion');
+
   final name = (context.vars['name'] as String? ?? "").trim().pascalCase;
   final isPost = context.vars['isPost'] as bool? ?? false;
   final isGet = context.vars['isGet'] as bool? ?? false;
 
+  context.logger.info('🎯 Generating feature: $name');
+
   void appendAtEndOfProvidersList(String content) {
     File file = File('lib/injection_container.dart');
+    if (!file.existsSync()) {
+      context.logger.warn(
+          '⚠️  injection_container.dart not found. Skipping dependency injection setup.');
+      return;
+    }
+
     String fileContent = file.readAsStringSync();
 
     int runAppIndex = fileContent.indexOf('Future<void> init() async {');
@@ -24,17 +43,24 @@ Future<void> run(HookContext context) async {
         String updatedContent = '$start$content\n$end';
 
         file.writeAsStringSync(updatedContent);
-        print('Content appended at the end of providers list.');
+        context.logger.success('✅ Added $name to dependency injection');
       } else {
-        print('End of providers list (]) not found after runApp');
+        context.logger.warn('⚠️  Could not find end of init() function');
       }
     } else {
-      print('Future<void> init() async { not found in the file.');
+      context.logger.warn(
+          '⚠️  Could not find init() function in injection_container.dart');
     }
   }
 
   void addImportAtTop(String importStatement, String whereToImport) {
     File file = File(whereToImport);
+    if (!file.existsSync()) {
+      context.logger
+          .warn('⚠️  $whereToImport not found. Skipping import setup.');
+      return;
+    }
+
     String fileContent = file.readAsStringSync();
 
     int importBlockIndex = fileContent.indexOf('import ');
@@ -43,9 +69,9 @@ Future<void> run(HookContext context) async {
       String updatedContent = '$importStatement\n$fileContent';
 
       file.writeAsStringSync(updatedContent);
-      print('Import statement added at the top of the file.');
+      context.logger.success('✅ Added imports for $name');
     } else {
-      print('Failed to find the import block.');
+      context.logger.warn('⚠️  Could not find import block in $whereToImport');
     }
   }
 
@@ -76,26 +102,6 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
 ''';
   appendAtEndOfProvidersList(providerStatement);
 
-//
-
-  // void moveFileToDirectory(String sourcePath, String destinationDirectory) {
-  //   File sourceFile = File(sourcePath);
-
-  //   if (sourceFile.existsSync()) {
-  //     Directory(destinationDirectory).createSync(recursive: true);
-  //     String destinationPath =
-  //         '$destinationDirectory/${sourceFile.path.split('/').last}';
-
-  //     sourceFile.copy(destinationPath).then((_) {
-  //       sourceFile
-  //           .delete()
-  //           .then((_) => print('File moved successfully.'))
-  //           .catchError((error) => print('Error deleting source file: $error'));
-  //     }).catchError((error) => print('Error copying file: $error'));
-  //   } else {
-  //     print('Source file does not exist.');
-  //   }
-  // }
   void moveFileToDirectory(String sourcePath, String destinationDirectory) {
     Directory sourceDir = Directory(sourcePath);
 
@@ -105,28 +111,29 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
         destinationDir.createSync(recursive: true);
       }
 
-      // Get the last segment of the source path and remove "_text" if it exists.
       String sourceName = sourceDir.path.split(Platform.pathSeparator).last;
-      String cleanedSourceName =
-          sourceName.split('_').first; // Removes the text after the first '_'
+      String cleanedSourceName = sourceName.split('_').first;
 
       String destinationPath = '${destinationDir.path}/$cleanedSourceName';
 
       try {
         sourceDir.renameSync(destinationPath);
-        print('Folder moved successfully.');
+        context.logger.success('✅ Moved $sourceName to $destinationDirectory');
       } catch (e) {
-        print('Error moving folder: $e');
+        context.logger.warn('⚠️  Error moving $sourceName: $e');
       }
     } else {
-      print('Source folder does not exist.');
+      context.logger.warn('⚠️  Source folder $sourcePath does not exist');
     }
   }
+
+  // Move feature files to their proper locations
+  context.logger.info('📁 Organizing feature files...');
 
   String sourcePath = name.snakeCase;
   String destinationDirectory = 'lib/features';
   moveFileToDirectory(sourcePath, destinationDirectory);
-  //
+
   String sourcePath4 = '${name.snakeCase}_entitie';
   String destinationDirector4 = 'lib/domain/entities';
   moveFileToDirectory(sourcePath4, destinationDirector4);
@@ -134,11 +141,11 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
   String sourcePath2 = '${name.snakeCase}_failure';
   String destinationDirector2 = 'lib/domain/failures';
   moveFileToDirectory(sourcePath2, destinationDirector2);
-  //
+
   String sourcePath3 = '${name.snakeCase}_base_api_service';
   String destinationDirector3 = 'lib/domain/repositories';
   moveFileToDirectory(sourcePath3, destinationDirector3);
-  //
+
   String sourcePath6 = '${name.snakeCase}_usecase';
   String destinationDirector6 = 'lib/domain/usecases';
   moveFileToDirectory(sourcePath6, destinationDirector6);
@@ -146,20 +153,22 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
   String sourcePath5 = '${name.snakeCase}_repositorie';
   String destinationDirector5 = 'lib/data/repositories';
   moveFileToDirectory(sourcePath5, destinationDirector5);
-  //
+
   String sourcePath7 = '${name.snakeCase}_datasource';
   String destinationDirector7 = 'lib/data/datasources';
   moveFileToDirectory(sourcePath7, destinationDirector7);
-  //
+
   String sourcePath8 = '${name.snakeCase}_model';
   String destinationDirector8 = 'lib/data/models';
   moveFileToDirectory(sourcePath8, destinationDirector8);
 
-  //test
+  // Move test files
+  context.logger.info('🧪 Organizing test files...');
+
   String testSource = "${name.snakeCase}_test";
   String testDestinationDirectory = 'test/features';
   moveFileToDirectory(testSource, testDestinationDirectory);
-  //
+
   String testSource1 = '${name.snakeCase}_entitie_test';
   String testDestinationDirectory4 = 'test/domain/entities';
   moveFileToDirectory(testSource1, testDestinationDirectory4);
@@ -167,11 +176,11 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
   String testSource2 = '${name.snakeCase}_failure_test';
   String testDestinationDirectory2 = 'test/domain/failures';
   moveFileToDirectory(testSource2, testDestinationDirectory2);
-  //
+
   String testSource3 = '${name.snakeCase}_base_api_service_test';
   String testDestinationDirectory3 = 'test/domain/repositories';
   moveFileToDirectory(testSource3, testDestinationDirectory3);
-  //
+
   String testSource6 = '${name.snakeCase}_usecase_test';
   String testDestinationDirectory6 = 'test/domain/usecases';
   moveFileToDirectory(testSource6, testDestinationDirectory6);
@@ -179,19 +188,22 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
   String testSource5 = '${name.snakeCase}_repositorie_test';
   String testDestinationDirectory5 = 'test/data/repositories';
   moveFileToDirectory(testSource5, testDestinationDirectory5);
-  //
+
   String testSource7 = '${name.snakeCase}_datasource_test';
   String testDestinationDirectory7 = 'test/data/datasources';
   moveFileToDirectory(testSource7, testDestinationDirectory7);
-  //
+
   String testSource8 = '${name.snakeCase}_model_test';
   String testDestinationDirectory8 = 'test/data/models';
   moveFileToDirectory(testSource8, testDestinationDirectory8);
 
-//
-
   void appUrl(String content) {
     File file = File('lib/core/utils/app_url.dart');
+    if (!file.existsSync()) {
+      context.logger.warn('⚠️  app_url.dart not found. Skipping URL setup.');
+      return;
+    }
+
     String fileContent = file.readAsStringSync();
 
     int runAppIndex = fileContent.indexOf('abstract class AppUrl {');
@@ -206,88 +218,50 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
         String updatedContent = '$start$content\n$end';
 
         file.writeAsStringSync(updatedContent);
-        print('Content appended at the end of providers list.');
+        context.logger.success('✅ Added $name URLs to app_url.dart');
       } else {
-        print('End of providers list (}) not found after runApp');
+        context.logger.warn('⚠️  Could not find end of AppUrl class');
       }
     } else {
-      print('runApp(MultiProvider(providers: { not found in the file.');
+      context.logger.warn('⚠️  Could not find AppUrl class in app_url.dart');
     }
   }
 
-  String nameUrl;
-  if (isPost || isGet) {
-    nameUrl = "static var ${name.camelCase} = '\$_baseUrl/${name.camelCase}';";
-  } else {
-    nameUrl = '';
+  // Add API URLs if needed
+  if (isGet || isPost) {
+    context.logger.info('🌐 Setting up API URLs...');
+    String urlContent = '''
+  // ${name} URLs
+  static const String ${name.camelCase}Url = '/${name.snakeCase}';
+''';
+    appUrl(urlContent);
   }
 
-  appUrl(nameUrl);
+  // Display completion message
+  context.logger.info('');
+  context.logger.info('🎉 Feature "$name" generated successfully!');
+  context.logger.info('');
+  context.logger.info('📋 Generated files:');
+  context.logger.info('   📂 lib/features/${name.snakeCase}/');
+  context.logger.info('   📂 lib/domain/entities/${name.snakeCase}/');
+  context.logger.info('   📂 lib/domain/failures/${name.snakeCase}/');
+  context.logger.info('   📂 lib/domain/repositories/${name.snakeCase}/');
+  context.logger.info('   📂 lib/domain/usecases/${name.snakeCase}/');
+  context.logger.info('   📂 lib/data/repositories/${name.snakeCase}/');
+  context.logger.info('   📂 lib/data/datasources/${name.snakeCase}/');
+  context.logger.info('   📂 lib/data/models/${name.snakeCase}/');
+  context.logger.info('   📂 test/features/${name.snakeCase}/');
+  context.logger.info('');
+  context.logger.info('🔧 Next steps:');
+  context.logger.info('   1. Review the generated files');
+  context.logger.info('   2. Implement your business logic');
+  context.logger.info('   3. Add your API endpoints');
+  context.logger.info('   4. Write your tests');
+  context.logger.info('   5. Integrate with your navigation');
+  context.logger.info('');
+  context.logger.info('🧪 To test your feature:');
+  context.logger.info('   flutter test test/features/${name.snakeCase}/');
+  context.logger.info('');
 
-//
-
-  // void routeName(String content) {
-  //   File file = File('lib/utils/routes/routes_name.dart');
-  //   String fileContent = file.readAsStringSync();
-
-  //   int runAppIndex = fileContent.indexOf('class RoutesName {');
-
-  //   if (runAppIndex != -1) {
-  //     int endProvidersIndex = fileContent.indexOf('}', runAppIndex);
-
-  //     if (endProvidersIndex != -1) {
-  //       String start = fileContent.substring(0, endProvidersIndex);
-  //       String end = fileContent.substring(endProvidersIndex);
-
-  //       String updatedContent = '$start$content\n$end';
-
-  //       file.writeAsStringSync(updatedContent);
-  //       print('Content appended at the end of providers list.');
-  //     } else {
-  //       print('End of providers list (}) not found after runApp');
-  //     }
-  //   } else {
-  //     print('class RoutesName { not found in the file.');
-  //   }
-  // }
-
-  // String routeText =
-  //     "static const String ${name.snakeCase} = '${name.snakeCase}';";
-
-  // routeName(routeText);
-
-//
-
-  // void addRouteCase(String caseContent) {
-  //   File file = File('lib/utils/routes/routes.dart');
-  //   String fileContent = file.readAsStringSync();
-
-  //   int switchIndex = fileContent.indexOf('switch (settings.name) {');
-
-  //   if (switchIndex != -1) {
-  //     int defaultIndex = fileContent.indexOf('default:', switchIndex);
-
-  //     if (defaultIndex != -1) {
-  //       String start = fileContent.substring(0, defaultIndex);
-  //       String end = fileContent.substring(defaultIndex);
-
-  //       String updatedContent = '$start\n$caseContent\n$end';
-
-  //       file.writeAsStringSync(updatedContent);
-  //       print('Case statement added successfully.');
-  //     } else {
-  //       print('Default case not found after the switch statement.');
-  //     }
-  //   } else {
-  //     print('Switch statement not found in the file.');
-  //   }
-  // }
-
-  // String route =
-  //     "case RoutesName.${name.snakeCase}:\nreturn pageRoute.getPageRoute(const ${name}View());";
-
-  // addRouteCase(route);
-  // String import = "import '/view/${name.snakeCase}_view.dart';";
-
-  // addImportAtTop(import, 'lib/utils/routes/routes.dart');
+  progress.complete();
 }

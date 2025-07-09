@@ -1,6 +1,13 @@
+import 'dart:io';
+
 import 'package:mason/mason.dart';
 
 void run(HookContext context) {
+  // Detect Flutter, Dart, and Java versions
+  final flutterVersion = _getFlutterVersion();
+  final dartVersion = _getDartVersion();
+  final javaVersion = _getJavaVersion();
+
   final stateManagement = context.vars['stateManagement'];
   context.vars['isBloc'] = stateManagement == 'Bloc';
   context.vars['isFlutterBloc'] = stateManagement == 'flutter_bloc';
@@ -36,6 +43,9 @@ void run(HookContext context) {
 
   context.vars = {
     ...context.vars,
+    "flutter_version": flutterVersion,
+    "dart_version": dartVersion,
+    "java_version": javaVersion,
     "page_file_name": pageFileName,
     "class_name": stem,
     "navigator_file_name": navigatorFileName,
@@ -56,4 +66,57 @@ void run(HookContext context) {
     "main": main,
     "use_cases_failure": useCasesfailureName,
   };
+}
+
+String _getFlutterVersion() {
+  try {
+    final result = Process.runSync('flutter', ['--version'], runInShell: true);
+    if (result.exitCode == 0) {
+      final output = result.stdout.toString();
+      final lines = output.split('\n');
+      for (final line in lines) {
+        if (line.contains('Flutter')) {
+          final match = RegExp(r'Flutter\s+(\d+\.\d+\.\d+)').firstMatch(line);
+          if (match != null) {
+            return match.group(1) ?? 'Unknown';
+          }
+        }
+      }
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+  return 'Unknown';
+}
+
+String _getDartVersion() {
+  try {
+    final result = Process.runSync('dart', ['--version'], runInShell: true);
+    if (result.exitCode == 0) {
+      final output = result.stdout.toString();
+      final match = RegExp(r'Dart\s+(\d+\.\d+\.\d+)').firstMatch(output);
+      if (match != null) {
+        return match.group(1) ?? 'Unknown';
+      }
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+  return 'Unknown';
+}
+
+String _getJavaVersion() {
+  try {
+    final result = Process.runSync('java', ['-version'], runInShell: true);
+    if (result.exitCode == 0) {
+      final output = result.stderr.toString(); // Java version goes to stderr
+      final match = RegExp(r'"(\d+\.\d+\.\d+[^"]*)"').firstMatch(output);
+      if (match != null) {
+        return match.group(1) ?? 'Unknown';
+      }
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+  return 'Unknown';
 }

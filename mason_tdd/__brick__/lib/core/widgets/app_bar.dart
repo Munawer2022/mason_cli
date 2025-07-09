@@ -41,7 +41,7 @@ abstract class CustomAppBar {
                 ),
                 onPressed: () => Navigator.pop(context),
                 icon: Image.asset(
-                  AppImages.arrowBack,
+                  '',
                   color: context.theme.iconTheme.color,
                   height: 14.h,
                   width: 14.w,
