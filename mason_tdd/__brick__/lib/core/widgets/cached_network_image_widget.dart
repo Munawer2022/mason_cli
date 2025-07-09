@@ -19,6 +19,9 @@ class AppCachedNetworkImage extends StatelessWidget {
   final Duration? fadeOutDuration;
   final bool useOldImageOnUrlChange;
   final bool cacheManager;
+  final bool showUserInitials;
+  final String? userName;
+  final Color? primaryColor;
 
   const AppCachedNetworkImage({
     super.key,
@@ -38,10 +41,21 @@ class AppCachedNetworkImage extends StatelessWidget {
     this.fadeOutDuration,
     this.useOldImageOnUrlChange = false,
     this.cacheManager = true,
+    this.showUserInitials = false,
+    this.userName,
+    this.primaryColor,
   });
+
+  String _getUserInitial(String? name) {
+    if (name == null || name.trim().isEmpty) return '?';
+    return name.trim().substring(0, 1).toUpperCase();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final effectivePrimaryColor = primaryColor ?? theme.colorScheme.primary;
+
     return ClipRRect(
       borderRadius: borderRadius ?? BorderRadius.zero,
       child: CachedNetworkImage(
@@ -76,7 +90,7 @@ class AppCachedNetworkImage extends StatelessWidget {
                   child: CircularProgressIndicator.adaptive(
                     strokeWidth: 2.w,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).colorScheme.primary,
+                      effectivePrimaryColor,
                     ),
                   ),
                 ),
@@ -84,16 +98,35 @@ class AppCachedNetworkImage extends StatelessWidget {
             ),
         errorWidget: (context, url, error) =>
             errorWidget ??
-            Container(
-              color: backgroundColor ?? Colors.grey[200],
-              child: Center(
-                child: Icon(
-                  Icons.error_outline,
-                  color: Colors.grey[400],
-                  size: 24.w,
-                ),
-              ),
-            ),
+            (showUserInitials
+                ? Container(
+                    width: width,
+                    height: height,
+                    decoration: BoxDecoration(
+                      color: effectivePrimaryColor.withOpacity(0.2),
+                      borderRadius: borderRadius ?? BorderRadius.zero,
+                    ),
+                    child: Center(
+                      child: Text(
+                        _getUserInitial(userName),
+                        style: TextStyle(
+                          color: effectivePrimaryColor,
+                          fontSize: (width != null ? width! / 2 : 24).sp,
+                          // fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(
+                    color: backgroundColor ?? Colors.grey[200],
+                    child: Center(
+                      child: Icon(
+                        Icons.error_outline,
+                        color: Colors.grey[400],
+                        size: 24.w,
+                      ),
+                    ),
+                  )),
       ),
     );
   }
