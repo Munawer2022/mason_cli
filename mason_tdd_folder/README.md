@@ -258,7 +258,6 @@ dependencies:
   flutter_bloc: ^8.1.0
   get_it: ^7.6.0
   fpdart: ^1.1.0
-  equatable: ^2.0.5
   http: ^1.1.0
 ```
 
@@ -282,7 +281,7 @@ dev_dependencies:
 ### 2. State Management
 
 - **Single Responsibility**: Each state represents one UI state
-- **Immutable States**: Use Equatable for state comparison
+- **Immutable States**: state
 - **Error Handling**: Include error states in your state classes
 
 ### 3. Repository Pattern

@@ -57,7 +57,7 @@ Future<void> run(HookContext context) async {
     'http',
     'http_interceptor',
     'shared_preferences',
-    'equatable',
+    // 'equatable',
     'fpdart',
     'shimmer',
     'connectivity_plus',

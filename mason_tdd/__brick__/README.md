@@ -125,7 +125,7 @@ test/
 
 - **Cubit**: Simple state management for basic features
 - **Bloc**: Complex state management with events
-- **State**: Immutable state objects with Equatable
+- **State**: Immutable state
 
 ### Example Usage
 
@@ -208,7 +208,7 @@ getIt.registerFactory<{{class_name}}Cubit>(() => {{class_name}}Cubit(getIt()));
 ### Failure Pattern
 
 ```dart
-abstract class Failure extends Equatable {
+abstract class Failure {
   final String message;
   const Failure(this.message);
 
@@ -249,7 +249,6 @@ abstract class Failure extends Equatable {
 - `flutter_bloc`: State management
 - `get_it`: Dependency injection
 - `fpdart`: Functional programming utilities
-- `equatable`: Value equality
 - `http`: HTTP client
 - `http_interceptor`: Request/Response interceptors
 
