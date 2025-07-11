@@ -1,3 +1,23 @@
+mason add --global my_brick --path ./path/to/my_brick
+
+//like that
+
+// ./path/to/my_brick
+
+// C:\Users\amazo\Downloads\mason_tdd\mason_tdd
+
+mason list --global
+
+mason remove -g <BRICK_NAME>
+
+mason upgrade --global
+
+# Generate a new brick with hooks.
+
+mason new <BRICK_NAME> --hooks
+mason make <BRICK_NAME> -o lib
+mason make <BRICK_NAME> --name hello -o lib
+
 # 🧱 Flutter Mason Bricks Collection
 
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
