@@ -1,5 +1,12 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 abstract class AppUrl {
-  static const _baseUrl = 'https://reqres.in';
+  static final _base = dotenv.env['BASE_URL'];
+  // static const _base = 'http://192.168.18.68:3001';
+  // static const _base = 'http://192.168.100.31:3001';
+  static final socketBaseUrl = _base;
+  static final _baseUrl = '$_base/api/v1';
+
   static var refreshToken = '$_baseUrl/refreshToken';
   {{#auth}}
   static var login = '$_baseUrl/login';

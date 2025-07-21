@@ -6,6 +6,14 @@ mason add --global my_brick --path ./path/to/my_brick
 
 // C:\Users\amazo\Downloads\mason_tdd\mason_tdd
 
+---
+
+also with url
+
+mason add --global mason_tdd --git-url https://github.com/Munawer2022/mason_cli.git --git-path mason_tdd --git-ref removeRepo
+
+---
+
 mason list --global
 
 mason remove -g <BRICK_NAME>

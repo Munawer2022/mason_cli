@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '/features/{{folder_name}}/{{page_file_name}}';
 import '/features/{{folder_name}}/{{initial_params_file_name}}';
 import '/config/theme/theme_data.dart';
@@ -18,6 +19,7 @@ import '/features/splash/splash_page.dart';
 void main() async {
 //  setCustomSystemUIOverlayStyle();
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await di.init();
   runApp(DevicePreview(
       enabled: false,

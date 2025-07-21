@@ -242,6 +242,21 @@ abstract class Failure {
    flutter run
    ```
 
+## 🌱 Environment Variables with flutter_dotenv
+
+This project uses [`flutter_dotenv`](https://pub.dev/packages/flutter_dotenv) for environment configuration.
+
+### Setup Steps
+
+1. **Dependencies and .env file are automatically set up for you!**
+2. **To add more environment variables, edit the `.env` file in your project root.**
+3. **Access variables in code:**
+   ```dart
+   import 'package:flutter_dotenv/flutter_dotenv.dart';
+   final baseUrl = dotenv.env['BASE_URL'];
+   ```
+> **Note:** Always load dotenv before using any URLs or environment-dependent values. See `main.dart` for the correct setup.
+
 ## 📦 Included Packages
 
 ### Core Dependencies

@@ -61,7 +61,8 @@ Future<void> run(HookContext context) async {
     'fpdart',
     'shimmer',
     'connectivity_plus',
-    'cached_network_image'
+    'cached_network_image',
+    'flutter_dotenv',
   ];
 
   for (var package in dependencies) {
@@ -104,6 +105,69 @@ Future<void> run(HookContext context) async {
   } else {
     context.logger.warn(
         '⚠️  Build runner failed (this is normal if no generated files are needed)');
+  }
+
+  // Create a default .env file if it doesn't exist
+  final envFile = File('.env');
+  if (!envFile.existsSync()) {
+    envFile.writeAsStringSync('BASE_URL=https://example.com\n');
+    context.logger.success('✅ Created .env file');
+  } else {
+    context.logger.info('ℹ️  .env file already exists');
+  }
+
+  // Ensure .env is included in pubspec.yaml assets
+  final pubspecLines = pubspec.readAsLinesSync();
+  bool hasFlutterSection = false;
+  bool hasAssetsSection = false;
+  bool hasEnvAsset = false;
+  int flutterIndex = -1;
+  int assetsIndex = -1;
+  int insertIndex = -1;
+
+  for (int i = 0; i < pubspecLines.length; i++) {
+    final line = pubspecLines[i];
+    if (line.trim().startsWith('flutter:')) {
+      hasFlutterSection = true;
+      flutterIndex = i;
+    }
+    if (line.trim().startsWith('assets:')) {
+      hasAssetsSection = true;
+      assetsIndex = i;
+    }
+    if (line.trim() == '- .env') {
+      hasEnvAsset = true;
+    }
+  }
+
+  if (!hasEnvAsset) {
+    List<String> newLines = List.from(pubspecLines);
+    if (hasFlutterSection) {
+      // Find where to insert assets
+      if (hasAssetsSection) {
+        // Insert under assets if not present
+        // Find the last asset entry
+        insertIndex = assetsIndex + 1;
+        while (insertIndex < newLines.length &&
+            (newLines[insertIndex].trim().startsWith('- ') ||
+                newLines[insertIndex].trim().isEmpty)) {
+          insertIndex++;
+        }
+        newLines.insert(assetsIndex + 1, '    - .env');
+      } else {
+        // Insert assets section under flutter
+        newLines.insert(flutterIndex + 1, '  assets:\n    - .env');
+      }
+    } else {
+      // No flutter section, add at end
+      newLines.add('flutter:');
+      newLines.add('  assets:');
+      newLines.add('    - .env');
+    }
+    pubspec.writeAsStringSync(newLines.join('\n'));
+    context.logger.success('✅ Added .env to assets in pubspec.yaml');
+  } else {
+    context.logger.info('ℹ️  .env already included in assets');
   }
 
   // Display next steps
