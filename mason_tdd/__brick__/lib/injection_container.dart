@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import '/domain/repositories/network/network_base_api_service.dart';
-import 'data/repositories/network/https_network_repository.dart';
+import 'data/repositories/network/https/https_network_repository.dart';
 import 'config/navigation/app_navigator.dart';
 import 'domain/repositories/local/local_storage_base_api_service.dart';
 import 'data/repositories/local/insecure_local_storage_repository.dart';
