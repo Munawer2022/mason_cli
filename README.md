@@ -8,7 +8,7 @@ mason add --global my_brick --path ./path/to/my_brick
 
 ---
 
-also with url
+also with url not tested
 
 mason add --global mason_tdd --git-url https://github.com/Munawer2022/mason_cli.git --git-path mason_tdd --git-ref removeRepo
 

@@ -255,7 +255,7 @@ This project uses [`flutter_dotenv`](https://pub.dev/packages/flutter_dotenv) fo
    import 'package:flutter_dotenv/flutter_dotenv.dart';
    final baseUrl = dotenv.env['BASE_URL'];
    ```
-> **Note:** Always load dotenv before using any URLs or environment-dependent values. See `main.dart` for the correct setup.
+   > **Note:** Always load dotenv before using any URLs or environment-dependent values. See `main.dart` for the correct setup.
 
 ## 📦 Included Packages
 

@@ -63,6 +63,7 @@ Future<void> run(HookContext context) async {
     'connectivity_plus',
     'cached_network_image',
     'flutter_dotenv',
+    'logger',
   ];
 
   for (var package in dependencies) {
