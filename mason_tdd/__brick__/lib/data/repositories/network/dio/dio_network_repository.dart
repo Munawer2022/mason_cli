@@ -139,57 +139,7 @@
 //     }
 //   }
 
-//   // Pagination helper method
-//   Future<Either<NetworkFailure, PaginatedResponse<T>>> getPaginated<T>({
-//     required String url,
-//     required int page,
-//     required int limit,
-//     Map<String, dynamic>? queryParams,
-//     Map<String, String>? headers,
-//     T Function(Map<String, dynamic>)? fromJson,
-//   }) async {
-//     try {
-//       final params = PaginationHelper.createPaginationParams(
-//         page: page,
-//         limit: limit,
-//         additionalParams: queryParams,
-//       );
 
-//       final response = await _dio.get(
-//         url,
-//         queryParameters: params,
-//         options: Options(headers: headers),
-//       );
-
-//       if (fromJson != null) {
-//         final paginatedResponse = PaginationHelper.parsePaginatedResponse<T>(
-//           responseData: response.data,
-//           fromJson: fromJson,
-//         );
-//         return right(paginatedResponse);
-//       } else {
-//         // Fallback for when fromJson is not provided
-//         final data = response.data;
-//         final items = data['data'] as List;
-//         final pagination = data['pagination'] ?? {};
-
-//         final paginatedResponse = PaginatedResponse<T>(
-//           data: items.cast<T>(),
-//           currentPage: pagination['currentPage'] ?? page,
-//           totalPages: pagination['totalPages'] ?? 1,
-//           totalItems: pagination['totalItems'] ?? items.length,
-//           hasNextPage: pagination['hasNextPage'] ?? false,
-//           hasPreviousPage: pagination['hasPreviousPage'] ?? false,
-//         );
-
-//         return right(paginatedResponse);
-//       }
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
 
 //   // File upload helper method
 //   Future<Either<NetworkFailure, T>> uploadFile<T>({
@@ -364,24 +314,7 @@
 //   }
 // }
 
-// // Pagination response model
-// class PaginatedResponse<T> {
-//   final List<T> data;
-//   final int currentPage;
-//   final int totalPages;
-//   final int totalItems;
-//   final bool hasNextPage;
-//   final bool hasPreviousPage;
 
-//   PaginatedResponse({
-//     required this.data,
-//     required this.currentPage,
-//     required this.totalPages,
-//     required this.totalItems,
-//     required this.hasNextPage,
-//     required this.hasPreviousPage,
-//   });
-// }
 
 // // Logging Interceptor
 // class _LoggingInterceptor extends Interceptor {

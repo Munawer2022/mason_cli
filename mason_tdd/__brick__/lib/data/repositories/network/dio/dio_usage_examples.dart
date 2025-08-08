@@ -129,26 +129,7 @@
 //     );
 //   }
 
-//   // Example 4: Pagination
-//   Future<void> examplePagination() async {
-//     final result = await _networkRepository.getPaginated<User>(
-//       url: '/api/users',
-//       page: 1,
-//       limit: 10,
-//       fromJson: User.fromJson,
-//       queryParams: {'status': 'active'},
-//     );
 
-//     result.fold((failure) => print('Error: ${failure.error}'), (
-//       paginatedResponse,
-//     ) {
-//       print('Current page: ${paginatedResponse.currentPage}');
-//       print('Total pages: ${paginatedResponse.totalPages}');
-//       print('Total items: ${paginatedResponse.totalItems}');
-//       print('Has next page: ${paginatedResponse.hasNextPage}');
-//       print('Users: ${paginatedResponse.data}');
-//     });
-//   }
 
 //   // Example 5: File upload with progress
 //   Future<void> exampleFileUpload() async {
@@ -261,40 +242,7 @@
 //     );
 //   }
 
-//   // Example 10: Using PaginationHelper directly
-//   Future<void> examplePaginationHelper() async {
-//     // Create pagination parameters
-//     final params = PaginationHelper.createPaginationParams(
-//       page: 1,
-//       limit: 20,
-//       sortBy: 'created_at',
-//       sortOrder: 'desc',
-//       additionalParams: {'status': 'active'},
-//     );
 
-//     // Parse paginated response
-//     final responseData = {
-//       'data': [
-//         {'id': '1', 'name': 'Product 1', 'price': 10.99},
-//         {'id': '2', 'name': 'Product 2', 'price': 20.99},
-//       ],
-//       'pagination': {
-//         'currentPage': 1,
-//         'totalPages': 5,
-//         'totalItems': 100,
-//         'hasNextPage': true,
-//         'hasPreviousPage': false,
-//       },
-//     };
-
-//     final paginatedResponse = PaginationHelper.parsePaginatedResponse<Product>(
-//       responseData: responseData,
-//       fromJson: Product.fromJson,
-//     );
-
-//     print('Products: ${paginatedResponse.data}');
-//     print('Has more data: ${paginatedResponse.hasMoreData}');
-//   }
 
 //   // Example 11: Error handling
 //   Future<void> exampleErrorHandling() async {
@@ -404,16 +352,15 @@
 
 //   UserService(this._networkRepository);
 
-//   Future<Either<NetworkFailure, PaginatedResponse<User>>> getUsers({
-//     int page = 1,
-//     int limit = 10,
-//   }) async {
-//     return await _networkRepository.getPaginated<User>(
+//   Future<Either<NetworkFailure, List<User>>> getUsers() async {
+//     final result = await _networkRepository.get<List<dynamic>>(
 //       url: '/api/users',
-//       page: page,
-//       limit: limit,
-//       fromJson: User.fromJson,
 //     );
+    
+//     return result.map((data) {
+//       final usersList = data as List;
+//       return usersList.map((user) => User.fromJson(user)).toList();
+//     });
 //   }
 
 //   Future<Either<NetworkFailure, User>> createUser(User user) async {
