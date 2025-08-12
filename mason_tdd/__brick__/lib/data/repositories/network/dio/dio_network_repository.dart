@@ -317,7 +317,7 @@
 
 
 // // Logging Interceptor
-// class _LoggingInterceptor extends Interceptor {
+// class LoggingInterceptor extends Interceptor {
 //   @override
 //   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
 //     log('🌐 REQUEST[${options.method}] => PATH: ${options.path}');
@@ -348,11 +348,11 @@
 // }
 
 // // Authentication Interceptor
-// class _AuthInterceptor extends Interceptor {
+// class AuthInterceptor extends Interceptor {
 //   final LoginDataSources _loginDataSources;
 //   final LocalStorageRepository _localStorageRepository;
 
-//   _AuthInterceptor(this._loginDataSources, this._localStorageRepository);
+//   AuthInterceptor(this._loginDataSources, this._localStorageRepository);
 
 //   @override
 //   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -408,7 +408,7 @@
 // }
 
 // // Error Interceptor
-// class _ErrorInterceptor extends Interceptor {
+// class ErrorInterceptor extends Interceptor {
 //   @override
 //   void onError(DioException err, ErrorInterceptorHandler handler) {
 //     // Add any global error handling logic here

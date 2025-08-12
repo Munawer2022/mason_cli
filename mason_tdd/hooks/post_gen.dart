@@ -111,8 +111,34 @@ Future<void> run(HookContext context) async {
   // Create a default .env file if it doesn't exist
   final envFile = File('.env');
   if (!envFile.existsSync()) {
-    envFile.writeAsStringSync('BASE_URL=https://example.com\n');
-    context.logger.success('✅ Created .env file');
+    final envContent =
+        '''# Flutter Release X Environment Variables (Android & iOS Only)
+# Copy this file to .env and fill in your actual values
+
+# Base URL for your API
+BASE_URL=https://example.com
+
+# GitHub Configuration
+GITHUB_TOKEN=your_github_personal_access_token_here
+GITHUB_REPOSITORY=your_username/your_repository_name
+
+# Google Drive Configuration
+GOOGLE_DRIVE_CLIENT_ID=your_google_drive_client_id_here
+GOOGLE_DRIVE_CLIENT_SECRET=your_google_drive_client_secret_here
+GOOGLE_DRIVE_FOLDER_ID=your_google_drive_folder_id_here
+
+# Slack Configuration
+SLACK_BOT_TOKEN=xoxb-your_slack_bot_token_here
+SLACK_CHANNEL_ID=your_slack_channel_id_here
+SLACK_MEMBER_IDS=U1234567890,U0987654321  # Comma-separated user IDs to mention
+
+# Build Configuration (Android & iOS Only)
+FLUTTER_CHANNEL=stable
+BUILD_TARGET=android,ios
+BUILD_FLAVOR=release
+''';
+    envFile.writeAsStringSync(envContent);
+    context.logger.success('✅ Created .env file with FRX configuration');
   } else {
     context.logger.info('ℹ️  .env file already exists');
   }
@@ -171,6 +197,57 @@ Future<void> run(HookContext context) async {
     context.logger.info('ℹ️  .env already included in assets');
   }
 
+  // Set up Flutter Release X
+  context.logger.info('🚀 Setting up Flutter Release X...');
+
+  // Check if Flutter Release X is already installed globally
+  context.logger.info('🔍 Checking Flutter Release X installation...');
+  final frxCheckResult =
+      await Process.runSync('frx', ['--version'], runInShell: true);
+
+  if (frxCheckResult.exitCode == 0) {
+    final version = frxCheckResult.stdout.toString().trim();
+    context.logger.success('✅ Flutter Release X already installed: $version');
+  } else {
+    // Install Flutter Release X globally if not found
+    context.logger.info('📦 Installing Flutter Release X...');
+    final frxResult = await Process.runSync(
+        'dart', ['pub', 'global', 'activate', 'flutter_release_x'],
+        runInShell: true);
+
+    if (frxResult.exitCode == 0) {
+      context.logger.success('✅ Flutter Release X installed successfully');
+    } else {
+      context.logger
+          .warn('⚠️  Failed to install Flutter Release X: ${frxResult.stderr}');
+      context.logger.info(
+          '💡 You can install it manually with: dart pub global activate flutter_release_x');
+    }
+  }
+
+  // Create build directories
+  context.logger.info('📁 Creating build directories...');
+  final buildDir = Directory('build');
+  final qrCodesDir = Directory('build/qr_codes');
+  final releasesDir = Directory('build/releases');
+
+  if (!buildDir.existsSync()) buildDir.createSync();
+  if (!qrCodesDir.existsSync()) qrCodesDir.createSync();
+  if (!releasesDir.existsSync()) releasesDir.createSync();
+
+  context.logger.success('✅ Build directories created');
+
+  // Make scripts executable (Unix/Linux/macOS)
+  if (Platform.isLinux || Platform.isMacOS) {
+    context.logger.info('🔧 Making scripts executable...');
+    final scriptsDir = Directory('scripts');
+    if (scriptsDir.existsSync()) {
+      await Process.runSync('chmod', ['+x', 'scripts/frx_setup.sh']);
+      await Process.runSync('chmod', ['+x', 'scripts/frx_build.sh']);
+      context.logger.success('✅ Scripts made executable');
+    }
+  }
+
   // Display next steps
   context.logger.info('');
   context.logger.info('🎉 Project setup complete!');
@@ -187,6 +264,22 @@ Future<void> run(HookContext context) async {
   context.logger.info('');
   context.logger.info('🚀 To run the app:');
   context.logger.info('   flutter run');
+  context.logger.info('');
+  context.logger.info('📦 Flutter Release X Setup:');
+  context.logger
+      .info('   1. Edit env.example and copy to .env with your API keys');
+  context.logger
+      .info('   2. Configure GitHub, Google Drive, and/or Slack tokens');
+  context.logger.info('   3. Run: ./scripts/frx_setup.sh (Unix/Linux/macOS)');
+  context.logger.info('      or: scripts\\frx_setup.bat (Windows)');
+  context.logger.info('');
+  context.logger.info('🚀 To build and release:');
+  context.logger
+      .info('   frx build                    # Build for Android & iOS');
+  context.logger
+      .info('   frx build -t android,ios     # Build for both platforms');
+  context.logger
+      .info('   ./scripts/frx_build.sh both  # Using convenience script');
   context.logger.info('');
 
   progress.complete();

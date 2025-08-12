@@ -1,0 +1,85 @@
+# Flutter Release X Configuration
+# This file configures the build, release, and distribution process
+
+# Flutter path configuration
+flutter:
+  path: "flutter" # Path to Flutter executable
+  channel: "stable" # Flutter channel to use
+
+# Build configuration
+build:
+  target: "android,ios" # Default target platforms (Android and iOS only)
+  flavor: "release" # Build flavor
+  split_per_abi: true # Split APK by ABI for smaller downloads
+  build_number: "auto" # Auto-increment build number
+
+# Upload configuration
+upload:
+  enabled: true
+  platforms:
+    - github
+    - google_drive
+    - slack
+
+# GitHub configuration
+github:
+  enabled: true
+  token: "${GITHUB_TOKEN}" # Use environment variable
+  repository: "${GITHUB_REPOSITORY}" # Use environment variable
+  release_tag: "v{version}" # Release tag format
+  release_title: "Release v{version}" # Release title format
+  release_notes: "Automated release from Flutter Release X" # Release notes
+
+# Google Drive configuration
+google_drive:
+  enabled: true
+  client_id: "${GOOGLE_DRIVE_CLIENT_ID}" # Use environment variable
+  client_secret: "${GOOGLE_DRIVE_CLIENT_SECRET}" # Use environment variable
+  folder_id: "${GOOGLE_DRIVE_FOLDER_ID}" # Use environment variable
+
+# Slack configuration
+slack:
+  enabled: true
+  bot_token: "${SLACK_BOT_TOKEN}" # Use environment variable
+  channel_id: "${SLACK_CHANNEL_ID}" # Use environment variable
+  member_ids: "${SLACK_MEMBER_IDS}" # Use environment variable for mentions
+
+# QR Code configuration
+qr_code:
+  enabled: true
+  save_file: true
+  show_in_command: true
+  size: 256
+  error_correction_level: "medium"
+  save_path: "./build/qr_codes"
+
+# Advanced pipeline configuration
+pipeline:
+  enabled: false # Enable for advanced CI/CD workflows
+  steps:
+    - name: "Pre-build checks"
+      command: "flutter analyze"
+    - name: "Run tests"
+      command: "flutter test"
+    - name: "Build Android and iOS"
+      command: "frx build -t android,ios"
+    - name: "Upload to stores"
+      command: "frx upload"
+
+# Notification configuration
+notifications:
+  enabled: true
+  platforms:
+    - slack
+  message_template: "🚀 New release available! Version: {version}"
+
+# Environment variables (for reference)
+env_vars:
+  - GITHUB_TOKEN
+  - GITHUB_REPOSITORY
+  - GOOGLE_DRIVE_CLIENT_ID
+  - GOOGLE_DRIVE_CLIENT_SECRET
+  - GOOGLE_DRIVE_FOLDER_ID
+  - SLACK_BOT_TOKEN
+  - SLACK_CHANNEL_ID
+  - SLACK_MEMBER_IDS
