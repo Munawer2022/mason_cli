@@ -64,6 +64,8 @@ Future<void> run(HookContext context) async {
     'cached_network_image',
     'flutter_dotenv',
     'logger',
+    'image_picker',
+    'permission_handler',
   ];
 
   for (var package in dependencies) {
@@ -141,6 +143,135 @@ BUILD_FLAVOR=release
     context.logger.success('✅ Created .env file with FRX configuration');
   } else {
     context.logger.info('ℹ️  .env file already exists');
+  }
+
+  // Set up Android permissions for image picker
+  context.logger.info('🔧 Setting up Android permissions...');
+  final androidManifestPath = 'android/app/src/main/AndroidManifest.xml';
+  final androidManifest = File(androidManifestPath);
+
+  if (androidManifest.existsSync()) {
+    final manifestContent = androidManifest.readAsStringSync();
+
+    // Check if permissions already exist
+    final hasCameraPermission =
+        manifestContent.contains('android.permission.CAMERA');
+    final hasStoragePermission =
+        manifestContent.contains('android.permission.READ_EXTERNAL_STORAGE');
+    final hasWritePermission =
+        manifestContent.contains('android.permission.WRITE_EXTERNAL_STORAGE');
+    final hasInternetPermission =
+        manifestContent.contains('android.permission.INTERNET');
+
+    if (!hasCameraPermission ||
+        !hasStoragePermission ||
+        !hasWritePermission ||
+        !hasInternetPermission) {
+      // Find the manifest tag and add permissions before it
+      final lines = manifestContent.split('\n');
+      final newLines = <String>[];
+      bool manifestFound = false;
+
+      for (final line in lines) {
+        newLines.add(line);
+
+        // Add permissions after the manifest tag
+        if (line.trim().startsWith('<manifest') && !manifestFound) {
+          manifestFound = true;
+
+          if (!hasCameraPermission) {
+            newLines.add(
+                '    <uses-permission android:name="android.permission.CAMERA" />');
+            context.logger.info('📱 Added camera permission');
+          }
+
+          if (!hasStoragePermission) {
+            newLines.add(
+                '    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />');
+            context.logger.info('📱 Added read storage permission');
+          }
+
+          if (!hasWritePermission) {
+            newLines.add(
+                '    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />');
+            context.logger.info('📱 Added write storage permission');
+          }
+
+          if (!hasInternetPermission) {
+            newLines.add(
+                '    <uses-permission android:name="android.permission.INTERNET" />');
+            context.logger.info('📱 Added internet permission');
+          }
+        }
+      }
+
+      androidManifest.writeAsStringSync(newLines.join('\n'));
+      context.logger.success('✅ Android permissions configured');
+    } else {
+      context.logger.info('ℹ️  Android permissions already configured');
+    }
+  } else {
+    context.logger
+        .warn('⚠️  AndroidManifest.xml not found at $androidManifestPath');
+  }
+
+  // Set up iOS permissions for image picker
+  context.logger.info('🔧 Setting up iOS permissions...');
+  final iosInfoPlistPath = 'ios/Runner/Info.plist';
+  final iosInfoPlist = File(iosInfoPlistPath);
+
+  if (iosInfoPlist.existsSync()) {
+    final plistContent = iosInfoPlist.readAsStringSync();
+
+    // Check if permissions already exist
+    final hasCameraUsageDescription =
+        plistContent.contains('NSCameraUsageDescription');
+    final hasPhotoLibraryUsageDescription =
+        plistContent.contains('NSPhotoLibraryUsageDescription');
+
+    if (!hasCameraUsageDescription || !hasPhotoLibraryUsageDescription) {
+      // Find the dict tag and add permissions before the closing dict
+      final lines = plistContent.split('\n');
+      final newLines = <String>[];
+      bool dictFound = false;
+      int dictLevel = 0;
+
+      for (final line in lines) {
+        newLines.add(line);
+
+        // Track dict level
+        if (line.trim().startsWith('<dict>')) {
+          dictLevel++;
+          if (dictLevel == 1) dictFound = true;
+        } else if (line.trim().startsWith('</dict>')) {
+          dictLevel--;
+
+          // Add permissions before the main dict closes
+          if (dictLevel == 0 && dictFound) {
+            if (!hasCameraUsageDescription) {
+              newLines.add('	<key>NSCameraUsageDescription</key>');
+              newLines.add(
+                  '	<string>This app needs camera access to take photos</string>');
+              context.logger.info('📱 Added camera usage description');
+            }
+
+            if (!hasPhotoLibraryUsageDescription) {
+              newLines.add('	<key>NSPhotoLibraryUsageDescription</key>');
+              newLines.add(
+                  '	<string>This app needs photo library access to select images</string>');
+              context.logger.info('📱 Added photo library usage description');
+            }
+          }
+        }
+      }
+
+      iosInfoPlist.writeAsStringSync(newLines.join('\n'));
+      context.logger.success('✅ iOS permissions configured');
+    } else {
+      context.logger.info('ℹ️  iOS permissions already configured');
+    }
+  } else {
+    context.logger.warn('⚠️  Info.plist not found at $iosInfoPlistPath');
   }
 
   // Ensure .env is included in pubspec.yaml assets
@@ -258,6 +389,14 @@ BUILD_FLAVOR=release
   context.logger.info(
       '   3. Set up your dependency injection in injection_container.dart');
   context.logger.info('   4. Start building your features!');
+  context.logger.info('');
+  context.logger.info('📸 Image Picker Setup:');
+  context.logger
+      .info('   ✅ Dependencies installed: image_picker, permission_handler');
+  context.logger.info('   ✅ Android permissions configured');
+  context.logger.info('   ✅ iOS permissions configured');
+  context.logger.info('   📱 Use ImagePickerService for camera/gallery access');
+  context.logger.info('   🎨 Use ImagePickerWidget for UI components');
   context.logger.info('');
   context.logger.info('🧪 To run tests:');
   context.logger.info('   flutter test');

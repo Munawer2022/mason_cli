@@ -15,4 +15,6 @@ abstract class AppUrl {
   {{/auth}}
 
   static var {{folder_name_camelCase}} = '$_baseUrl/{{folder_name_camelCase}}';
+
+  // static String endpoint(String path) => '$_baseUrl/$path';
 }
