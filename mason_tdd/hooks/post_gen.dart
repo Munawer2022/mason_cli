@@ -145,7 +145,7 @@ BUILD_FLAVOR=release
     context.logger.info('ℹ️  .env file already exists');
   }
 
-  // Set up Android permissions for image picker
+  // Set up Android permissions for storage and internet
   context.logger.info('🔧 Setting up Android permissions...');
   final androidManifestPath = 'android/app/src/main/AndroidManifest.xml';
   final androidManifest = File(androidManifestPath);
@@ -154,8 +154,6 @@ BUILD_FLAVOR=release
     final manifestContent = androidManifest.readAsStringSync();
 
     // Check if permissions already exist
-    final hasCameraPermission =
-        manifestContent.contains('android.permission.CAMERA');
     final hasStoragePermission =
         manifestContent.contains('android.permission.READ_EXTERNAL_STORAGE');
     final hasWritePermission =
@@ -163,8 +161,7 @@ BUILD_FLAVOR=release
     final hasInternetPermission =
         manifestContent.contains('android.permission.INTERNET');
 
-    if (!hasCameraPermission ||
-        !hasStoragePermission ||
+    if (!hasStoragePermission ||
         !hasWritePermission ||
         !hasInternetPermission) {
       // Find the manifest tag and add permissions before it
@@ -178,12 +175,6 @@ BUILD_FLAVOR=release
         // Add permissions after the manifest tag
         if (line.trim().startsWith('<manifest') && !manifestFound) {
           manifestFound = true;
-
-          if (!hasCameraPermission) {
-            newLines.add(
-                '    <uses-permission android:name="android.permission.CAMERA" />');
-            context.logger.info('📱 Added camera permission');
-          }
 
           if (!hasStoragePermission) {
             newLines.add(
@@ -215,7 +206,7 @@ BUILD_FLAVOR=release
         .warn('⚠️  AndroidManifest.xml not found at $androidManifestPath');
   }
 
-  // Set up iOS permissions for image picker
+  // Set up iOS permissions for photo library access
   context.logger.info('🔧 Setting up iOS permissions...');
   final iosInfoPlistPath = 'ios/Runner/Info.plist';
   final iosInfoPlist = File(iosInfoPlistPath);
@@ -224,12 +215,10 @@ BUILD_FLAVOR=release
     final plistContent = iosInfoPlist.readAsStringSync();
 
     // Check if permissions already exist
-    final hasCameraUsageDescription =
-        plistContent.contains('NSCameraUsageDescription');
     final hasPhotoLibraryUsageDescription =
         plistContent.contains('NSPhotoLibraryUsageDescription');
 
-    if (!hasCameraUsageDescription || !hasPhotoLibraryUsageDescription) {
+    if (!hasPhotoLibraryUsageDescription) {
       // Find the dict tag and add permissions before the closing dict
       final lines = plistContent.split('\n');
       final newLines = <String>[];
@@ -248,13 +237,6 @@ BUILD_FLAVOR=release
 
           // Add permissions before the main dict closes
           if (dictLevel == 0 && dictFound) {
-            if (!hasCameraUsageDescription) {
-              newLines.add('	<key>NSCameraUsageDescription</key>');
-              newLines.add(
-                  '	<string>This app needs camera access to take photos</string>');
-              context.logger.info('📱 Added camera usage description');
-            }
-
             if (!hasPhotoLibraryUsageDescription) {
               newLines.add('	<key>NSPhotoLibraryUsageDescription</key>');
               newLines.add(
@@ -393,9 +375,10 @@ BUILD_FLAVOR=release
   context.logger.info('📸 Image Picker Setup:');
   context.logger
       .info('   ✅ Dependencies installed: image_picker, permission_handler');
-  context.logger.info('   ✅ Android permissions configured');
-  context.logger.info('   ✅ iOS permissions configured');
-  context.logger.info('   📱 Use ImagePickerService for camera/gallery access');
+  context.logger
+      .info('   ✅ Android permissions configured (storage & internet)');
+  context.logger.info('   ✅ iOS permissions configured (photo library)');
+  context.logger.info('   📱 Use ImagePickerService for gallery access');
   context.logger.info('   🎨 Use ImagePickerWidget for UI components');
   context.logger.info('');
   context.logger.info('🧪 To run tests:');

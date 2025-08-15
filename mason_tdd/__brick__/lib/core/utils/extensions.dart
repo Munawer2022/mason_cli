@@ -744,7 +744,7 @@ extension DurationExtension on Duration {
 
   /// Get duration in months (approximate)
   int get inMonths => inDays ~/ 30;
-g
+
   /// Get duration in years (approximate)
   int get inYears => inDays ~/ 365;
 }
