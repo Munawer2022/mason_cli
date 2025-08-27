@@ -18,25 +18,27 @@ void run(HookContext context) {
   context.vars['isPost'] = http == 'post';
   context.vars['isNoThing'] = http == 'noThing';
   // UserDetails
-  var stem = (context.vars["name"] as String? ?? "").trim().pascalCase;
+  var originalName = (context.vars["name"] as String? ?? "").trim();
+  var stem = originalName.pascalCase;
   var pageName = "${stem}Page";
   final pageFileName = "${pageName.snakeCase}.dart";
-  final navigatorFileName = "${stem.snakeCase}_navigator.dart";
-  final cubitFileName = "${stem.snakeCase}_cubit.dart";
-  final stateFileName = "${stem.snakeCase}_state.dart";
-  final initialParamsFileName = "${stem.snakeCase}_initial_params.dart";
+  final navigatorFileName = "${originalName.snakeCase}_navigator.dart";
+  final cubitFileName = "${originalName.snakeCase}_cubit.dart";
+  final stateFileName = "${originalName.snakeCase}_state.dart";
+  final initialParamsFileName = "${originalName.snakeCase}_initial_params.dart";
   //
-  final widgetFileName = "${stem.snakeCase}_widget.dart";
-  final mockRepoFileName = "Mock_${stem.snakeCase}_repository.dart";
-  final repoFileName = "${stem.snakeCase}_repository.dart";
-  final baseApiServiceFileName = "${stem.snakeCase}_base_api_service.dart";
-  final mockModelFileName = "mock_${stem.snakeCase}_model.dart";
-  final modelFileName = "${stem.snakeCase}_model.dart";
-  final folderName = "${stem.snakeCase}";
-  final folderNameCamelCase = "${stem.camelCase}";
-  final failureName = "${stem.snakeCase}_failure.dart";
-  final useCasesName = "${stem.snakeCase}_use_cases.dart";
-  final dataSourcesName = "${stem.snakeCase}_data_sources.dart";
+  final widgetFileName = "${originalName.snakeCase}_widget.dart";
+  final mockRepoFileName = "Mock_${originalName.snakeCase}_repository.dart";
+  final repoFileName = "${originalName.snakeCase}_repository.dart";
+  final baseApiServiceFileName =
+      "${originalName.snakeCase}_base_api_service.dart";
+  final mockModelFileName = "mock_${originalName.snakeCase}_model.dart";
+  final modelFileName = "${originalName.snakeCase}_model.dart";
+  final folderName = "${originalName.snakeCase}";
+  final folderNameCamelCase = "${originalName.camelCase}";
+  final failureName = "${originalName.snakeCase}_failure.dart";
+  final useCasesName = "${originalName.snakeCase}_use_cases.dart";
+  final dataSourcesName = "${originalName.snakeCase}_data_sources.dart";
 
   context.vars = {
     ...context.vars,

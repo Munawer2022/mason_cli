@@ -15,7 +15,8 @@ Future<void> run(HookContext context) async {
   context.logger.info('   Dart: $dartVersion');
   context.logger.info('   Java: $javaVersion');
 
-  final name = (context.vars['name'] as String? ?? "").trim().pascalCase;
+  final originalName = (context.vars['name'] as String? ?? "").trim();
+  final name = originalName.pascalCase;
   final isPost = context.vars['isPost'] as bool? ?? false;
   final isGet = context.vars['isGet'] as bool? ?? false;
 
@@ -80,9 +81,9 @@ Future<void> run(HookContext context) async {
 /*
 ************************ ${name} ************************
 */
-import 'features/${name.snakeCase}/${name.snakeCase}_cubit.dart';
-import 'features/${name.snakeCase}/${name.snakeCase}_navigator.dart';
-import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
+import 'features/${originalName.snakeCase}/${originalName.snakeCase}_cubit.dart';
+import 'features/${originalName.snakeCase}/${originalName.snakeCase}_navigator.dart';
+import 'features/${originalName.snakeCase}/${originalName.snakeCase}_initial_params.dart';
 ''';
   addImportAtTop(importStatement, 'lib/injection_container.dart');
 
@@ -97,7 +98,7 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
       ${isGet ? ', getIt()' : ''}
       ${isPost ? ', getIt(), getIt()' : ''}
       )
-      ${isGet ? '..${name.camelCase}()' : ''}
+      ${isGet ? '..${originalName.camelCase}()' : ''}
       );
 ''';
   appendAtEndOfProvidersList(providerStatement);
@@ -112,7 +113,7 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
       }
 
       String sourceName = sourceDir.path.split(Platform.pathSeparator).last;
-      String cleanedSourceName = sourceName.split('_').first;
+      String cleanedSourceName = sourceName;
 
       String destinationPath = '${destinationDir.path}/$cleanedSourceName';
 
@@ -130,70 +131,70 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
   // Move feature files to their proper locations
   context.logger.info('📁 Organizing feature files...');
 
-  String sourcePath = name.snakeCase;
+  String sourcePath = originalName.snakeCase;
   String destinationDirectory = 'lib/features';
   moveFileToDirectory(sourcePath, destinationDirectory);
 
-  String sourcePath4 = '${name.snakeCase}_entitie';
+  String sourcePath4 = '${originalName.snakeCase}_entitie';
   String destinationDirector4 = 'lib/domain/entities';
   moveFileToDirectory(sourcePath4, destinationDirector4);
 
-  String sourcePath2 = '${name.snakeCase}_failure';
+  String sourcePath2 = '${originalName.snakeCase}_failure';
   String destinationDirector2 = 'lib/domain/failures';
   moveFileToDirectory(sourcePath2, destinationDirector2);
 
-  String sourcePath3 = '${name.snakeCase}_base_api_service';
+  String sourcePath3 = '${originalName.snakeCase}_base_api_service';
   String destinationDirector3 = 'lib/domain/repositories';
   moveFileToDirectory(sourcePath3, destinationDirector3);
 
-  String sourcePath6 = '${name.snakeCase}_usecase';
+  String sourcePath6 = '${originalName.snakeCase}_usecase';
   String destinationDirector6 = 'lib/domain/usecases';
   moveFileToDirectory(sourcePath6, destinationDirector6);
 
-  String sourcePath5 = '${name.snakeCase}_repositorie';
+  String sourcePath5 = '${originalName.snakeCase}_repositorie';
   String destinationDirector5 = 'lib/data/repositories';
   moveFileToDirectory(sourcePath5, destinationDirector5);
 
-  String sourcePath7 = '${name.snakeCase}_datasource';
+  String sourcePath7 = '${originalName.snakeCase}_datasource';
   String destinationDirector7 = 'lib/data/datasources';
   moveFileToDirectory(sourcePath7, destinationDirector7);
 
-  String sourcePath8 = '${name.snakeCase}_model';
+  String sourcePath8 = '${originalName.snakeCase}_model';
   String destinationDirector8 = 'lib/data/models';
   moveFileToDirectory(sourcePath8, destinationDirector8);
 
   // Move test files
   context.logger.info('🧪 Organizing test files...');
 
-  String testSource = "${name.snakeCase}_test";
+  String testSource = "${originalName.snakeCase}_test";
   String testDestinationDirectory = 'test/features';
   moveFileToDirectory(testSource, testDestinationDirectory);
 
-  String testSource1 = '${name.snakeCase}_entitie_test';
+  String testSource1 = '${originalName.snakeCase}_entitie_test';
   String testDestinationDirectory4 = 'test/domain/entities';
   moveFileToDirectory(testSource1, testDestinationDirectory4);
 
-  String testSource2 = '${name.snakeCase}_failure_test';
+  String testSource2 = '${originalName.snakeCase}_failure_test';
   String testDestinationDirectory2 = 'test/domain/failures';
   moveFileToDirectory(testSource2, testDestinationDirectory2);
 
-  String testSource3 = '${name.snakeCase}_base_api_service_test';
+  String testSource3 = '${originalName.snakeCase}_base_api_service_test';
   String testDestinationDirectory3 = 'test/domain/repositories';
   moveFileToDirectory(testSource3, testDestinationDirectory3);
 
-  String testSource6 = '${name.snakeCase}_usecase_test';
+  String testSource6 = '${originalName.snakeCase}_usecase_test';
   String testDestinationDirectory6 = 'test/domain/usecases';
   moveFileToDirectory(testSource6, testDestinationDirectory6);
 
-  String testSource5 = '${name.snakeCase}_repositorie_test';
+  String testSource5 = '${originalName.snakeCase}_repositorie_test';
   String testDestinationDirectory5 = 'test/data/repositories';
   moveFileToDirectory(testSource5, testDestinationDirectory5);
 
-  String testSource7 = '${name.snakeCase}_datasource_test';
+  String testSource7 = '${originalName.snakeCase}_datasource_test';
   String testDestinationDirectory7 = 'test/data/datasources';
   moveFileToDirectory(testSource7, testDestinationDirectory7);
 
-  String testSource8 = '${name.snakeCase}_model_test';
+  String testSource8 = '${originalName.snakeCase}_model_test';
   String testDestinationDirectory8 = 'test/data/models';
   moveFileToDirectory(testSource8, testDestinationDirectory8);
 
@@ -232,7 +233,7 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
     context.logger.info('🌐 Setting up API URLs...');
     String urlContent = '''
   // ${name} URLs
-  static const String ${name.camelCase}Url = '/${name.snakeCase}';
+  static const String ${originalName.camelCase}Url = '/${originalName.snakeCase}';
 ''';
     appUrl(urlContent);
   }
@@ -242,15 +243,16 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
   context.logger.info('🎉 Feature "$name" generated successfully!');
   context.logger.info('');
   context.logger.info('📋 Generated files:');
-  context.logger.info('   📂 lib/features/${name.snakeCase}/');
-  context.logger.info('   📂 lib/domain/entities/${name.snakeCase}/');
-  context.logger.info('   📂 lib/domain/failures/${name.snakeCase}/');
-  context.logger.info('   📂 lib/domain/repositories/${name.snakeCase}/');
-  context.logger.info('   📂 lib/domain/usecases/${name.snakeCase}/');
-  context.logger.info('   📂 lib/data/repositories/${name.snakeCase}/');
-  context.logger.info('   📂 lib/data/datasources/${name.snakeCase}/');
-  context.logger.info('   📂 lib/data/models/${name.snakeCase}/');
-  context.logger.info('   📂 test/features/${name.snakeCase}/');
+  context.logger.info('   📂 lib/features/${originalName.snakeCase}/');
+  context.logger.info('   📂 lib/domain/entities/${originalName.snakeCase}/');
+  context.logger.info('   📂 lib/domain/failures/${originalName.snakeCase}/');
+  context.logger
+      .info('   📂 lib/domain/repositories/${originalName.snakeCase}/');
+  context.logger.info('   📂 lib/domain/usecases/${originalName.snakeCase}/');
+  context.logger.info('   📂 lib/data/repositories/${originalName.snakeCase}/');
+  context.logger.info('   📂 lib/data/datasources/${originalName.snakeCase}/');
+  context.logger.info('   📂 lib/data/models/${originalName.snakeCase}/');
+  context.logger.info('   📂 test/features/${originalName.snakeCase}/');
   context.logger.info('');
   context.logger.info('🔧 Next steps:');
   context.logger.info('   1. Review the generated files');
@@ -260,7 +262,8 @@ import 'features/${name.snakeCase}/${name.snakeCase}_initial_params.dart';
   context.logger.info('   5. Integrate with your navigation');
   context.logger.info('');
   context.logger.info('🧪 To test your feature:');
-  context.logger.info('   flutter test test/features/${name.snakeCase}/');
+  context.logger
+      .info('   flutter test test/features/${originalName.snakeCase}/');
   context.logger.info('');
 
   progress.complete();
