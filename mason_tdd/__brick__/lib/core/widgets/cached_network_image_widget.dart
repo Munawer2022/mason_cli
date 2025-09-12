@@ -2,132 +2,665 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AppCachedNetworkImage extends StatelessWidget {
-  final String imageUrl;
+import '/config/theme/theme_data.dart';
+
+/// Configuration class for AppCachedNetworkImage styling and behavior
+class AppImageConfig {
+  // Size and layout
   final double? width;
   final double? height;
-  final BoxFit? fit;
-  final Widget? placeholder;
-  final Widget? errorWidget;
+  final BoxFit fit;
+  final Alignment alignment;
+
+  // Styling
   final BorderRadius? borderRadius;
   final Color? backgroundColor;
-  final double? memCacheWidth;
-  final double? memCacheHeight;
-  final double? maxWidthDiskCache;
-  final double? maxHeightDiskCache;
-  final Duration? fadeInDuration;
-  final Duration? fadeOutDuration;
-  final bool useOldImageOnUrlChange;
-  final bool cacheManager;
-  final bool showUserInitials;
-  final String? userName;
-  final Color? primaryColor;
+  final List<BoxShadow>? boxShadow;
+  final Border? border;
+  final DecorationImage? backgroundImage;
 
-  const AppCachedNetworkImage({
-    super.key,
-    required this.imageUrl,
+  // Cache settings
+  final int? memCacheWidth;
+  final int? memCacheHeight;
+  final int? maxWidthDiskCache;
+  final int? maxHeightDiskCache;
+  final bool enableMemoryCache;
+  final bool enableDiskCache;
+
+  // Animation
+  final Duration fadeInDuration;
+  final Duration fadeOutDuration;
+  final Curve fadeInCurve;
+  final Curve fadeOutCurve;
+  final bool useOldImageOnUrlChange;
+
+  // Loading indicator
+  final bool showLoadingIndicator;
+  final Widget? customLoadingWidget;
+  final Color? loadingBackgroundColor;
+  final Color? loadingIndicatorColor;
+  final double loadingIndicatorSize;
+  final double loadingIndicatorStrokeWidth;
+
+  // Error handling
+  final bool showErrorWidget;
+  final Widget? customErrorWidget;
+  final IconData errorIcon;
+  final Color? errorIconColor;
+  final double errorIconSize;
+  final Color? errorBackgroundColor;
+
+  // User initials (for profile images)
+  final bool enableUserInitials;
+  final Color? initialsBackgroundColor;
+  final Color? initialsTextColor;
+  final TextStyle? initialsTextStyle;
+  final String defaultInitial;
+
+  const AppImageConfig({
+    // Size and layout
     this.width,
     this.height,
-    this.fit,
-    this.placeholder,
-    this.errorWidget,
+    this.fit = BoxFit.cover,
+    this.alignment = Alignment.center,
+
+    // Styling
     this.borderRadius,
     this.backgroundColor,
+    this.boxShadow,
+    this.border,
+    this.backgroundImage,
+
+    // Cache settings
     this.memCacheWidth,
     this.memCacheHeight,
     this.maxWidthDiskCache,
     this.maxHeightDiskCache,
-    this.fadeInDuration,
-    this.fadeOutDuration,
+    this.enableMemoryCache = true,
+    this.enableDiskCache = true,
+
+    // Animation
+    this.fadeInDuration = const Duration(milliseconds: 300),
+    this.fadeOutDuration = const Duration(milliseconds: 100),
+    this.fadeInCurve = Curves.easeIn,
+    this.fadeOutCurve = Curves.easeOut,
     this.useOldImageOnUrlChange = false,
-    this.cacheManager = true,
-    this.showUserInitials = false,
-    this.userName,
-    this.primaryColor,
+
+    // Loading indicator
+    this.showLoadingIndicator = true,
+    this.customLoadingWidget,
+    this.loadingBackgroundColor,
+    this.loadingIndicatorColor,
+    this.loadingIndicatorSize = 24.0,
+    this.loadingIndicatorStrokeWidth = 2.0,
+
+    // Error handling
+    this.showErrorWidget = true,
+    this.customErrorWidget,
+    this.errorIcon = Icons.error_outline,
+    this.errorIconColor,
+    this.errorIconSize = 24.0,
+    this.errorBackgroundColor,
+
+    // User initials
+    this.enableUserInitials = false,
+    this.initialsBackgroundColor,
+    this.initialsTextColor,
+    this.initialsTextStyle,
+    this.defaultInitial = '?',
   });
 
-  String _getUserInitial(String? name) {
-    if (name == null || name.trim().isEmpty) return '?';
-    return name.trim().substring(0, 1).toUpperCase();
+  AppImageConfig copyWith({
+    double? width,
+    double? height,
+    BoxFit? fit,
+    Alignment? alignment,
+    BorderRadius? borderRadius,
+    Color? backgroundColor,
+    List<BoxShadow>? boxShadow,
+    Border? border,
+    DecorationImage? backgroundImage,
+    int? memCacheWidth,
+    int? memCacheHeight,
+    int? maxWidthDiskCache,
+    int? maxHeightDiskCache,
+    bool? enableMemoryCache,
+    bool? enableDiskCache,
+    Duration? fadeInDuration,
+    Duration? fadeOutDuration,
+    Curve? fadeInCurve,
+    Curve? fadeOutCurve,
+    bool? useOldImageOnUrlChange,
+    bool? showLoadingIndicator,
+    Widget? customLoadingWidget,
+    Color? loadingBackgroundColor,
+    Color? loadingIndicatorColor,
+    double? loadingIndicatorSize,
+    double? loadingIndicatorStrokeWidth,
+    bool? showErrorWidget,
+    Widget? customErrorWidget,
+    IconData? errorIcon,
+    Color? errorIconColor,
+    double? errorIconSize,
+    Color? errorBackgroundColor,
+    bool? enableUserInitials,
+    Color? initialsBackgroundColor,
+    Color? initialsTextColor,
+    TextStyle? initialsTextStyle,
+    String? defaultInitial,
+  }) {
+    return AppImageConfig(
+      width: width ?? this.width,
+      height: height ?? this.height,
+      fit: fit ?? this.fit,
+      alignment: alignment ?? this.alignment,
+      borderRadius: borderRadius ?? this.borderRadius,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      boxShadow: boxShadow ?? this.boxShadow,
+      border: border ?? this.border,
+      backgroundImage: backgroundImage ?? this.backgroundImage,
+      memCacheWidth: memCacheWidth ?? this.memCacheWidth,
+      memCacheHeight: memCacheHeight ?? this.memCacheHeight,
+      maxWidthDiskCache: maxWidthDiskCache ?? this.maxWidthDiskCache,
+      maxHeightDiskCache: maxHeightDiskCache ?? this.maxHeightDiskCache,
+      enableMemoryCache: enableMemoryCache ?? this.enableMemoryCache,
+      enableDiskCache: enableDiskCache ?? this.enableDiskCache,
+      fadeInDuration: fadeInDuration ?? this.fadeInDuration,
+      fadeOutDuration: fadeOutDuration ?? this.fadeOutDuration,
+      fadeInCurve: fadeInCurve ?? this.fadeInCurve,
+      fadeOutCurve: fadeOutCurve ?? this.fadeOutCurve,
+      useOldImageOnUrlChange:
+          useOldImageOnUrlChange ?? this.useOldImageOnUrlChange,
+      showLoadingIndicator: showLoadingIndicator ?? this.showLoadingIndicator,
+      customLoadingWidget: customLoadingWidget ?? this.customLoadingWidget,
+      loadingBackgroundColor:
+          loadingBackgroundColor ?? this.loadingBackgroundColor,
+      loadingIndicatorColor:
+          loadingIndicatorColor ?? this.loadingIndicatorColor,
+      loadingIndicatorSize: loadingIndicatorSize ?? this.loadingIndicatorSize,
+      loadingIndicatorStrokeWidth:
+          loadingIndicatorStrokeWidth ?? this.loadingIndicatorStrokeWidth,
+      showErrorWidget: showErrorWidget ?? this.showErrorWidget,
+      customErrorWidget: customErrorWidget ?? this.customErrorWidget,
+      errorIcon: errorIcon ?? this.errorIcon,
+      errorIconColor: errorIconColor ?? this.errorIconColor,
+      errorIconSize: errorIconSize ?? this.errorIconSize,
+      errorBackgroundColor: errorBackgroundColor ?? this.errorBackgroundColor,
+      enableUserInitials: enableUserInitials ?? this.enableUserInitials,
+      initialsBackgroundColor:
+          initialsBackgroundColor ?? this.initialsBackgroundColor,
+      initialsTextColor: initialsTextColor ?? this.initialsTextColor,
+      initialsTextStyle: initialsTextStyle ?? this.initialsTextStyle,
+      defaultInitial: defaultInitial ?? this.defaultInitial,
+    );
   }
+}
+
+/// Enum for different image types and presets
+enum AppImageType { standard, avatar, thumbnail, hero, card, background }
+
+/// Main AppCachedNetworkImage widget with improved architecture
+class AppCachedNetworkImage extends StatelessWidget {
+  // Core properties
+  final String? imageUrl;
+  final AppImageType type;
+  final AppImageConfig? config;
+
+  // Fallback and user info
+  final String? userName;
+  final String? fallbackAsset;
+  final Widget? fallbackWidget;
+
+  // Callbacks
+  final VoidCallback? onTap;
+  final VoidCallback? onImageLoaded;
+  final void Function(Object error)? onImageError;
+
+  // Accessibility
+  final String? semanticLabel;
+  final bool excludeFromSemantics;
+
+  const AppCachedNetworkImage({
+    super.key,
+    this.imageUrl,
+    this.type = AppImageType.standard,
+    this.config,
+    this.userName,
+    this.fallbackAsset,
+    this.fallbackWidget,
+    this.onTap,
+    this.onImageLoaded,
+    this.onImageError,
+    this.semanticLabel,
+    this.excludeFromSemantics = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final effectivePrimaryColor = primaryColor ?? theme.colorScheme.primary;
+    final effectiveConfig = config ?? _getDefaultConfig(context, type);
 
-    return ClipRRect(
-      borderRadius: borderRadius ?? BorderRadius.zero,
-      child: CachedNetworkImage(
-        imageUrl: imageUrl,
-        width: width,
-        height: height,
-        fit: fit ?? BoxFit.cover,
-        memCacheWidth: memCacheWidth?.toInt(),
-        memCacheHeight: memCacheHeight?.toInt(),
-        maxWidthDiskCache: maxWidthDiskCache?.toInt(),
-        maxHeightDiskCache: maxHeightDiskCache?.toInt(),
-        fadeInDuration: fadeInDuration ?? const Duration(milliseconds: 300),
-        fadeOutDuration: fadeOutDuration ?? const Duration(milliseconds: 300),
-        useOldImageOnUrlChange: useOldImageOnUrlChange,
-        imageBuilder: (context, imageProvider) => Container(
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            image: DecorationImage(
-              image: imageProvider,
-              fit: fit ?? BoxFit.cover,
-            ),
-          ),
-        ),
-        placeholder: (context, url) =>
-            placeholder ??
-            Container(
-              color: backgroundColor ?? Colors.grey[200],
-              child: Center(
-                child: SizedBox(
-                  width: 24.w,
-                  height: 24.w,
-                  child: CircularProgressIndicator.adaptive(
-                    strokeWidth: 2.w,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      effectivePrimaryColor,
-                    ),
-                  ),
+    Widget imageWidget = _buildImageWidget(context, effectiveConfig);
+
+    // Add tap functionality if provided
+    if (onTap != null) {
+      imageWidget = GestureDetector(onTap: onTap, child: imageWidget);
+    }
+
+    // Add semantics
+    if (!excludeFromSemantics) {
+      imageWidget = Semantics(
+        label: semanticLabel ?? 'Image',
+        image: true,
+        child: imageWidget,
+      );
+    }
+
+    return imageWidget;
+  }
+
+  AppImageConfig _getDefaultConfig(BuildContext context, AppImageType type) {
+    final theme = Theme.of(context);
+
+    switch (type) {
+      case AppImageType.avatar:
+        return AppImageConfig(
+          width: 40.0,
+          height: 40.0,
+          fit: BoxFit.cover,
+          borderRadius: BorderRadius.circular(20.0),
+          enableUserInitials: true,
+          initialsBackgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+          initialsTextColor: theme.colorScheme.primary,
+          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
+        );
+      case AppImageType.thumbnail:
+        return AppImageConfig(
+          width: 80.0,
+          height: 80.0,
+          fit: BoxFit.cover,
+          borderRadius: BorderRadius.circular(8.0),
+          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
+        );
+      case AppImageType.hero:
+        return AppImageConfig(
+          width: double.infinity,
+          height: 200.0,
+          fit: BoxFit.cover,
+          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
+          fadeInDuration: const Duration(milliseconds: 500),
+        );
+      case AppImageType.card:
+        return AppImageConfig(
+          fit: BoxFit.cover,
+          borderRadius: BorderRadius.circular(12.0),
+          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
+        );
+      case AppImageType.background:
+        return AppImageConfig(
+          fit: BoxFit.cover,
+          loadingBackgroundColor: theme.colorScheme.surface,
+          showLoadingIndicator: false,
+        );
+      default:
+        return AppImageConfig(
+          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
+        );
+    }
+  }
+
+  Widget _buildImageWidget(BuildContext context, AppImageConfig config) {
+    if (imageUrl == null || imageUrl!.trim().isEmpty) {
+      return _buildFallbackWidget(context, config);
+    }
+
+    return Container(
+      width: config.width?.w,
+      height: config.height?.h,
+      decoration: BoxDecoration(
+        borderRadius: config.borderRadius,
+        boxShadow: config.boxShadow,
+        border: config.border,
+      ),
+      child: ClipRRect(
+        borderRadius: config.borderRadius ?? BorderRadius.zero,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl!,
+          width: config.width?.w,
+          height: config.height?.h,
+          fit: config.fit,
+          alignment: config.alignment,
+          memCacheWidth: config.memCacheWidth,
+          memCacheHeight: config.memCacheHeight,
+          maxWidthDiskCache: config.maxWidthDiskCache,
+          maxHeightDiskCache: config.maxHeightDiskCache,
+          fadeInDuration: config.fadeInDuration,
+          fadeOutDuration: config.fadeOutDuration,
+          fadeInCurve: config.fadeInCurve,
+          fadeOutCurve: config.fadeOutCurve,
+          useOldImageOnUrlChange: config.useOldImageOnUrlChange,
+          imageBuilder: (context, imageProvider) {
+            onImageLoaded?.call();
+            return Container(
+              decoration: BoxDecoration(
+                color: config.backgroundColor,
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: config.fit,
+                  alignment: config.alignment,
                 ),
               ),
-            ),
-        errorWidget: (context, url, error) =>
-            errorWidget ??
-            (showUserInitials
-                ? Container(
-                    width: width,
-                    height: height,
-                    decoration: BoxDecoration(
-                      color: effectivePrimaryColor.withOpacity(0.2),
-                      borderRadius: borderRadius ?? BorderRadius.zero,
-                    ),
-                    child: Center(
-                      child: Text(
-                        _getUserInitial(userName),
-                        style: TextStyle(
-                          color: effectivePrimaryColor,
-                          fontSize: (width != null ? width! / 2 : 24).sp,
-                          // fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  )
-                : Container(
-                    color: backgroundColor ?? Colors.grey[200],
-                    child: Center(
-                      child: Icon(
-                        Icons.error_outline,
-                        color: Colors.grey[400],
-                        size: 24.w,
-                      ),
-                    ),
-                  )),
+            );
+          },
+          placeholder: config.showLoadingIndicator
+              ? (context, url) => _buildLoadingWidget(context, config)
+              : null,
+          errorWidget: config.showErrorWidget
+              ? (context, url, error) {
+                  onImageError?.call(error);
+                  return _buildErrorWidget(context, config);
+                }
+              : null,
+        ),
       ),
     );
   }
+
+  Widget _buildLoadingWidget(BuildContext context, AppImageConfig config) {
+    if (config.customLoadingWidget != null) {
+      return config.customLoadingWidget!;
+    }
+
+    return Container(
+      width: config.width?.w,
+      height: config.height?.h,
+      color:
+          config.loadingBackgroundColor ??
+          Theme.of(context).colorScheme.surfaceContainerHighest,
+      child: Center(
+        child: SizedBox(
+          width: config.loadingIndicatorSize.w,
+          height: config.loadingIndicatorSize.h,
+          child: CircularProgressIndicator.adaptive(
+            strokeWidth: config.loadingIndicatorStrokeWidth.w,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              config.loadingIndicatorColor ??
+                  Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorWidget(BuildContext context, AppImageConfig config) {
+    if (config.customErrorWidget != null) {
+      return config.customErrorWidget!;
+    }
+
+    // Show user initials for avatar type or when explicitly enabled
+    if (config.enableUserInitials && userName != null) {
+      return _buildUserInitialsWidget(context, config);
+    }
+
+    // Show fallback asset if available
+    if (fallbackAsset != null) {
+      return _buildAssetFallback(context, config);
+    }
+
+    // Show custom fallback widget
+    if (fallbackWidget != null) {
+      return SizedBox(
+        width: config.width?.w,
+        height: config.height?.h,
+        child: fallbackWidget,
+      );
+    }
+
+    // Default error widget
+    return Container(
+      width: config.width?.w,
+      height: config.height?.h,
+      color:
+          config.errorBackgroundColor ??
+          Theme.of(context).colorScheme.errorContainer,
+      child: Center(
+        child: Icon(
+          config.errorIcon,
+          color:
+              config.errorIconColor ??
+              Theme.of(context).colorScheme.onErrorContainer,
+          size: config.errorIconSize.w,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUserInitialsWidget(BuildContext context, AppImageConfig config) {
+    final theme = Theme.of(context);
+    final initials = _getUserInitials(userName);
+    final fontSize = config.width != null ? (config.width! / 2.5).sp : 16.0.sp;
+
+    return Container(
+      width: config.width?.w,
+      height: config.height?.h,
+      decoration: BoxDecoration(
+        color:
+            config.initialsBackgroundColor ??
+            theme.colorScheme.primary.withOpacity(0.1),
+        borderRadius: config.borderRadius,
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style:
+              config.initialsTextStyle?.copyWith(
+                fontSize: fontSize,
+                color: config.initialsTextColor,
+              ) ??
+              TextStyle(
+                fontSize: fontSize,
+                color: config.initialsTextColor ?? theme.colorScheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAssetFallback(BuildContext context, AppImageConfig config) {
+    return Container(
+      width: config.width?.w,
+      height: config.height?.h,
+      decoration: BoxDecoration(
+        borderRadius: config.borderRadius,
+        image: DecorationImage(
+          image: AssetImage(fallbackAsset!),
+          fit: config.fit,
+          alignment: config.alignment,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFallbackWidget(BuildContext context, AppImageConfig config) {
+    // Show user initials if available
+    if (config.enableUserInitials && userName != null) {
+      return _buildUserInitialsWidget(context, config);
+    }
+
+    // Show asset fallback
+    if (fallbackAsset != null) {
+      return _buildAssetFallback(context, config);
+    }
+
+    // Show custom fallback widget
+    if (fallbackWidget != null) {
+      return SizedBox(
+        width: config.width?.w,
+        height: config.height?.h,
+        child: fallbackWidget,
+      );
+    }
+
+    // Default fallback
+    return _buildErrorWidget(context, config);
+  }
+
+  String _getUserInitials(String? name) {
+    if (name == null || name.trim().isEmpty)
+      return config?.defaultInitial ?? '?';
+
+    final trimmedName = name.trim();
+    final words = trimmedName.split(RegExp(r'\s+'));
+
+    if (words.length >= 2) {
+      return '${words[0][0]}${words[1][0]}'.toUpperCase();
+    } else {
+      return trimmedName.substring(0, 1).toUpperCase();
+    }
+  }
+}
+
+/// Specialized image widgets for common use cases
+class AppAvatarImage extends StatelessWidget {
+  final String? imageUrl;
+  final String? userName;
+  final double size;
+  final AppImageConfig? config;
+  final VoidCallback? onTap;
+
+  const AppAvatarImage({
+    super.key,
+    this.imageUrl,
+    this.userName,
+    this.size = 40.0,
+    this.config,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCachedNetworkImage(
+      imageUrl: imageUrl,
+      userName: userName,
+      type: AppImageType.avatar,
+      config: (config ?? AppImageConfig()).copyWith(
+        width: size,
+        height: size,
+        borderRadius: BorderRadius.circular(size / 2),
+        enableUserInitials: true,
+      ),
+      onTap: onTap,
+      semanticLabel: 'Avatar for ${userName ?? "user"}',
+    );
+  }
+}
+
+class AppThumbnailImage extends StatelessWidget {
+  final String imageUrl;
+  final double? width;
+  final double? height;
+  final AppImageConfig? config;
+  final VoidCallback? onTap;
+
+  const AppThumbnailImage({
+    super.key,
+    required this.imageUrl,
+    this.width,
+    this.height,
+    this.config,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCachedNetworkImage(
+      imageUrl: imageUrl,
+      type: AppImageType.thumbnail,
+      config: (config ?? AppImageConfig()).copyWith(
+        width: width ?? 80.0,
+        height: height ?? 80.0,
+      ),
+      onTap: onTap,
+      semanticLabel: 'Thumbnail image',
+    );
+  }
+}
+
+class AppHeroImage extends StatelessWidget {
+  final String imageUrl;
+  final double? height;
+  final AppImageConfig? config;
+  final VoidCallback? onTap;
+  final String? heroTag;
+
+  const AppHeroImage({
+    super.key,
+    required this.imageUrl,
+    this.height,
+    this.config,
+    this.onTap,
+    this.heroTag,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Widget image = AppCachedNetworkImage(
+      imageUrl: imageUrl,
+      type: AppImageType.hero,
+      config: (config ?? AppImageConfig()).copyWith(
+        height: height ?? 200.0,
+        width: double.infinity,
+      ),
+      onTap: onTap,
+      semanticLabel: 'Hero image',
+    );
+
+    if (heroTag != null) {
+      image = Hero(tag: heroTag!, child: image);
+    }
+
+    return image;
+  }
+}
+
+class AppCardImage extends StatelessWidget {
+  final String imageUrl;
+  final double? width;
+  final double? height;
+  final AppImageConfig? config;
+  final VoidCallback? onTap;
+
+  const AppCardImage({
+    super.key,
+    required this.imageUrl,
+    this.width,
+    this.height,
+    this.config,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCachedNetworkImage(
+      imageUrl: imageUrl,
+      type: AppImageType.card,
+      config: (config ?? AppImageConfig()).copyWith(
+        width: width,
+        height: height,
+      ),
+      onTap: onTap,
+      semanticLabel: 'Card image',
+    );
+  }
+}
+
+/// Extension for easier usage
+extension AppImageExtensions on BuildContext {
+  AppImageConfig get defaultImageConfig => AppImageConfig(
+    loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
+    loadingIndicatorColor: theme.colorScheme.primary,
+    errorBackgroundColor: theme.colorScheme.errorContainer,
+    errorIconColor: theme.colorScheme.onErrorContainer,
+  );
 }
