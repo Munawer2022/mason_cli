@@ -60,7 +60,7 @@ Future<void> run(HookContext context) async {
     // 'equatable',
     'fpdart',
     'shimmer',
-    'connectivity_plus',
+    // 'connectivity_plus',
     'cached_network_image',
     'flutter_dotenv',
     'logger',

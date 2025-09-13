@@ -37,13 +37,12 @@ Widget build(BuildContext context) {
 return Scaffold(
   {{#isGet}}
       body: RefreshIndicator.adaptive(
-        onRefresh: cubit.refresh,
+        onRefresh: cubit.{{folder_name_camelCase}},
         child: BlocBuilder(
           bloc: cubit,
           builder: (context, state) {
             state as {{class_name}}State;
-            return StatusSwitcher<{{class_name}}Model>(
-                response: state.response,
+            return state.response.toWidget(
                 onCompleted: (context, data) => const SizedBox());
           }
         )

@@ -24,9 +24,7 @@ Future<void> {{folder_name_camelCase}}() async {
     {{folder_name_camelCase}}.fold(
       (l) => emit(state.copyWith(response: ApiResponse.error(l.error))),
       ((r) =>emit(state.copyWith(response: ApiResponse.completed({{class_name}}Model.fromJson(r))))));
-  }
-  Future<void> refresh() async => await {{folder_name_camelCase}}();
-  
+  }  
 }
 {{/isGet}}
 
