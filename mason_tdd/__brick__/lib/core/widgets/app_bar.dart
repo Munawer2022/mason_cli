@@ -4,364 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '/core/utils/extensions.dart';
 
-/// Configuration class for AppBar styling and behavior
-class AppBarConfig {
-  // Layout
-  final double toolbarHeight;
-  final double leadingWidth;
-  final bool centerTitle;
-  final bool automaticallyImplyLeading;
-  final EdgeInsets titlePadding;
-  final EdgeInsets actionsPadding;
-
-  // Styling
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-  final Color? shadowColor;
-  final Color? surfaceTintColor;
-  final double elevation;
-  final double scrolledUnderElevation;
-  final ShapeBorder? shape;
-
-  // Typography
-  final TextStyle? titleTextStyle;
-  final double titleFontSize;
-  final FontWeight titleFontWeight;
-
-  // Leading icon
-  final double leadingIconSize;
-  final EdgeInsets leadingIconPadding;
-  final Color? leadingIconColor;
-  final Color? leadingIconBackgroundColor;
-  final double leadingIconBorderRadius;
-
-  // System UI
-  final SystemUiOverlayStyle? systemOverlayStyle;
-  final bool forceMaterialTransparency;
-
-  const AppBarConfig({
-    // Layout defaults
-    this.toolbarHeight = kToolbarHeight,
-    this.leadingWidth = 80.0,
-    this.centerTitle = true,
-    this.automaticallyImplyLeading = false,
-    this.titlePadding = EdgeInsets.zero,
-    this.actionsPadding = const EdgeInsets.symmetric(horizontal: 8.0),
-
-    // Styling defaults
-    this.backgroundColor,
-    this.foregroundColor,
-    this.shadowColor,
-    this.surfaceTintColor,
-    this.elevation = 0.0,
-    this.scrolledUnderElevation = 0.0,
-    this.shape,
-
-    // Typography defaults
-    this.titleTextStyle,
-    this.titleFontSize = 24.0,
-    this.titleFontWeight = FontWeight.w600,
-
-    // Leading icon defaults
-    this.leadingIconSize = 14.0,
-    this.leadingIconPadding = const EdgeInsets.all(14.0),
-    this.leadingIconColor,
-    this.leadingIconBackgroundColor,
-    this.leadingIconBorderRadius = 8.0,
-
-    // System UI
-    this.systemOverlayStyle,
-    this.forceMaterialTransparency = false,
-  });
-
-  AppBarConfig copyWith({
-    double? toolbarHeight,
-    double? leadingWidth,
-    bool? centerTitle,
-    bool? automaticallyImplyLeading,
-    EdgeInsets? titlePadding,
-    EdgeInsets? actionsPadding,
-    Color? backgroundColor,
-    Color? foregroundColor,
-    Color? shadowColor,
-    Color? surfaceTintColor,
-    double? elevation,
-    double? scrolledUnderElevation,
-    ShapeBorder? shape,
-    TextStyle? titleTextStyle,
-    double? titleFontSize,
-    FontWeight? titleFontWeight,
-    double? leadingIconSize,
-    EdgeInsets? leadingIconPadding,
-    Color? leadingIconColor,
-    Color? leadingIconBackgroundColor,
-    double? leadingIconBorderRadius,
-    SystemUiOverlayStyle? systemOverlayStyle,
-    bool? forceMaterialTransparency,
-  }) {
-    return AppBarConfig(
-      toolbarHeight: toolbarHeight ?? this.toolbarHeight,
-      leadingWidth: leadingWidth ?? this.leadingWidth,
-      centerTitle: centerTitle ?? this.centerTitle,
-      automaticallyImplyLeading:
-          automaticallyImplyLeading ?? this.automaticallyImplyLeading,
-      titlePadding: titlePadding ?? this.titlePadding,
-      actionsPadding: actionsPadding ?? this.actionsPadding,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      foregroundColor: foregroundColor ?? this.foregroundColor,
-      shadowColor: shadowColor ?? this.shadowColor,
-      surfaceTintColor: surfaceTintColor ?? this.surfaceTintColor,
-      elevation: elevation ?? this.elevation,
-      scrolledUnderElevation:
-          scrolledUnderElevation ?? this.scrolledUnderElevation,
-      shape: shape ?? this.shape,
-      titleTextStyle: titleTextStyle ?? this.titleTextStyle,
-      titleFontSize: titleFontSize ?? this.titleFontSize,
-      titleFontWeight: titleFontWeight ?? this.titleFontWeight,
-      leadingIconSize: leadingIconSize ?? this.leadingIconSize,
-      leadingIconPadding: leadingIconPadding ?? this.leadingIconPadding,
-      leadingIconColor: leadingIconColor ?? this.leadingIconColor,
-      leadingIconBackgroundColor:
-          leadingIconBackgroundColor ?? this.leadingIconBackgroundColor,
-      leadingIconBorderRadius:
-          leadingIconBorderRadius ?? this.leadingIconBorderRadius,
-      systemOverlayStyle: systemOverlayStyle ?? this.systemOverlayStyle,
-      forceMaterialTransparency:
-          forceMaterialTransparency ?? this.forceMaterialTransparency,
-    );
-  }
-}
-
-/// Enum for different AppBar variants
-enum AppBarType {
-  standard,
-  search,
-  tabbed,
-  profile,
-  settings,
-  transparent,
-  colored,
-}
-
-/// Main CustomAppBar widget with improved architecture
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  // Core properties
-  final String? title;
-  final Widget? titleWidget;
-  final AppBarType type;
-  final AppBarConfig? config;
-
-  // Navigation
-  final bool showLeading;
-  final Widget? leading;
-  final VoidCallback? onLeadingPressed;
-  final String? leadingIconAsset;
-  final IconData? leadingIcon;
-
-  // Actions
-  final List<Widget>? actions;
-  final List<AppBarAction>? quickActions;
-
-  // Bottom
-  final PreferredSizeWidget? bottom;
-
-  // Behavior
-  final bool pinned;
-  final bool floating;
-  final bool snap;
-
-  const CustomAppBar({
-    super.key,
-    this.title,
-    this.titleWidget,
-    this.type = AppBarType.standard,
-    this.config,
-    this.showLeading = true,
-    this.leading,
-    this.onLeadingPressed,
-    this.leadingIconAsset,
-    this.leadingIcon,
-    this.actions,
-    this.quickActions,
-    this.bottom,
-    this.pinned = true,
-    this.floating = false,
-    this.snap = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final effectiveConfig = config ?? _getDefaultConfig(context);
-
-    return AppBar(
-      automaticallyImplyLeading: effectiveConfig.automaticallyImplyLeading,
-      backgroundColor:
-          effectiveConfig.backgroundColor ?? _getBackgroundColor(context, type),
-      foregroundColor: effectiveConfig.foregroundColor,
-      shadowColor: effectiveConfig.shadowColor,
-      surfaceTintColor: effectiveConfig.surfaceTintColor,
-      elevation: effectiveConfig.elevation,
-      scrolledUnderElevation: effectiveConfig.scrolledUnderElevation,
-      toolbarHeight: effectiveConfig.toolbarHeight.h,
-      leadingWidth: effectiveConfig.leadingWidth.w,
-      centerTitle: effectiveConfig.centerTitle,
-      titleSpacing: 0,
-      shape: effectiveConfig.shape,
-      systemOverlayStyle:
-          effectiveConfig.systemOverlayStyle ??
-          _getSystemOverlayStyle(context, type),
-      forceMaterialTransparency: effectiveConfig.forceMaterialTransparency,
-      leading: _buildLeading(context, effectiveConfig),
-      title: _buildTitle(context, effectiveConfig),
-      actions: _buildActions(context, effectiveConfig),
-      bottom: bottom,
-    );
-  }
-
-  AppBarConfig _getDefaultConfig(BuildContext context) {
-    return AppBarConfig(
-      backgroundColor: context.theme.scaffoldBackgroundColor,
-      titleTextStyle: context.textTheme.bodyLarge,
-    );
-  }
-
-  Color? _getBackgroundColor(BuildContext context, AppBarType type) {
-    switch (type) {
-      case AppBarType.transparent:
-        return Colors.transparent;
-      case AppBarType.colored:
-        return context.theme.primaryColor;
-      default:
-        return context.theme.scaffoldBackgroundColor;
-    }
-  }
-
-  SystemUiOverlayStyle? _getSystemOverlayStyle(
-    BuildContext context,
-    AppBarType type,
-  ) {
-    final isDark = context.theme.brightness == Brightness.dark;
-
-    switch (type) {
-      case AppBarType.transparent:
-        return SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
-        );
-      case AppBarType.colored:
-        return const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light,
-        );
-      default:
-        return SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
-        );
-    }
-  }
-
-  Widget? _buildLeading(BuildContext context, AppBarConfig config) {
-    if (!showLeading) return null;
-    if (leading != null) return leading;
-
-    return Container(
-      margin: EdgeInsets.only(left: 16.w),
-      child: IconButton(
-        padding: config.leadingIconPadding,
-        style: IconButton.styleFrom(
-          backgroundColor:
-              config.leadingIconBackgroundColor ??
-              context.theme.iconButtonTheme.style?.backgroundColor?.resolve({}),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              config.leadingIconBorderRadius.r,
-            ),
-          ),
-        ),
-        onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
-        icon: _buildLeadingIcon(context, config),
-      ),
-    );
-  }
-
-  Widget _buildLeadingIcon(BuildContext context, AppBarConfig config) {
-    if (leadingIconAsset != null) {
-      return Image.asset(
-        leadingIconAsset!,
-        color: config.leadingIconColor ?? context.theme.iconTheme.color,
-        height: config.leadingIconSize.h,
-        width: config.leadingIconSize.w,
-      );
-    }
-
-    return Icon(
-      leadingIcon ?? Icons.arrow_back_ios_new_rounded,
-      color: config.leadingIconColor ?? context.theme.iconTheme.color,
-      size: config.leadingIconSize.sp,
-    );
-  }
-
-  Widget? _buildTitle(BuildContext context, AppBarConfig config) {
-    if (titleWidget != null) return titleWidget;
-    if (title == null) return null;
-
-    return Text(
-      title!,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: (config.titleTextStyle ?? context.textTheme.bodyLarge)?.copyWith(
-        fontSize: config.titleFontSize.sp,
-        fontWeight: config.titleFontWeight,
-      ),
-    );
-  }
-
-  List<Widget>? _buildActions(BuildContext context, AppBarConfig config) {
-    final allActions = <Widget>[];
-
-    // Add quick actions
-    if (quickActions != null) {
-      allActions.addAll(
-        quickActions!.map((action) => _buildQuickAction(context, action)),
-      );
-    }
-
-    // Add custom actions
-    if (actions != null) {
-      allActions.addAll(actions!);
-    }
-
-    if (allActions.isEmpty) return null;
-
-    return [
-      ...allActions,
-      SizedBox(width: 16.w), // Right padding
-    ];
-  }
-
-  Widget _buildQuickAction(BuildContext context, AppBarAction action) {
-    return Container(
-      margin: EdgeInsets.only(right: 8.w),
-      child: IconButton(
-        onPressed: action.onPressed,
-        icon: action.icon,
-        tooltip: action.tooltip,
-        style: IconButton.styleFrom(
-          backgroundColor: action.backgroundColor,
-          foregroundColor: action.iconColor,
-        ),
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize => Size.fromHeight(
-    (config?.toolbarHeight ?? kToolbarHeight).h +
-        (bottom?.preferredSize.height ?? 0),
-  );
-}
-
 /// Class for defining quick actions
 class AppBarAction {
   final Widget icon;
@@ -379,167 +21,299 @@ class AppBarAction {
   });
 }
 
-/// Specialized AppBar widgets for common use cases
-class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String? hintText;
-  final TextEditingController? controller;
-  final ValueChanged<String>? onChanged;
-  final ValueChanged<String>? onSubmitted;
-  final VoidCallback? onClear;
-  final AppBarConfig? config;
-  final bool showLeading;
-  final List<Widget>? actions;
+/// Enhanced abstract class for CustomAppBar with improved functionality
+abstract class CustomAppBar {
+  // Default values
+  static const double _defaultToolbarHeight = kToolbarHeight;
+  static const double _defaultLeadingWidth = 80.0;
+  static const double _defaultLeadingIconSize = 14.0;
+  static const EdgeInsets _defaultLeadingIconPadding = EdgeInsets.all(14.0);
+  static const double _defaultTitleFontSize = 24.0;
+  static const double _defaultLeadingIconBorderRadius = 8.0;
 
-  const SearchAppBar({
-    super.key,
-    this.hintText = 'Search...',
-    this.controller,
-    this.onChanged,
-    this.onSubmitted,
-    this.onClear,
-    this.config,
-    this.showLeading = true,
-    this.actions,
-  });
+  /// Creates an AppBar with enhanced features
+  static PreferredSizeWidget getAppBar({
+    required BuildContext context,
+    // Core properties
+    String? title,
+    Widget? titleWidget,
 
-  @override
-  Widget build(BuildContext context) {
-    return CustomAppBar(
-      type: AppBarType.search,
-      config: config,
-      showLeading: showLeading,
-      titleWidget: _buildSearchField(context),
-      actions: actions,
-    );
-  }
+    // Layout
+    double? toolbarHeight,
+    double? leadingWidth,
+    bool centerTitle = true,
+    bool automaticallyImplyLeading = false,
+    EdgeInsets? titlePadding,
+    EdgeInsets? actionsPadding,
 
-  Widget _buildSearchField(BuildContext context) {
-    return Container(
-      height: 40.h,
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      decoration: BoxDecoration(
-        color: context.theme.cardColor,
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      child: TextField(
-        controller: controller,
-        onChanged: onChanged,
-        onSubmitted: onSubmitted,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: context.textTheme.bodyMedium?.copyWith(
-            color: context.theme.hintColor,
-          ),
-          prefixIcon: const Icon(Icons.search),
-          suffixIcon: controller?.text.isNotEmpty == true
-              ? IconButton(
-                  onPressed: () {
-                    controller?.clear();
-                    onClear?.call();
-                  },
-                  icon: const Icon(Icons.clear),
-                  iconSize: 20.sp,
-                )
-              : null,
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 12.h,
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize =>
-      Size.fromHeight((config?.toolbarHeight ?? kToolbarHeight).h);
-}
-
-class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String? userName;
-  final String? userSubtitle;
-  final Widget? avatar;
-  final List<AppBarAction>? actions;
-  final AppBarConfig? config;
-
-  const ProfileAppBar({
-    super.key,
-    this.userName,
-    this.userSubtitle,
-    this.avatar,
-    this.actions,
-    this.config,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomAppBar(
-      type: AppBarType.profile,
-      config: config?.copyWith(centerTitle: false),
-      showLeading: false,
-      titleWidget: _buildProfileTitle(context),
-      quickActions: actions,
-    );
-  }
-
-  Widget _buildProfileTitle(BuildContext context) {
-    return Row(
-      children: [
-        if (avatar != null) ...[avatar!, 16.horizontalSpace],
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (userName != null)
-                Text(
-                  userName!,
-                  style: context.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              if (userSubtitle != null)
-                Text(
-                  userSubtitle!,
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: context.theme.hintColor,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  Size get preferredSize =>
-      Size.fromHeight((config?.toolbarHeight ?? kToolbarHeight).h);
-}
-
-/// Extension for easier usage
-extension AppBarExtensions on BuildContext {
-  AppBarConfig get defaultAppBarConfig => AppBarConfig(
-    backgroundColor: theme.scaffoldBackgroundColor,
-    titleTextStyle: textTheme.bodyLarge,
-    leadingIconColor: theme.iconTheme.color,
-  );
-
-  PreferredSizeWidget simpleAppBar(
-    String title, {
-    List<Widget>? actions,
+    // Navigation
     bool showLeading = true,
+    Widget? leading,
+    VoidCallback? onLeadingPressed,
+    String? leadingIconAsset,
+    IconData? leadingIcon,
+
+    // Actions
+    List<Widget>? actions,
+    List<AppBarAction>? quickActions,
+
+    // Styling
+    Color? backgroundColor,
+    Color? foregroundColor,
+    Color? shadowColor,
+    Color? surfaceTintColor,
+    double elevation = 0.0,
+    double scrolledUnderElevation = 0.0,
+    ShapeBorder? shape,
+
+    // Typography
+    TextStyle? titleTextStyle,
+    double? titleFontSize,
+    FontWeight? titleFontWeight,
+
+    // Leading icon styling
+    double? leadingIconSize,
+    EdgeInsets? leadingIconPadding,
+    Color? leadingIconColor,
+    Color? leadingIconBackgroundColor,
+    double? leadingIconBorderRadius,
+
+    // System UI
+    SystemUiOverlayStyle? systemOverlayStyle,
+    bool forceMaterialTransparency = false,
+
+    // Bottom
+    PreferredSizeWidget? bottom,
+
+    // Accessibility
+    String? tooltip,
+    String? semanticLabel,
+
+    // Animation
+    Duration? animationDuration,
   }) {
-    return CustomAppBar(
-      title: title,
-      showLeading: showLeading,
-      actions: actions,
-      config: defaultAppBarConfig,
+    assert(
+      title != null ||
+          titleWidget != null ||
+          actions != null ||
+          quickActions != null,
+      'AppBar must have at least title, titleWidget, or actions',
+    );
+
+    final effectiveToolbarHeight = toolbarHeight?.h ?? _defaultToolbarHeight.h;
+    final effectiveLeadingWidth = leadingWidth?.w ?? _defaultLeadingWidth.w;
+
+    Widget appBar = AppBar(
+      automaticallyImplyLeading: automaticallyImplyLeading,
+      backgroundColor: backgroundColor ?? _getDefaultBackgroundColor(context),
+      foregroundColor: foregroundColor,
+      shadowColor: shadowColor,
+      surfaceTintColor: surfaceTintColor,
+      elevation: elevation,
+      scrolledUnderElevation: scrolledUnderElevation,
+      toolbarHeight: effectiveToolbarHeight,
+      leadingWidth: effectiveLeadingWidth,
+      centerTitle: centerTitle,
+      titleSpacing: 0,
+      shape: shape,
+      systemOverlayStyle:
+          systemOverlayStyle ?? _getDefaultSystemOverlayStyle(context),
+      forceMaterialTransparency: forceMaterialTransparency,
+      leading: _buildLeading(
+        context,
+        showLeading,
+        leading,
+        onLeadingPressed,
+        leadingIconAsset,
+        leadingIcon,
+        leadingIconSize,
+        leadingIconPadding,
+        leadingIconColor,
+        leadingIconBackgroundColor,
+        leadingIconBorderRadius,
+      ),
+      title: _buildTitle(
+        context,
+        title,
+        titleWidget,
+        titleTextStyle,
+        titleFontSize,
+        titleFontWeight,
+      ),
+      actions: _buildActions(context, actions, quickActions, actionsPadding),
+      bottom: bottom,
+    );
+
+    // Add tooltip if provided
+    if (tooltip != null) {
+      appBar = Tooltip(message: tooltip, child: appBar);
+    }
+
+    // Add semantic label if provided
+    if (semanticLabel != null) {
+      appBar = Semantics(label: semanticLabel, child: appBar);
+    }
+
+    return PreferredSize(
+      preferredSize: Size.fromHeight(
+        effectiveToolbarHeight + (bottom?.preferredSize.height ?? 0),
+      ),
+      child: appBar,
+    );
+  }
+
+  // Helper methods
+  static Color _getDefaultBackgroundColor(BuildContext context) {
+    return context.theme.scaffoldBackgroundColor;
+  }
+
+  static SystemUiOverlayStyle _getDefaultSystemOverlayStyle(
+    BuildContext context,
+  ) {
+    final isDark = context.theme.brightness == Brightness.dark;
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+    );
+  }
+
+  static Widget? _buildLeading(
+    BuildContext context,
+    bool showLeading,
+    Widget? leading,
+    VoidCallback? onLeadingPressed,
+    String? leadingIconAsset,
+    IconData? leadingIcon,
+    double? leadingIconSize,
+    EdgeInsets? leadingIconPadding,
+    Color? leadingIconColor,
+    Color? leadingIconBackgroundColor,
+    double? leadingIconBorderRadius,
+  ) {
+    if (!showLeading) return null;
+    if (leading != null) return leading;
+
+    final effectiveLeadingIconSize =
+        leadingIconSize?.sp ?? _defaultLeadingIconSize.sp;
+    final effectiveLeadingIconPadding =
+        leadingIconPadding ?? _defaultLeadingIconPadding;
+    final effectiveLeadingIconBorderRadius =
+        leadingIconBorderRadius?.r ?? _defaultLeadingIconBorderRadius.r;
+
+    return Container(
+      margin: EdgeInsets.only(left: 16.w),
+      child: IconButton(
+        padding: effectiveLeadingIconPadding,
+        style: IconButton.styleFrom(
+          backgroundColor:
+              leadingIconBackgroundColor ??
+              context.theme.iconButtonTheme.style?.backgroundColor?.resolve({}),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              effectiveLeadingIconBorderRadius,
+            ),
+          ),
+        ),
+        onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
+        icon: _buildLeadingIcon(
+          context,
+          leadingIconAsset,
+          leadingIcon,
+          effectiveLeadingIconSize,
+          leadingIconColor,
+        ),
+      ),
+    );
+  }
+
+  static Widget _buildLeadingIcon(
+    BuildContext context,
+    String? leadingIconAsset,
+    IconData? leadingIcon,
+    double leadingIconSize,
+    Color? leadingIconColor,
+  ) {
+    if (leadingIconAsset != null) {
+      return Image.asset(
+        leadingIconAsset,
+        color: leadingIconColor ?? context.theme.iconTheme.color,
+        height: leadingIconSize,
+        width: leadingIconSize,
+      );
+    }
+
+    return Icon(
+      leadingIcon ?? Icons.arrow_back_ios_new_rounded,
+      color: leadingIconColor ?? context.theme.iconTheme.color,
+      size: leadingIconSize,
+    );
+  }
+
+  static Widget? _buildTitle(
+    BuildContext context,
+    String? title,
+    Widget? titleWidget,
+    TextStyle? titleTextStyle,
+    double? titleFontSize,
+    FontWeight? titleFontWeight,
+  ) {
+    if (titleWidget != null) return titleWidget;
+    if (title == null) return null;
+
+    final effectiveTitleFontSize =
+        titleFontSize?.sp ?? _defaultTitleFontSize.sp;
+
+    return Text(
+      title,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: (titleTextStyle ?? context.textTheme.bodyLarge)?.copyWith(
+        fontSize: effectiveTitleFontSize,
+        fontWeight: titleFontWeight ?? FontWeight.w600,
+      ),
+    );
+  }
+
+  static List<Widget>? _buildActions(
+    BuildContext context,
+    List<Widget>? actions,
+    List<AppBarAction>? quickActions,
+    EdgeInsets? actionsPadding,
+  ) {
+    final allActions = <Widget>[];
+
+    // Add quick actions
+    if (quickActions != null) {
+      allActions.addAll(
+        quickActions.map((action) => _buildQuickAction(context, action)),
+      );
+    }
+
+    // Add custom actions
+    if (actions != null) {
+      allActions.addAll(actions);
+    }
+
+    if (allActions.isEmpty) return null;
+
+    return [
+      ...allActions,
+      SizedBox(width: 16.w), // Right padding
+    ];
+  }
+
+  static Widget _buildQuickAction(BuildContext context, AppBarAction action) {
+    return Container(
+      margin: EdgeInsets.only(right: 8.w),
+      child: IconButton(
+        onPressed: action.onPressed,
+        icon: action.icon,
+        tooltip: action.tooltip,
+        style: IconButton.styleFrom(
+          backgroundColor: action.backgroundColor,
+          foregroundColor: action.iconColor,
+        ),
+      ),
     );
   }
 }
