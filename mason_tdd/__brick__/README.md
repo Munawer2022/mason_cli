@@ -1,4 +1,4 @@
-# 🚀 Flutter TDD Architecture Template
+# 🚀 Flutter TDD Architecture
 
 A comprehensive Flutter project template implementing **Clean Architecture** with **Test-Driven Development (TDD)** principles, featuring modern state management, dependency injection, and production-ready utilities.
 

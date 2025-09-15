@@ -36,5 +36,39 @@ class AppColors {
   static const Color inverseSurface = Color(0xFF121212);
   static const Color onInverseSurface = Color(0xFFFFFFFF);
   static const Color inversePrimary = Color(0xFF1976D2);
-}
 
+  // Color Scheme
+  static ColorScheme colorScheme = ColorScheme(
+    brightness: Brightness.light,
+    primary: primary,
+    onPrimary: onPrimary,
+    primaryContainer: primaryVariant,
+    onPrimaryContainer: onPrimary,
+    secondary: secondary,
+    onSecondary: onSecondary,
+    secondaryContainer: secondaryVariant,
+    onSecondaryContainer: onSecondary,
+    tertiary: secondary,
+    onTertiary: onSecondary,
+    tertiaryContainer: secondaryVariant,
+    onTertiaryContainer: onSecondary,
+    error: error,
+    onError: onPrimary,
+    errorContainer: error,
+    onErrorContainer: onPrimary,
+    background: background,
+    onBackground: onBackground,
+    surface: surface,
+    onSurface: onSurface,
+    surfaceVariant: surface,
+    onSurfaceVariant: onSurface,
+    outline: divider,
+    outlineVariant: divider,
+    shadow: shadow,
+    scrim: scrim,
+    inverseSurface: inverseSurface,
+    onInverseSurface: onInverseSurface,
+    inversePrimary: inversePrimary,
+    surfaceTint: primary,
+  );
+}
