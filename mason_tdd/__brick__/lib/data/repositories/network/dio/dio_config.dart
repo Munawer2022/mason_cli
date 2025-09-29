@@ -1,368 +1,204 @@
-// import 'dart:developer';
-// import 'dart:io';
+import 'dart:developer';
 
-// import 'package:dio/dio.dart';
-// import 'package:fpdart/fpdart.dart';
+import 'package:dio/dio.dart';
 
-// import '/core/utils/app_url.dart';
-// import '/data/datasources/auth/login_data_sources.dart';
-// import '/data/models/local/local_user_info_store_model.dart';
-// import '/domain/repositories/local/local_storage_base_api_service.dart';
+import '/data/datasources/auth/login_data_sources.dart';
+import '/domain/repositories/local/local_storage_base_api_service.dart';
 
-// class DioConfig {
-//   static Dio createDio({
-//     required LoginDataSources loginDataSources,
-//     required LocalStorageRepository localStorageRepository,
-//     String? baseUrl,
-//     Duration? connectTimeout,
-//     Duration? receiveTimeout,
-//     Duration? sendTimeout,
-//   }) {
-//     final dio = Dio();
+class DioConfig {
+  static Dio createDio({
+    required LoginDataSources loginDataSources,
+    required LocalStorageRepository localStorageRepository,
+    String? baseUrl,
+    Duration? connectTimeout,
+    Duration? receiveTimeout,
+    Duration? sendTimeout,
+    bool enableRetry = true,
+  }) {
+    final dio = Dio();
 
-//     // Base configuration
-//     dio.options = BaseOptions(
-//       baseUrl: baseUrl ?? AppUrl.baseUrl,
-//       connectTimeout: connectTimeout ?? const Duration(seconds: 30),
-//       receiveTimeout: receiveTimeout ?? const Duration(seconds: 30),
-//       sendTimeout: sendTimeout ?? const Duration(seconds: 30),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Accept': 'application/json',
-//       },
-//     );
+    // Base configuration
+    dio.options = BaseOptions(
+      baseUrl: baseUrl ?? '',
+      connectTimeout: connectTimeout ?? const Duration(seconds: 30),
+      receiveTimeout: receiveTimeout ?? const Duration(seconds: 30),
+      sendTimeout: sendTimeout ?? const Duration(seconds: 30),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      validateStatus: (status) => status != null && status < 500,
+    );
 
-//     // Add interceptors
-//     dio.interceptors.addAll([
-//       LoggingInterceptor(),
-//       AuthInterceptor(loginDataSources, localStorageRepository),
-//       ErrorInterceptor(),
-//       RetryInterceptor(),
-//       CacheInterceptor(),
-//     ]);
+    // Add interceptors in order
+    dio.interceptors.addAll([
+      AuthInterceptor(loginDataSources, localStorageRepository),
+      if (enableRetry) RetryInterceptor(dio),
+      LoggingInterceptor(),
+    ]);
 
-//     return dio;
-//   }
-// }
+    return dio;
+  }
+}
 
-// // Enhanced Logging Interceptor
-// class LoggingInterceptor extends Interceptor {
-//   @override
-//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-//     final timestamp = DateTime.now().toIso8601String();
-//     log('🌐 [$timestamp] REQUEST[${options.method}] => ${options.uri}');
-//     log('Headers: ${options.headers}');
-//     if (options.data != null) {
-//       log('Data: ${options.data}');
-//     }
-//     if (options.queryParameters.isNotEmpty) {
-//       log('Query Parameters: ${options.queryParameters}');
-//     }
-//     handler.next(options);
-//   }
+// Enhanced Authentication Interceptor
+class AuthInterceptor extends Interceptor {
+  final LoginDataSources _loginDataSources;
+  final LocalStorageRepository _localStorageRepository;
 
-//   @override
-//   void onResponse(Response response, ResponseInterceptorHandler handler) {
-//     final timestamp = DateTime.now().toIso8601String();
-//     log(
-//       '✅ [$timestamp] RESPONSE[${response.statusCode}] => ${response.requestOptions.uri}',
-//     );
-//     log('Response Data: ${response.data}');
-//     handler.next(response);
-//   }
+  AuthInterceptor(this._loginDataSources, this._localStorageRepository);
 
-//   @override
-//   void onError(DioException err, ErrorInterceptorHandler handler) {
-//     final timestamp = DateTime.now().toIso8601String();
-//     log(
-//       '❌ [$timestamp] ERROR[${err.response?.statusCode}] => ${err.requestOptions.uri}',
-//     );
-//     log('Error Type: ${err.type}');
-//     log('Error Message: ${err.message}');
-//     if (err.response?.data != null) {
-//       log('Error Data: ${err.response?.data}');
-//     }
-//     handler.next(err);
-//   }
-// }
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    final token = _loginDataSources.state.token;
+    if (token.isNotEmpty) {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
+    handler.next(options);
+  }
 
-// // Enhanced Authentication Interceptor
-// class AuthInterceptor extends Interceptor {
-//   final LoginDataSources _loginDataSources;
-//   final LocalStorageRepository _localStorageRepository;
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    if (err.response?.statusCode == 401) {
+      // Token might be expired, clear it
+      _loginDataSources.close();
+      _localStorageRepository.removeUserData();
+    }
+    handler.next(err);
+  }
+}
 
-//   AuthInterceptor(this._loginDataSources, this._localStorageRepository);
+// Retry Interceptor for failed requests
+class RetryInterceptor extends Interceptor {
+  final Dio dio;
+  final int maxRetries;
+  final Duration retryDelay;
 
-//   @override
-//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-//     final token = _loginDataSources.state.token;
-//     if (token.isNotEmpty) {
-//       options.headers['Authorization'] = 'Bearer $token';
-//     }
-//     handler.next(options);
-//   }
+  RetryInterceptor(
+    this.dio, {
+    this.maxRetries = 3,
+    this.retryDelay = const Duration(seconds: 1),
+  });
 
-//   @override
-//   void onError(DioException err, ErrorInterceptorHandler handler) async {
-//     if (err.response?.statusCode == 401) {
-//       // Token expired, try to refresh
-//       final refreshToken = _loginDataSources.state.refreshToken;
-//       if (refreshToken.isNotEmpty) {
-//         try {
-//           final dio = Dio();
-//           final refreshResponse = await dio.post(
-//             AppUrl.refreshToken,
-//             data: {'refreshToken': refreshToken},
-//             options: Options(headers: {'Content-Type': 'application/json'}),
-//           );
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    if (_shouldRetry(err) && err.requestOptions.extra['retryCount'] == null) {
+      _retry(err.requestOptions, handler);
+    } else {
+      handler.next(err);
+    }
+  }
 
-//           if (refreshResponse.statusCode == 200) {
-//             final newTokens = LocalUserInfoStoreModel.fromJson(
-//               refreshResponse.data,
-//             );
+  bool _shouldRetry(DioException error) {
+    return error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.receiveTimeout ||
+        error.type == DioExceptionType.sendTimeout ||
+        (error.response?.statusCode != null &&
+            error.response!.statusCode! >= 500);
+  }
 
-//             await _localStorageRepository.setUserData(
-//               localUserInfoStoreModel: newTokens,
-//             );
+  void _retry(
+    RequestOptions requestOptions,
+    ErrorInterceptorHandler handler,
+  ) async {
+    final retryCount = (requestOptions.extra['retryCount'] as int?) ?? 0;
 
-//             _loginDataSources.setLoginDataSources(
-//               localUserInfoStoreModel: newTokens,
-//             );
+    if (retryCount >= maxRetries) {
+      handler.next(
+        DioException(
+          requestOptions: requestOptions,
+          error: 'Max retries exceeded',
+          type: DioExceptionType.unknown,
+        ),
+      );
+      return;
+    }
 
-//             // Retry the original request with new token
-//             final newOptions = err.requestOptions;
-//             newOptions.headers['Authorization'] = 'Bearer ${newTokens.token}';
+    requestOptions.extra['retryCount'] = retryCount + 1;
 
-//             final retryResponse = await dio.fetch(newOptions);
-//             handler.resolve(retryResponse);
-//             return;
-//           }
-//         } catch (e) {
-//           log('Token refresh failed: $e');
-//           // Clear tokens and redirect to login
-//           await _localStorageRepository.clearUserData();
-//         }
-//       }
-//     }
-//     handler.next(err);
-//   }
-// }
+    // Add exponential backoff
+    await Future.delayed(
+      Duration(milliseconds: retryDelay.inMilliseconds * (retryCount + 1)),
+    );
 
-// // Error Interceptor for global error handling
-// class ErrorInterceptor extends Interceptor {
-//   @override
-//   void onError(DioException err, ErrorInterceptorHandler handler) {
-//     // Add any global error handling logic here
-//     // For example, showing global error messages, logging to analytics, etc.
+    try {
+      final response = await dio.fetch(requestOptions);
+      handler.resolve(response);
+    } on DioException catch (e) {
+      if (retryCount + 1 >= maxRetries) {
+        handler.next(e);
+      } else {
+        _retry(requestOptions, handler);
+      }
+    }
+  }
+}
 
-//     if (err.type == DioExceptionType.unknown && err.error is SocketException) {
-//       // Handle no internet connection
-//       log('No internet connection detected');
-//     }
+// Enhanced Logging Interceptor
+class LoggingInterceptor extends Interceptor {
+  final bool logRequestBody;
+  final bool logResponseBody;
+  final int maxLogLength;
 
-//     // Log to analytics or crash reporting service
-//     _logErrorToAnalytics(err);
+  LoggingInterceptor({
+    this.logRequestBody = false,
+    this.logResponseBody = false,
+    this.maxLogLength = 1000,
+  });
 
-//     handler.next(err);
-//   }
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    final method = options.method.toUpperCase();
+    final url = options.uri.toString();
 
-//   void _logErrorToAnalytics(DioException error) {
-//     // Implement analytics logging here
-//     // Example: Firebase Analytics, Sentry, etc.
-//     log('Analytics: Network error logged - ${error.type}');
-//   }
-// }
+    log('🌐 REQUEST[$method] => $url');
 
-// // Retry Interceptor for automatic retries
-// class RetryInterceptor extends Interceptor {
-//   final int maxRetries;
-//   final Duration retryDelay;
+    if (logRequestBody && options.data != null) {
+      final body = options.data.toString();
+      final truncatedBody = body.length > maxLogLength
+          ? '${body.substring(0, maxLogLength)}...'
+          : body;
+      log('📤 Request Body: $truncatedBody');
+    }
 
-//   RetryInterceptor({
-//     this.maxRetries = 3,
-//     this.retryDelay = const Duration(seconds: 1),
-//   });
+    handler.next(options);
+  }
 
-//   @override
-//   void onError(DioException err, ErrorInterceptorHandler handler) async {
-//     if (_shouldRetry(err) && err.requestOptions.extra['retryCount'] == null) {
-//       err.requestOptions.extra['retryCount'] = 0;
-//     }
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    final statusCode = response.statusCode;
+    final url = response.requestOptions.uri.toString();
 
-//     final retryCount = err.requestOptions.extra['retryCount'] ?? 0;
+    log('✅ RESPONSE[$statusCode] => $url');
 
-//     if (_shouldRetry(err) && retryCount < maxRetries) {
-//       err.requestOptions.extra['retryCount'] = retryCount + 1;
+    if (logResponseBody && response.data != null) {
+      final body = response.data.toString();
+      final truncatedBody = body.length > maxLogLength
+          ? '${body.substring(0, maxLogLength)}...'
+          : body;
+      log('📥 Response Body: $truncatedBody');
+    }
 
-//       log(
-//         '🔄 Retrying request (${retryCount + 1}/$maxRetries): ${err.requestOptions.uri}',
-//       );
+    handler.next(response);
+  }
 
-//       await Future.delayed(retryDelay * (retryCount + 1));
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    final method = err.requestOptions.method.toUpperCase();
+    final url = err.requestOptions.uri.toString();
+    final statusCode = err.response?.statusCode;
 
-//       try {
-//         final dio = Dio();
-//         final response = await dio.fetch(err.requestOptions);
-//         handler.resolve(response);
-//         return;
-//       } catch (e) {
-//         log('Retry failed: $e');
-//       }
-//     }
+    log('❌ ERROR[$statusCode] $method => $url');
+    log('💥 Error: ${err.message}');
 
-//     handler.next(err);
-//   }
+    if (err.response?.data != null) {
+      final errorBody = err.response!.data.toString();
+      final truncatedError = errorBody.length > maxLogLength
+          ? '${errorBody.substring(0, maxLogLength)}...'
+          : errorBody;
+      log('📥 Error Response: $truncatedError');
+    }
 
-//   bool _shouldRetry(DioException error) {
-//     return error.type == DioExceptionType.connectionTimeout ||
-//         error.type == DioExceptionType.receiveTimeout ||
-//         error.type == DioExceptionType.sendTimeout ||
-//         (error.type == DioExceptionType.unknown &&
-//             error.error is SocketException) ||
-//         (error.response?.statusCode ?? 0) >= 500;
-//   }
-// }
-
-// // Cache Interceptor for response caching
-// class CacheInterceptor extends Interceptor {
-//   final Map<String, _CacheEntry> _cache = {};
-//   final Duration defaultCacheDuration;
-
-//   CacheInterceptor({this.defaultCacheDuration = const Duration(minutes: 5)});
-
-//   @override
-//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-//     if (options.method == 'GET' && _shouldCache(options)) {
-//       final cacheKey = _generateCacheKey(options);
-//       final cachedEntry = _cache[cacheKey];
-
-//       if (cachedEntry != null && !cachedEntry.isExpired) {
-//         log('📦 Serving cached response for: ${options.uri}');
-//         handler.resolve(cachedEntry.response);
-//         return;
-//       }
-//     }
-
-//     handler.next(options);
-//   }
-
-//   @override
-//   void onResponse(Response response, ResponseInterceptorHandler handler) {
-//     if (response.requestOptions.method == 'GET' &&
-//         _shouldCache(response.requestOptions) &&
-//         response.statusCode == 200) {
-//       final cacheKey = _generateCacheKey(response.requestOptions);
-//       _cache[cacheKey] = _CacheEntry(
-//         response: response,
-//         timestamp: DateTime.now(),
-//         duration: defaultCacheDuration,
-//       );
-//       log('📦 Cached response for: ${response.requestOptions.uri}');
-//     }
-
-//     handler.next(response);
-//   }
-
-//   bool _shouldCache(RequestOptions options) {
-//     // Add logic to determine which requests should be cached
-//     // For example, cache user profile, settings, etc.
-//     return options.path.contains('/profile') ||
-//         options.path.contains('/settings') ||
-//         options.path.contains('/config');
-//   }
-
-//   String _generateCacheKey(RequestOptions options) {
-//     return '${options.method}_${options.path}_${options.queryParameters.hashCode}';
-//   }
-
-//   void clearCache() {
-//     _cache.clear();
-//     log('🗑️ Cache cleared');
-//   }
-
-//   void removeExpiredEntries() {
-//     _cache.removeWhere((key, entry) => entry.isExpired);
-//   }
-// }
-
-// class _CacheEntry {
-//   final Response response;
-//   final DateTime timestamp;
-//   final Duration duration;
-
-//   _CacheEntry({
-//     required this.response,
-//     required this.timestamp,
-//     required this.duration,
-//   });
-
-//   bool get isExpired => DateTime.now().difference(timestamp) > duration;
-// }
-
-// // Form Data Helper
-// class FormDataHelper {
-//   static Future<FormData> createFormData({
-//     required Map<String, dynamic> data,
-//     List<File>? files,
-//     String fileFieldName = 'files',
-//   }) async {
-//     final formData = FormData();
-
-//     // Add regular fields
-//     for (final entry in data.entries) {
-//       if (entry.value != null) {
-//         formData.fields.add(MapEntry(entry.key, entry.value.toString()));
-//       }
-//     }
-
-//     // Add files
-//     if (files != null) {
-//       for (int i = 0; i < files.length; i++) {
-//         final file = files[i];
-//         if (await file.exists()) {
-//           formData.files.add(
-//             MapEntry(
-//               '$fileFieldName[$i]',
-//               await MultipartFile.fromFile(
-//                 file.path,
-//                 filename: file.path.split('/').last,
-//               ),
-//             ),
-//           );
-//         }
-//       }
-//     }
-
-//     return formData;
-//   }
-
-//   static FormData createFormDataWithBytes({
-//     required Map<String, dynamic> data,
-//     Map<String, List<int>>? fileBytes,
-//     Map<String, String>? fileNames,
-//   }) {
-//     final formData = FormData();
-
-//     // Add regular fields
-//     for (final entry in data.entries) {
-//       if (entry.value != null) {
-//         formData.fields.add(MapEntry(entry.key, entry.value.toString()));
-//       }
-//     }
-
-//     // Add file bytes
-//     if (fileBytes != null) {
-//       for (final entry in fileBytes.entries) {
-//         final fileName = fileNames?[entry.key] ?? '${entry.key}.bin';
-//         formData.files.add(
-//           MapEntry(
-//             entry.key,
-//             MultipartFile.fromBytes(entry.value, filename: fileName),
-//           ),
-//         );
-//       }
-//     }
-
-//     return formData;
-//   }
-// }
+    handler.next(err);
+  }
+}

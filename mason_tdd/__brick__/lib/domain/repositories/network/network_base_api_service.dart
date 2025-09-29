@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '/domain/failures/network/network_failure.dart';
@@ -6,33 +7,51 @@ abstract class NetworkBaseApiService {
   Future<Either<NetworkFailure, T>> get<T>({
     required String url,
     Map<String, dynamic>? queryParams,
+    Map<String, String>? headers,
+    CancelToken? cancelToken,
   });
 
   Future<Either<NetworkFailure, T>> post<T>({
     required String url,
     required Map<String, dynamic> body,
     Map<String, String>? headers,
-    // Map<String, dynamic>? queryParams,
-    // bool isFormData = false
+    Map<String, dynamic>? queryParams,
+    bool isFormData = false,
+    CancelToken? cancelToken,
   });
 
   Future<Either<NetworkFailure, T>> patch<T>({
     required String url,
-    required Map<String, dynamic> body,
+    Map<String, dynamic>? body,
     Map<String, String>? headers,
-    // bool isFormData = false
+    Map<String, dynamic>? queryParams,
+    bool isFormData = false,
+    CancelToken? cancelToken,
   });
+
   Future<Either<NetworkFailure, T>> put<T>({
     required String url,
     Map<String, dynamic>? body,
     Map<String, String>? headers,
-    // Map<String, dynamic>? queryParams,
-    // Map<String, File>? files
-    // bool isFormData = false
+    Map<String, dynamic>? queryParams,
+    bool isFormData = false,
+    CancelToken? cancelToken,
   });
+
   Future<Either<NetworkFailure, T>> delete<T>({
     required String url,
     Map<String, dynamic>? body,
     Map<String, String>? headers,
+    CancelToken? cancelToken,
+  });
+
+  Future<Either<NetworkFailure, T>> upload<T>({
+    required String url,
+    required String filePath,
+    required String fileName,
+    Map<String, dynamic>? data,
+    Map<String, String>? headers,
+    ProgressCallback? onSendProgress,
+    CancelToken? cancelToken,
   });
 }

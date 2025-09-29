@@ -1,7 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../data/datasources/{{#auth}}auth{{/auth}}/login_data_sources.dart';
-
 abstract class AppUrl {
   static final _base = dotenv.env['BASE_URL'];
   // static const _base = 'http://192.168.18.68:3001';

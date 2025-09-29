@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import '/domain/repositories/network/network_base_api_service.dart';
-import 'data/repositories/network/https/https_network_repository.dart';
 import 'config/navigation/app_navigator.dart';
 import 'domain/repositories/local/local_storage_base_api_service.dart';
 import 'data/repositories/local/insecure_local_storage_repository.dart';
@@ -9,6 +8,7 @@ import 'domain/usecases/theme/get_theme_use_case.dart';
 import 'domain/usecases/theme/update_theme_use_case.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'core/show/show/show.dart';
+import 'data/repositories/network/dio/dio_network_repository.dart';
 // import '/data/datasources/internet_connectivity/internet_connectivity_checker_data_sources.dart';
 
 {{#auth}}
@@ -45,7 +45,7 @@ Future<void> init() async {
   {{/auth}}
     getIt.registerSingleton<LocalStorageRepository>(
       InsecureLocalStorageRepository());
-  getIt.registerSingleton<NetworkBaseApiService>(HttpsNetworkRepository(
+  getIt.registerSingleton<NetworkBaseApiService>(DioNetworkRepository(
     {{#auth}}
     getIt(),
     getIt()

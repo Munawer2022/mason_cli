@@ -1,424 +1,350 @@
-// import 'dart:async';
-// import 'dart:convert';
-// import 'dart:developer';
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:dio/dio.dart';
-// import 'package:fpdart/fpdart.dart';
+import 'package:dio/dio.dart';
+import 'package:fpdart/fpdart.dart';
 
-// import '/data/datasources/auth/login_data_sources.dart';
-// import '/domain/failures/network/network_failure.dart';
-// import '/domain/repositories/local/local_storage_base_api_service.dart';
-// import '/domain/repositories/network/network_base_api_service.dart';
-// import 'dio_config.dart';
+import '/data/datasources/auth/login_data_sources.dart';
+import '/domain/failures/network/network_failure.dart';
+import '/domain/repositories/local/local_storage_base_api_service.dart';
+import '/domain/repositories/network/network_base_api_service.dart';
+import 'dio_config.dart';
 
-// class DioNetworkRepository implements NetworkBaseApiService {
-//   final LoginDataSources _loginDataSources;
-//   final LocalStorageRepository _localStorageRepository;
-//   late final Dio _dio;
+class DioNetworkRepository implements NetworkBaseApiService {
+  final LoginDataSources _loginDataSources;
+  final LocalStorageRepository _localStorageRepository;
+  late final Dio _dio;
 
-//   DioNetworkRepository(this._loginDataSources, this._localStorageRepository) {
-//     _dio = DioConfig.createDio(
-//       loginDataSources: _loginDataSources,
-//       localStorageRepository: _localStorageRepository,
-//     );
-//   }
+  DioNetworkRepository(this._loginDataSources, this._localStorageRepository) {
+    _dio = DioConfig.createDio(
+      loginDataSources: _loginDataSources,
+      localStorageRepository: _localStorageRepository,
+    );
+  }
 
-//   @override
-//   Future<Either<NetworkFailure, T>> get<T>({
-//     required String url,
-//     Map<String, dynamic>? queryParams,
-//     Map<String, String>? headers,
-//   }) async {
-//     try {
-//       final response = await _dio.get(
-//         url,
-//         queryParameters: queryParams,
-//         options: Options(headers: headers),
-//       );
+  @override
+  Future<Either<NetworkFailure, T>> get<T>({
+    required String url,
+    Map<String, dynamic>? queryParams,
+    Map<String, String>? headers,
+    CancelToken? cancelToken,
+  }) async {
+    return _executeRequest<T>(
+      () => _dio.get(
+        url,
+        queryParameters: queryParams,
+        cancelToken: cancelToken,
+        options: Options(headers: headers),
+      ),
+    );
+  }
 
-//       return right(response.data);
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
+  @override
+  Future<Either<NetworkFailure, T>> post<T>({
+    required String url,
+    required Map<String, dynamic> body,
+    Map<String, String>? headers,
+    Map<String, dynamic>? queryParams,
+    bool isFormData = false,
+    CancelToken? cancelToken,
+  }) async {
+    return _executeRequest<T>(
+      () => _dio.post(
+        url,
+        data: isFormData ? FormData.fromMap(body) : body,
+        queryParameters: queryParams,
+        cancelToken: cancelToken,
+        options: Options(
+          headers: headers,
+          contentType: isFormData
+              ? Headers.multipartFormDataContentType
+              : Headers.jsonContentType,
+        ),
+      ),
+    );
+  }
 
-//   @override
-//   Future<Either<NetworkFailure, T>> post<T>({
-//     required String url,
-//     required Map<String, dynamic> body,
-//     Map<String, String>? headers,
-//   }) async {
-//     try {
-//       final response = await _dio.post(
-//         url,
-//         data: body,
-//         options: Options(headers: headers),
-//       );
+  @override
+  Future<Either<NetworkFailure, T>> patch<T>({
+    required String url,
+    Map<String, dynamic>? body,
+    Map<String, String>? headers,
+    Map<String, dynamic>? queryParams,
+    bool isFormData = false,
+    CancelToken? cancelToken,
+  }) async {
+    return _executeRequest<T>(
+      () => _dio.patch(
+        url,
+        data: isFormData && body != null ? FormData.fromMap(body) : body,
+        queryParameters: queryParams,
+        cancelToken: cancelToken,
+        options: Options(
+          headers: headers,
+          contentType: isFormData
+              ? Headers.multipartFormDataContentType
+              : Headers.jsonContentType,
+        ),
+      ),
+    );
+  }
 
-//       return right(response.data);
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
+  @override
+  Future<Either<NetworkFailure, T>> put<T>({
+    required String url,
+    Map<String, dynamic>? body,
+    Map<String, String>? headers,
+    Map<String, dynamic>? queryParams,
+    bool isFormData = false,
+    CancelToken? cancelToken,
+  }) async {
+    return _executeRequest<T>(
+      () => _dio.put(
+        url,
+        data: isFormData && body != null ? FormData.fromMap(body) : body,
+        queryParameters: queryParams,
+        cancelToken: cancelToken,
+        options: Options(
+          headers: headers,
+          contentType: isFormData
+              ? Headers.multipartFormDataContentType
+              : Headers.jsonContentType,
+        ),
+      ),
+    );
+  }
 
-//   @override
-//   Future<Either<NetworkFailure, T>> patch<T>({
-//     required String url,
-//     required Map<String, dynamic> body,
-//     Map<String, String>? headers,
-//   }) async {
-//     try {
-//       final response = await _dio.patch(
-//         url,
-//         data: body,
-//         options: Options(headers: headers),
-//       );
+  @override
+  Future<Either<NetworkFailure, T>> delete<T>({
+    required String url,
+    Map<String, dynamic>? body,
+    Map<String, String>? headers,
+    CancelToken? cancelToken,
+  }) async {
+    return _executeRequest<T>(
+      () => _dio.delete(
+        url,
+        data: body,
+        cancelToken: cancelToken,
+        options: Options(headers: headers),
+      ),
+    );
+  }
 
-//       return right(response.data);
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
+  @override
+  Future<Either<NetworkFailure, T>> upload<T>({
+    required String url,
+    required String filePath,
+    required String fileName,
+    Map<String, dynamic>? data,
+    Map<String, String>? headers,
+    ProgressCallback? onSendProgress,
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(filePath, filename: fileName),
+        if (data != null) ...data,
+      });
 
-//   @override
-//   Future<Either<NetworkFailure, T>> put<T>({
-//     required String url,
-//     Map<String, dynamic>? body,
-//     Map<String, String>? headers,
-//     bool isFormData = false,
-//   }) async {
-//     try {
-//       dynamic data = body;
+      return _executeRequest<T>(
+        () => _dio.post(
+          url,
+          data: formData,
+          cancelToken: cancelToken,
+          onSendProgress: onSendProgress,
+          options: Options(headers: headers),
+        ),
+      );
+    } catch (e) {
+      return left(
+        NetworkFailure(
+          error: 'File upload preparation failed: $e',
+          type: NetworkFailureType.unknown,
+        ),
+      );
+    }
+  }
 
-//       if (isFormData) {
-//         data = await FormDataHelper.createFormData(data: body ?? {});
-//       }
+  /// Common method to execute requests and handle errors
+  Future<Either<NetworkFailure, T>> _executeRequest<T>(
+    Future<Response> Function() request,
+  ) async {
+    try {
+      final response = await request();
+      return right(response.data);
+    } on DioException catch (e) {
+      return left(_handleDioError(e));
+    } catch (e) {
+      return left(
+        NetworkFailure(
+          error: 'Unexpected error: $e',
+          type: NetworkFailureType.unknown,
+        ),
+      );
+    }
+  }
 
-//       final response = await _dio.put(
-//         url,
-//         data: data,
-//         options: Options(
-//           headers: headers,
-//           contentType: isFormData ? 'multipart/form-data' : 'application/json',
-//         ),
-//       );
+  NetworkFailure _handleDioError(DioException error) {
+    switch (error.type) {
+      case DioExceptionType.connectionTimeout:
+        return NetworkFailure(
+          error: 'Connection timeout. Please check your internet connection.',
+          type: NetworkFailureType.connectionTimeout,
+          statusCode: error.response?.statusCode,
+        );
 
-//       return right(response.data);
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
+      case DioExceptionType.sendTimeout:
+        return NetworkFailure(
+          error: 'Send timeout. Request took too long to send.',
+          type: NetworkFailureType.sendTimeout,
+          statusCode: error.response?.statusCode,
+        );
 
-//   @override
-//   Future<Either<NetworkFailure, T>> delete<T>({
-//     required String url,
-//     Map<String, dynamic>? body,
-//     Map<String, String>? headers,
-//   }) async {
-//     try {
-//       final response = await _dio.delete(
-//         url,
-//         data: body,
-//         options: Options(headers: headers),
-//       );
+      case DioExceptionType.receiveTimeout:
+        return NetworkFailure(
+          error: 'Receive timeout. Server took too long to respond.',
+          type: NetworkFailureType.receiveTimeout,
+          statusCode: error.response?.statusCode,
+        );
 
-//       return right(response.data);
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
+      case DioExceptionType.badResponse:
+        return _handleBadResponse(error);
 
+      case DioExceptionType.cancel:
+        return NetworkFailure(
+          error: 'Request was cancelled',
+          type: NetworkFailureType.cancelled,
+        );
 
+      case DioExceptionType.unknown:
+        return _handleUnknownError(error);
 
-//   // File upload helper method
-//   Future<Either<NetworkFailure, T>> uploadFile<T>({
-//     required String url,
-//     required File file,
-//     String fieldName = 'file',
-//     Map<String, dynamic>? additionalData,
-//     Map<String, String>? headers,
-//     ProgressCallback? onProgress,
-//   }) async {
-//     try {
-//       final formData = await FormDataHelper.createFormData(
-//         data: additionalData ?? {},
-//         files: [file],
-//         fileFieldName: fieldName,
-//       );
+      default:
+        return NetworkFailure(
+          error: 'Network error occurred',
+          type: NetworkFailureType.unknown,
+        );
+    }
+  }
 
-//       final response = await _dio.post(
-//         url,
-//         data: formData,
-//         options: Options(headers: headers, contentType: 'multipart/form-data'),
-//         onSendProgress: onProgress,
-//       );
+  NetworkFailure _handleBadResponse(DioException error) {
+    final statusCode = error.response?.statusCode;
+    final responseData = error.response?.data;
 
-//       return right(response.data);
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
+    // Extract error message from response
+    String errorMessage = 'Request failed';
+    if (responseData is Map<String, dynamic>) {
+      errorMessage =
+          responseData['message'] ??
+          responseData['error'] ??
+          responseData['details'] ??
+          errorMessage;
+    }
 
-//   // Multiple files upload helper method
-//   Future<Either<NetworkFailure, T>> uploadMultipleFiles<T>({
-//     required String url,
-//     required List<File> files,
-//     String fieldName = 'files',
-//     Map<String, dynamic>? additionalData,
-//     Map<String, String>? headers,
-//     ProgressCallback? onProgress,
-//   }) async {
-//     try {
-//       final formData = await FormDataHelper.createFormData(
-//         data: additionalData ?? {},
-//         files: files,
-//         fileFieldName: fieldName,
-//       );
+    switch (statusCode) {
+      case 400:
+        return NetworkFailure(
+          error: 'Bad request: $errorMessage',
+          type: NetworkFailureType.badRequest,
+          statusCode: statusCode,
+        );
+      case 401:
+        return NetworkFailure(
+          error: 'Unauthorized access. Please login again.',
+          type: NetworkFailureType.unauthorized,
+          statusCode: statusCode,
+        );
+      case 403:
+        return NetworkFailure(
+          error: 'Access forbidden. You don\'t have permission.',
+          type: NetworkFailureType.forbidden,
+          statusCode: statusCode,
+        );
+      case 404:
+        return NetworkFailure(
+          error: 'Resource not found',
+          type: NetworkFailureType.notFound,
+          statusCode: statusCode,
+        );
+      case 422:
+        return NetworkFailure(
+          error: 'Validation error: $errorMessage',
+          type: NetworkFailureType.validationError,
+          statusCode: statusCode,
+        );
+      case 429:
+        return NetworkFailure(
+          error: 'Too many requests. Please try again later.',
+          type: NetworkFailureType.tooManyRequests,
+          statusCode: statusCode,
+        );
+      case 500:
+        return NetworkFailure(
+          error: 'Internal server error. Please try again later.',
+          type: NetworkFailureType.internalServerError,
+          statusCode: statusCode,
+        );
+      case 502:
+        return NetworkFailure(
+          error: 'Bad gateway. Server is temporarily unavailable.',
+          type: NetworkFailureType.badGateway,
+          statusCode: statusCode,
+        );
+      case 503:
+        return NetworkFailure(
+          error: 'Service unavailable. Please try again later.',
+          type: NetworkFailureType.serviceUnavailable,
+          statusCode: statusCode,
+        );
+      default:
+        return NetworkFailure(
+          error: errorMessage,
+          type: NetworkFailureType.badResponse,
+          statusCode: statusCode,
+        );
+    }
+  }
 
-//       final response = await _dio.post(
-//         url,
-//         data: formData,
-//         options: Options(headers: headers, contentType: 'multipart/form-data'),
-//         onSendProgress: onProgress,
-//       );
+  NetworkFailure _handleUnknownError(DioException error) {
+    if (error.error is SocketException) {
+      return NetworkFailure(
+        error: 'No internet connection. Please check your network.',
+        type: NetworkFailureType.noInternetConnection,
+      );
+    }
 
-//       return right(response.data);
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
+    if (error.error is FormatException) {
+      return NetworkFailure(
+        error: 'Invalid response format from server.',
+        type: NetworkFailureType.formatError,
+      );
+    }
 
-//   // Download file helper method
-//   Future<Either<NetworkFailure, File>> downloadFile({
-//     required String url,
-//     required String savePath,
-//     Map<String, String>? headers,
-//     ProgressCallback? onProgress,
-//   }) async {
-//     try {
-//       final response = await _dio.download(
-//         url,
-//         savePath,
-//         options: Options(headers: headers),
-//         onReceiveProgress: onProgress,
-//       );
+    return NetworkFailure(
+      error:
+          'Unknown network error: ${error.error?.toString() ?? error.message}',
+      type: NetworkFailureType.unknown,
+    );
+  }
+}
 
-//       if (response.statusCode == 200) {
-//         return right(File(savePath));
-//       } else {
-//         return left(NetworkFailure(error: 'Download failed'));
-//       }
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
-
-//   // Stream download helper method
-//   Future<Either<NetworkFailure, Stream<List<int>>>> downloadStream({
-//     required String url,
-//     Map<String, String>? headers,
-//   }) async {
-//     try {
-//       final response = await _dio.get(
-//         url,
-//         options: Options(headers: headers, responseType: ResponseType.stream),
-//       );
-
-//       if (response.statusCode == 200) {
-//         final stream = response.data.stream as Stream<List<int>>;
-//         return right(stream);
-//       } else {
-//         return left(NetworkFailure(error: 'Download failed'));
-//       }
-//     } on DioException catch (e) {
-//       return left(_handleDioError(e));
-//     } catch (e) {
-//       return left(NetworkFailure(error: 'Unexpected error: $e'));
-//     }
-//   }
-
-//   // Cancel ongoing requests
-//   void cancelRequests({String? tag}) {
-//     if (tag != null) {
-//       _dio.close(force: true);
-//     } else {
-//       _dio.close(force: true);
-//     }
-//   }
-
-//   // Clear cache
-//   void clearCache() {
-//     final cacheInterceptor = _dio.interceptors
-//         .whereType<CacheInterceptor>()
-//         .firstOrNull;
-//     cacheInterceptor?.clearCache();
-//   }
-
-//   NetworkFailure _handleDioError(DioException error) {
-//     switch (error.type) {
-//       case DioExceptionType.connectionTimeout:
-//       case DioExceptionType.sendTimeout:
-//       case DioExceptionType.receiveTimeout:
-//         return NetworkFailure(
-//           error: 'Connection timeout. Please check your internet connection.',
-//         );
-
-//       case DioExceptionType.badResponse:
-//         final statusCode = error.response?.statusCode;
-//         final responseData = error.response?.data;
-
-//         if (statusCode == 401) {
-//           return NetworkFailure(error: 'Unauthorized access');
-//         } else if (statusCode == 403) {
-//           return NetworkFailure(error: 'Access forbidden');
-//         } else if (statusCode == 404) {
-//           return NetworkFailure(error: 'Resource not found');
-//         } else if (statusCode == 500) {
-//           return NetworkFailure(error: 'Internal server error');
-//         } else {
-//           final message = responseData is Map
-//               ? responseData['message'] ?? 'Unknown error'
-//               : 'Request failed with status: $statusCode';
-//           return NetworkFailure(error: message);
-//         }
-
-//       case DioExceptionType.cancel:
-//         return NetworkFailure(error: 'Request was cancelled');
-
-//       case DioExceptionType.unknown:
-//         if (error.error is SocketException) {
-//           return NetworkFailure(error: 'No internet connection');
-//         }
-//         return NetworkFailure(error: 'Unknown error occurred');
-
-//       default:
-//         return NetworkFailure(error: 'Network error occurred');
-//     }
-//   }
-// }
-
-
-
-// // Logging Interceptor
-// class LoggingInterceptor extends Interceptor {
-//   @override
-//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-//     log('🌐 REQUEST[${options.method}] => PATH: ${options.path}');
-//     log('Headers: ${options.headers}');
-//     if (options.data != null) {
-//       log('Data: ${options.data}');
-//     }
-//     handler.next(options);
-//   }
-
-//   @override
-//   void onResponse(Response response, ResponseInterceptorHandler handler) {
-//     log(
-//       '✅ RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}',
-//     );
-//     log('Data: ${response.data}');
-//     handler.next(response);
-//   }
-
-//   @override
-//   void onError(DioException err, ErrorInterceptorHandler handler) {
-//     log(
-//       '❌ ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}',
-//     );
-//     log('Error: ${err.message}');
-//     handler.next(err);
-//   }
-// }
-
-// // Authentication Interceptor
-// class AuthInterceptor extends Interceptor {
-//   final LoginDataSources _loginDataSources;
-//   final LocalStorageRepository _localStorageRepository;
-
-//   AuthInterceptor(this._loginDataSources, this._localStorageRepository);
-
-//   @override
-//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-//     final token = _loginDataSources.state.token;
-//     if (token.isNotEmpty) {
-//       options.headers['Authorization'] = 'Bearer $token';
-//     }
-//     handler.next(options);
-//   }
-
-//   @override
-//   void onError(DioException err, ErrorInterceptorHandler handler) async {
-//     if (err.response?.statusCode == 401) {
-//       // Token expired, try to refresh
-//       final refreshToken = _loginDataSources.state.refreshToken;
-//       if (refreshToken.isNotEmpty) {
-//         try {
-//           final dio = Dio();
-//           final refreshResponse = await dio.post(
-//             AppUrl.refreshToken,
-//             data: {'refreshToken': refreshToken},
-//             options: Options(headers: {'Content-Type': 'application/json'}),
-//           );
-
-//           if (refreshResponse.statusCode == 200) {
-//             final newTokens = LocalUserInfoStoreModel.fromJson(
-//               refreshResponse.data,
-//             );
-
-//             await _localStorageRepository.setUserData(
-//               localUserInfoStoreModel: newTokens,
-//             );
-
-//             _loginDataSources.setLoginDataSources(
-//               localUserInfoStoreModel: newTokens,
-//             );
-
-//             // Retry the original request with new token
-//             final newOptions = err.requestOptions;
-//             newOptions.headers['Authorization'] = 'Bearer ${newTokens.token}';
-
-//             final retryResponse = await dio.fetch(newOptions);
-//             handler.resolve(retryResponse);
-//             return;
-//           }
-//         } catch (e) {
-//           log('Token refresh failed: $e');
-//         }
-//       }
-//     }
-//     handler.next(err);
-//   }
-// }
-
-// // Error Interceptor
-// class ErrorInterceptor extends Interceptor {
-//   @override
-//   void onError(DioException err, ErrorInterceptorHandler handler) {
-//     // Add any global error handling logic here
-//     // For example, showing global error messages, logging to analytics, etc.
-
-//     if (err.type == DioExceptionType.unknown && err.error is SocketException) {
-//       // Handle no internet connection
-//       log('No internet connection detected');
-//     }
-
-//     handler.next(err);
-//   }
-// }
+// Enhanced NetworkFailure class
+enum NetworkFailureType {
+  connectionTimeout,
+  sendTimeout,
+  receiveTimeout,
+  badRequest,
+  unauthorized,
+  forbidden,
+  notFound,
+  validationError,
+  tooManyRequests,
+  internalServerError,
+  badGateway,
+  serviceUnavailable,
+  badResponse,
+  cancelled,
+  noInternetConnection,
+  formatError,
+  unknown,
+}
