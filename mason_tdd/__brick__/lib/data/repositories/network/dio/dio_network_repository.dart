@@ -46,6 +46,7 @@ class DioNetworkRepository implements NetworkBaseApiService {
     Map<String, dynamic>? queryParams,
     bool isFormData = false,
     CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   }) async {
     return _executeRequest<T>(
       () => _dio.post(
@@ -53,6 +54,7 @@ class DioNetworkRepository implements NetworkBaseApiService {
         data: isFormData ? FormData.fromMap(body) : body,
         queryParameters: queryParams,
         cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
         options: Options(
           headers: headers,
           contentType: isFormData
@@ -71,6 +73,7 @@ class DioNetworkRepository implements NetworkBaseApiService {
     Map<String, dynamic>? queryParams,
     bool isFormData = false,
     CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   }) async {
     return _executeRequest<T>(
       () => _dio.patch(
@@ -78,6 +81,7 @@ class DioNetworkRepository implements NetworkBaseApiService {
         data: isFormData && body != null ? FormData.fromMap(body) : body,
         queryParameters: queryParams,
         cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
         options: Options(
           headers: headers,
           contentType: isFormData
@@ -96,6 +100,7 @@ class DioNetworkRepository implements NetworkBaseApiService {
     Map<String, dynamic>? queryParams,
     bool isFormData = false,
     CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   }) async {
     return _executeRequest<T>(
       () => _dio.put(
@@ -103,6 +108,7 @@ class DioNetworkRepository implements NetworkBaseApiService {
         data: isFormData && body != null ? FormData.fromMap(body) : body,
         queryParameters: queryParams,
         cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
         options: Options(
           headers: headers,
           contentType: isFormData

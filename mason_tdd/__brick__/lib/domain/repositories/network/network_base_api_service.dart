@@ -18,6 +18,7 @@ abstract class NetworkBaseApiService {
     Map<String, dynamic>? queryParams,
     bool isFormData = false,
     CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   });
 
   Future<Either<NetworkFailure, T>> patch<T>({
@@ -27,6 +28,7 @@ abstract class NetworkBaseApiService {
     Map<String, dynamic>? queryParams,
     bool isFormData = false,
     CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   });
 
   Future<Either<NetworkFailure, T>> put<T>({
@@ -36,6 +38,7 @@ abstract class NetworkBaseApiService {
     Map<String, dynamic>? queryParams,
     bool isFormData = false,
     CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   });
 
   Future<Either<NetworkFailure, T>> delete<T>({
