@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:test/core/widgets/app_print.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 import '/data/datasources/auth/login_data_sources.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
@@ -25,8 +25,15 @@ class DioConfig {
 
     // Add interceptors in order
     dio.interceptors.addAll([
+      TalkerDioLogger(
+        settings: TalkerDioLoggerSettings(
+          printRequestHeaders: true,
+          printResponseHeaders: true,
+          printResponseMessage: true,
+        ),
+      ),
       InterceptorsWrapper(loginDataSources, localStorageRepository),
-      LoggingInterceptor(),
+      // LoggingInterceptor(),
     ]);
 
     return dio;
@@ -65,36 +72,35 @@ class InterceptorsWrapper extends Interceptor {
   }
 }
 
-// Logging Interceptor (for debugging)
-class LoggingInterceptor extends Interceptor {
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    AppPrint.success('🌐 REQUEST[${options.method}] => PATH: ${options.uri}');
-    AppPrint.info('📤 Headers: ${options.headers}');
-    if (options.data != null) {
-      AppPrint.success('📦 Body: ${options.data}');
-    }
-    handler.next(options);
-  }
+// // Logging Interceptor (for debugging)
+// class LoggingInterceptor extends Interceptor {
+//   @override
+//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+//     AppPrint.success('🌐 REQUEST[${options.method}] => PATH: ${options.uri}');
+//     AppPrint.info('📤 Headers: ${options.headers}');
+//     if (options.data != null) {
+//       AppPrint.success('📦 Body: ${options.data}');
+//     }
+//     handler.next(options);
+//   }
 
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    AppPrint.success(
-      '✅ RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.uri}',
-    );
-    AppPrint.success('📥 Data: ${response.data}');
-    handler.next(response);
-  }
+//   @override
+//   void onResponse(Response response, ResponseInterceptorHandler handler) {
+//     AppPrint.success(
+//       '✅ RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.uri}',
+//     );
+//     AppPrint.json('📥 Data: ${response.data}');
+//     handler.next(response);
+//   }
 
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    AppPrint.error(
-      '❌ ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.uri}',
-    );
-    AppPrint.error('💥 Message: ${err.message}');
-    if (err.response != null) {
-      AppPrint.error('📛 Response: ${err.response?.data}');
-    }
-    handler.next(err);
-  }
-}
+//   @override
+//   void onError(DioException err, ErrorInterceptorHandler handler) {
+//     AppPrint.error(
+//       '❌ ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.uri}',
+//     );
+//     AppPrint.error('💥 Message: ${err.message}');
+//     if (err.response != null) {
+//       AppPrint.error('📛 Response: ${err.response?.data}');
+//     }
+//     handler.next(err);
+//   }

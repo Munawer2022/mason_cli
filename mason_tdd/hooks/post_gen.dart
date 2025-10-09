@@ -57,6 +57,7 @@ Future<void> run(HookContext context) async {
     // 'http',
     // 'http_interceptor',
     'dio',
+    'talker_dio_logger',
     'shared_preferences',
     // 'equatable',
     'fpdart',
