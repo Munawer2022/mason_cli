@@ -6,7 +6,7 @@ import 'data/repositories/local/insecure_local_storage_repository.dart';
 import 'data/datasources/theme/theme_data_source.dart';
 import 'domain/usecases/theme/get_theme_use_case.dart';
 import 'domain/usecases/theme/update_theme_use_case.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
 import 'core/show/show/show.dart';
 import 'data/repositories/network/dio/dio_network_repository.dart';
 // import '/data/datasources/internet_connectivity/internet_connectivity_checker_data_sources.dart';
@@ -60,7 +60,7 @@ Future<void> init() async {
     GetThemeUseCase( getIt(), getIt()));
   getIt.registerSingleton<UpdateThemeUseCase>(
     UpdateThemeUseCase(getIt(), getIt()));
- getIt.registerSingleton<Connectivity>(Connectivity());
+//  getIt.registerSingleton<Connectivity>(Connectivity());
   getIt.registerSingleton<Show>(Show());
 
   // getIt.registerSingleton<InternetConnectivityCheckerDataSources>(
