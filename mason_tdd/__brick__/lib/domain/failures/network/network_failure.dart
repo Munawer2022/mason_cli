@@ -1,4 +1,4 @@
-import 'package:test/data/repositories/network/dio/dio_network_repository.dart';
+import '/data/repositories/network/dio/dio_network_repository.dart';
 
 class NetworkFailure {
   final String error;

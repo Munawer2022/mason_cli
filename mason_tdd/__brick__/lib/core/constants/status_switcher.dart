@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '/config/response/api_response.dart';
 import '/config/response/status.dart';
 import '/core/utils/extensions.dart';
+import '/core/widgets/app_button.dart';
 
 /// Configuration class for customizing StatusSwitcher appearance and behavior
 class StatusSwitcherConfig {
@@ -297,53 +298,18 @@ class _DefaultErrorWidget extends StatelessWidget {
       builder: (context, value, child) {
         return Transform.scale(
           scale: value,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  context.theme.colorScheme.error,
-                  context.theme.colorScheme.error.withOpacity(0.8),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(16.r),
-              boxShadow: [
-                BoxShadow(
-                  color: context.theme.colorScheme.error.withOpacity(0.3),
-                  blurRadius: 15,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: onRetry,
-                borderRadius: BorderRadius.circular(16.r),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 32.w,
-                    vertical: 16.h,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(config.retryIcon, color: Colors.white, size: 20.sp),
-                      12.horizontalSpace,
-                      Text(
-                        config.retryButtonText,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+          child: AppButton.getButton(
+            context: context,
+            text: config.retryButtonText,
+            onPressed: onRetry,
+            backgroundColor: context.theme.colorScheme.error,
+            textColor: Colors.white,
+            radius: 16,
+            height: 50,
+            elevation: 6,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            icon: Icon(config.retryIcon, color: Colors.white, size: 20.sp),
           ),
         );
       },
