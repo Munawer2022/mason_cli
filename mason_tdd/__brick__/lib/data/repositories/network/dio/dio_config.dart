@@ -26,11 +26,7 @@ class DioConfig {
     // Add interceptors in order
     dio.interceptors.addAll([
       TalkerDioLogger(
-        settings: TalkerDioLoggerSettings(
-          printRequestHeaders: true,
-          printResponseHeaders: true,
-          printResponseMessage: true,
-        ),
+        settings: TalkerDioLoggerSettings(printRequestHeaders: true),
       ),
       InterceptorsWrapper(loginDataSources, localStorageRepository),
       // LoggingInterceptor(),
