@@ -359,22 +359,17 @@ class AppShimmer {
     Color? baseColor,
     Color? highlightColor,
     required TickerProvider vsync,
-  }) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    return AnimatedBuilder(
-      animation: AnimationController.unbounded(vsync: vsync)
-        ..repeat(min: 0.0, max: 1.0, period: duration),
-      builder: (context, _) {
-        return shimmer(
-          context,
-          baseColor: baseColor,
-          highlightColor: highlightColor,
-          duration: duration,
-          child: child,
-        );
-      },
-    );
-  }
+  }) => AnimatedBuilder(
+    animation: AnimationController.unbounded(vsync: vsync)
+      ..repeat(min: 0.0, max: 1.0, period: duration),
+    builder: (context, _) {
+      return shimmer(
+        context,
+        baseColor: baseColor,
+        highlightColor: highlightColor,
+        duration: duration,
+        child: child,
+      );
+    },
+  );
 }
