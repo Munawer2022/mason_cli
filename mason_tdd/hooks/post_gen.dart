@@ -10,10 +10,8 @@ Future<void> run(HookContext context) async {
   final dartVersion = context.vars['dart_version'] ?? 'Unknown';
   final javaVersion = context.vars['java_version'] ?? 'Unknown';
 
-  context.logger.info('📋 Detected Versions:');
-  context.logger.info('   Flutter: $flutterVersion');
-  context.logger.info('   Dart: $dartVersion');
-  context.logger.info('   Java: $javaVersion');
+  context.logger.info(
+      '📋 Flutter: $flutterVersion | Dart: $dartVersion | Java: $javaVersion');
 
   // Check if pubspec.yaml exists
   final pubspec = File('pubspec.yaml');
@@ -33,36 +31,27 @@ Future<void> run(HookContext context) async {
   // Function to add package with feedback
   Future<void> addPackage(String package, {bool isDev = false}) async {
     if (!isPackageInPubspec(package)) {
-      context.logger.info('📦 Adding $package...');
       final result = await Process.runSync('flutter',
           isDev ? ['pub', 'add', package, '--dev'] : ['pub', 'add', package],
           runInShell: true);
 
-      if (result.exitCode == 0) {
-        context.logger.success('✅ Added $package');
-      } else {
+      if (result.exitCode != 0) {
         context.logger.warn('⚠️  Failed to add $package: ${result.stderr}');
       }
-    } else {
-      context.logger.info('ℹ️  $package already exists');
     }
   }
 
-  // Core dependencies
-  context.logger.info('🔧 Installing core dependencies...');
+  // Install dependencies
+  context.logger.info('🔧 Installing dependencies...');
   final dependencies = [
     'flutter_bloc',
     'get_it',
     'flutter_screenutil',
-    // 'http',
-    // 'http_interceptor',
     'dio',
     'talker_dio_logger',
     'shared_preferences',
-    // 'equatable',
     'fpdart',
     'shimmer',
-    // 'connectivity_plus',
     'cached_network_image',
     'flutter_dotenv',
     'logger',
@@ -70,47 +59,30 @@ Future<void> run(HookContext context) async {
     'permission_handler',
   ];
 
+  final devDependencies = [
+    'device_preview',
+  ];
+
   for (var package in dependencies) {
     await addPackage(package);
   }
-
-  // Development dependencies
-  context.logger.info('🔧 Installing development dependencies...');
-  final devDependencies = [
-    'device_preview',
-    // 'bloc_test',
-    // 'mockito',
-    // 'mocktail',
-    // 'build_runner',
-  ];
 
   for (var package in devDependencies) {
     await addPackage(package, isDev: true);
   }
 
   // Run flutter pub get
-  context.logger.info('🔄 Running flutter pub get...');
   final getResult =
       await Process.runSync('flutter', ['pub', 'get'], runInShell: true);
 
-  if (getResult.exitCode == 0) {
-    context.logger.success('✅ Dependencies installed successfully');
-  } else {
+  if (getResult.exitCode != 0) {
     context.logger.err('❌ Failed to install dependencies: ${getResult.stderr}');
   }
 
   // Generate build runner files if needed
-  context.logger.info('🔨 Generating build runner files...');
-  final buildResult = await Process.runSync(
+  await Process.runSync(
       'flutter', ['packages', 'pub', 'run', 'build_runner', 'build'],
       runInShell: true);
-
-  if (buildResult.exitCode == 0) {
-    context.logger.success('✅ Build runner completed');
-  } else {
-    context.logger.warn(
-        '⚠️  Build runner failed (this is normal if no generated files are needed)');
-  }
 
   // Create a default .env file if it doesn't exist
   final envFile = File('.env');
@@ -142,13 +114,9 @@ BUILD_TARGET=android,ios
 BUILD_FLAVOR=release
 ''';
     envFile.writeAsStringSync(envContent);
-    context.logger.success('✅ Created .env file with FRX configuration');
-  } else {
-    context.logger.info('ℹ️  .env file already exists');
   }
 
   // Set up Android permissions for storage and internet
-  context.logger.info('🔧 Setting up Android permissions...');
   final androidManifestPath = 'android/app/src/main/AndroidManifest.xml';
   final androidManifest = File(androidManifestPath);
 
@@ -181,35 +149,25 @@ BUILD_FLAVOR=release
           if (!hasStoragePermission) {
             newLines.add(
                 '    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />');
-            context.logger.info('📱 Added read storage permission');
           }
 
           if (!hasWritePermission) {
             newLines.add(
                 '    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />');
-            context.logger.info('📱 Added write storage permission');
           }
 
           if (!hasInternetPermission) {
             newLines.add(
                 '    <uses-permission android:name="android.permission.INTERNET" />');
-            context.logger.info('📱 Added internet permission');
           }
         }
       }
 
       androidManifest.writeAsStringSync(newLines.join('\n'));
-      context.logger.success('✅ Android permissions configured');
-    } else {
-      context.logger.info('ℹ️  Android permissions already configured');
     }
-  } else {
-    context.logger
-        .warn('⚠️  AndroidManifest.xml not found at $androidManifestPath');
   }
 
   // Set up iOS permissions for photo library access
-  context.logger.info('🔧 Setting up iOS permissions...');
   final iosInfoPlistPath = 'ios/Runner/Info.plist';
   final iosInfoPlist = File(iosInfoPlistPath);
 
@@ -243,19 +201,13 @@ BUILD_FLAVOR=release
               newLines.add('	<key>NSPhotoLibraryUsageDescription</key>');
               newLines.add(
                   '	<string>This app needs photo library access to select images</string>');
-              context.logger.info('📱 Added photo library usage description');
             }
           }
         }
       }
 
       iosInfoPlist.writeAsStringSync(newLines.join('\n'));
-      context.logger.success('✅ iOS permissions configured');
-    } else {
-      context.logger.info('ℹ️  iOS permissions already configured');
     }
-  } else {
-    context.logger.warn('⚠️  Info.plist not found at $iosInfoPlistPath');
   }
 
   // Ensure .env is included in pubspec.yaml assets
@@ -307,41 +259,24 @@ BUILD_FLAVOR=release
       newLines.add('    - .env');
     }
     pubspec.writeAsStringSync(newLines.join('\n'));
-    context.logger.success('✅ Added .env to assets in pubspec.yaml');
-  } else {
-    context.logger.info('ℹ️  .env already included in assets');
   }
 
   // Set up Flutter Release X
-  context.logger.info('🚀 Setting up Flutter Release X...');
-
-  // Check if Flutter Release X is already installed globally
-  context.logger.info('🔍 Checking Flutter Release X installation...');
   final frxCheckResult =
       await Process.runSync('frx', ['--version'], runInShell: true);
 
-  if (frxCheckResult.exitCode == 0) {
-    final version = frxCheckResult.stdout.toString().trim();
-    context.logger.success('✅ Flutter Release X already installed: $version');
-  } else {
-    // Install Flutter Release X globally if not found
-    context.logger.info('📦 Installing Flutter Release X...');
+  if (frxCheckResult.exitCode != 0) {
     final frxResult = await Process.runSync(
         'dart', ['pub', 'global', 'activate', 'flutter_release_x'],
         runInShell: true);
 
-    if (frxResult.exitCode == 0) {
-      context.logger.success('✅ Flutter Release X installed successfully');
-    } else {
+    if (frxResult.exitCode != 0) {
       context.logger
           .warn('⚠️  Failed to install Flutter Release X: ${frxResult.stderr}');
-      context.logger.info(
-          '💡 You can install it manually with: dart pub global activate flutter_release_x');
     }
   }
 
   // Create build directories
-  context.logger.info('📁 Creating build directories...');
   final buildDir = Directory('build');
   final qrCodesDir = Directory('build/qr_codes');
   final releasesDir = Directory('build/releases');
@@ -350,61 +285,18 @@ BUILD_FLAVOR=release
   if (!qrCodesDir.existsSync()) qrCodesDir.createSync();
   if (!releasesDir.existsSync()) releasesDir.createSync();
 
-  context.logger.success('✅ Build directories created');
-
   // Make scripts executable (Unix/Linux/macOS)
   if (Platform.isLinux || Platform.isMacOS) {
-    context.logger.info('🔧 Making scripts executable...');
     final scriptsDir = Directory('scripts');
     if (scriptsDir.existsSync()) {
       await Process.runSync('chmod', ['+x', 'scripts/frx_setup.sh']);
       await Process.runSync('chmod', ['+x', 'scripts/frx_build.sh']);
-      context.logger.success('✅ Scripts made executable');
     }
   }
 
-  // Display next steps
-  context.logger.info('');
+  // Display completion
   context.logger.info('🎉 Project setup complete!');
-  context.logger.info('');
-  context.logger.info('📋 Next steps:');
-  context.logger.info('   1. Review the generated architecture');
-  context.logger.info('   2. Configure your API endpoints in config/');
-  context.logger.info(
-      '   3. Set up your dependency injection in injection_container.dart');
-  context.logger.info('   4. Start building your features!');
-  context.logger.info('');
-  context.logger.info('📸 Image Picker Setup:');
-  context.logger
-      .info('   ✅ Dependencies installed: image_picker, permission_handler');
-  context.logger
-      .info('   ✅ Android permissions configured (storage & internet)');
-  context.logger.info('   ✅ iOS permissions configured (photo library)');
-  context.logger.info('   📱 Use ImagePickerService for gallery access');
-  context.logger.info('   🎨 Use ImagePickerWidget for UI components');
-  context.logger.info('');
-  context.logger.info('🧪 To run tests:');
-  context.logger.info('   flutter test');
-  context.logger.info('');
-  context.logger.info('🚀 To run the app:');
-  context.logger.info('   flutter run');
-  context.logger.info('');
-  context.logger.info('📦 Flutter Release X Setup:');
-  context.logger
-      .info('   1. Edit env.example and copy to .env with your API keys');
-  context.logger
-      .info('   2. Configure GitHub, Google Drive, and/or Slack tokens');
-  context.logger.info('   3. Run: ./scripts/frx_setup.sh (Unix/Linux/macOS)');
-  context.logger.info('      or: scripts\\frx_setup.bat (Windows)');
-  context.logger.info('');
-  context.logger.info('🚀 To build and release:');
-  context.logger
-      .info('   frx build                    # Build for Android & iOS');
-  context.logger
-      .info('   frx build -t android,ios     # Build for both platforms');
-  context.logger
-      .info('   ./scripts/frx_build.sh both  # Using convenience script');
-  context.logger.info('');
+  // context.logger.info('🚀 Run: flutter run');
 
   progress.complete();
 }
