@@ -292,18 +292,16 @@ abstract class AppButton {
 
     if (text != null) {
       children.add(
-        Flexible(
-          child: Text(
-            text,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: _buildTextStyle(
-              context,
-              textStyle,
-              fontSize,
-              fontWeight,
-              textColor,
-            ),
+        Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          style: _buildTextStyle(
+            context,
+            textStyle,
+            fontSize,
+            fontWeight,
+            textColor,
           ),
         ),
       );

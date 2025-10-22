@@ -18,17 +18,18 @@ class DioConfig {
       sendTimeout: const Duration(seconds: 30),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${loginDataSources.state.token}',
+        if (loginDataSources.state.token.isNotEmpty)
+          'Authorization': 'Bearer ${loginDataSources.state.token}',
       },
-      validateStatus: (status) => status != null && status < 500,
+      // validateStatus: (status) => status != null && status < 500,
     );
 
     // Add interceptors in order
     dio.interceptors.addAll([
+      InterceptorsWrapper(loginDataSources, localStorageRepository),
       TalkerDioLogger(
         settings: TalkerDioLoggerSettings(printRequestHeaders: true),
       ),
-      InterceptorsWrapper(loginDataSources, localStorageRepository),
       // LoggingInterceptor(),
     ]);
 
