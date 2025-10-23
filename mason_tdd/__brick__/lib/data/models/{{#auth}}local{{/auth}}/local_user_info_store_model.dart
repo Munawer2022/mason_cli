@@ -1,14 +1,30 @@
 class LocalUserInfoStoreModel {
-  LocalUserInfoStoreModel({required this.token});
+  LocalUserInfoStoreModel({
+    required this.accessToken,
+    required this.refreshToken,
+  });
 
-  final String token;
+  final String accessToken;
+  final String refreshToken;
 
-  LocalUserInfoStoreModel copyWith({String? token}) =>
-      LocalUserInfoStoreModel(token: token ?? this.token);
+  LocalUserInfoStoreModel copyWith({
+    String? accessToken,
+    String? refreshToken,
+  }) => LocalUserInfoStoreModel(
+    accessToken: accessToken ?? this.accessToken,
+    refreshToken: refreshToken ?? this.refreshToken,
+  );
 
   factory LocalUserInfoStoreModel.fromJson(Map<String, dynamic> json) =>
-      LocalUserInfoStoreModel(token: json["token"] ?? "");
-  factory LocalUserInfoStoreModel.empty() => LocalUserInfoStoreModel(token: "");
+      LocalUserInfoStoreModel(
+        accessToken: json["accessToken"] ?? "",
+        refreshToken: json["refreshToken"] ?? "",
+      );
+  factory LocalUserInfoStoreModel.empty() =>
+      LocalUserInfoStoreModel(accessToken: "", refreshToken: "");
 
-  Map<String, dynamic> toJson() => {"token": token};
+  Map<String, dynamic> toJson() => {
+    "accessToken": accessToken,
+    "refreshToken": refreshToken,
+  };
 }
