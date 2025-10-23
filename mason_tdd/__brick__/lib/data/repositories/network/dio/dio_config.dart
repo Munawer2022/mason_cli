@@ -101,7 +101,7 @@ Future<Response<dynamic>?> _handleUnauthorized(
   try {
     final refreshResponse = await Dio().post(
       AppUrl.refreshToken,
-      data: {'refreshToken': refreshToken, 'expiresInMins': 1},
+      data: {'refreshToken': refreshToken},
       options: Options(headers: {'Content-Type': 'application/json'}),
     );
 
