@@ -13,14 +13,10 @@ class DioConfig {
 
     // Base configuration
     dio.options = BaseOptions(
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      sendTimeout: const Duration(seconds: 30),
-      headers: {
-        'Content-Type': 'application/json',
-        if (loginDataSources.state.token.isNotEmpty)
-          'Authorization': 'Bearer ${loginDataSources.state.token}',
-      },
+      // connectTimeout: const Duration(seconds: 30),
+      // receiveTimeout: const Duration(seconds: 30),
+      // sendTimeout: const Duration(seconds: 30),
+      headers: {'Content-Type': 'application/json'},
       // validateStatus: (status) => status != null && status < 500,
     );
 
@@ -28,7 +24,11 @@ class DioConfig {
     dio.interceptors.addAll([
       InterceptorsWrapper(loginDataSources, localStorageRepository),
       TalkerDioLogger(
-        settings: TalkerDioLoggerSettings(printRequestHeaders: true),
+        settings: TalkerDioLoggerSettings(
+          printRequestHeaders: true,
+          printErrorHeaders: false,
+          printErrorMessage: false,
+        ),
       ),
       // LoggingInterceptor(),
     ]);
@@ -62,8 +62,8 @@ class InterceptorsWrapper extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.response?.statusCode == 401) {
       // Token might be expired, clear it
-      _loginDataSources.close();
-      _localStorageRepository.removeUserData();
+      // _loginDataSources.close();
+      // _localStorageRepository.removeUserData();
     }
     handler.next(err);
   }

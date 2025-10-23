@@ -76,38 +76,83 @@ class ImagePickerService {
   }
 
   /// Pick multiple images from gallery
-  Future<List<File>> pickMultipleImagesFromGallery({
-    double? maxWidth,
-    double? maxHeight,
-    int? imageQuality,
-    int maxImages = 10,
-  }) async {
-    try {
-      // Check storage permission
-      final storageStatus = await Permission.storage.status;
-      if (!storageStatus.isGranted) {
-        final result = await Permission.storage.request();
-        if (!result.isGranted) {
+  // Future<List<File>> pickMultipleImagesFromGallery({
+  //   double? maxWidth,
+  //   double? maxHeight,
+  //   int? imageQuality,
+  //   int maxImages = 10,
+  // }) async {
+  //   try {
+  //     // Check storage permission
+  //     final storageStatus = await Permission.storage.status;
+  //     if (!storageStatus.isGranted) {
+  //       final result = await Permission.storage.request();
+  //       if (!result.isGranted) {
+  //         throw Exception('Storage permission denied');
+  //       }
+  //     }
+
+  //     final List<XFile> images = await _picker.pickMultiImage(
+  //       maxWidth: maxWidth,
+  //       maxHeight: maxHeight,
+  //       imageQuality: imageQuality ?? 80,
+  //     );
+
+  //     if (images.isNotEmpty) {
+  //       // Limit the number of images
+  //       final limitedImages = images.take(maxImages).toList();
+  //       return limitedImages.map((image) => File(image.path)).toList();
+  //     }
+  //     return [];
+  //   } catch (e) {
+  //     throw Exception('Failed to pick multiple images: $e');
+  //   }
+  // }
+
+
+
+
+Future<List<File>> pickMultipleImagesFromGallery({
+  double? maxWidth,
+  double? maxHeight,
+  int? imageQuality,
+  int maxImages = 10,
+}) async {
+  try {
+    // Check correct permission depending on Android version
+    final photosPermission = await Permission.photos.status;
+    final storagePermission = await Permission.storage.status;
+
+    if (!photosPermission.isGranted && !storagePermission.isGranted) {
+      final result = await Permission.photos.request();
+      if (!result.isGranted) {
+        // fallback for older Android versions
+        final storageResult = await Permission.storage.request();
+        if (!storageResult.isGranted) {
           throw Exception('Storage permission denied');
         }
       }
-
-      final List<XFile> images = await _picker.pickMultiImage(
-        maxWidth: maxWidth,
-        maxHeight: maxHeight,
-        imageQuality: imageQuality ?? 80,
-      );
-
-      if (images.isNotEmpty) {
-        // Limit the number of images
-        final limitedImages = images.take(maxImages).toList();
-        return limitedImages.map((image) => File(image.path)).toList();
-      }
-      return [];
-    } catch (e) {
-      throw Exception('Failed to pick multiple images: $e');
     }
+
+    final List<XFile> images = await _picker.pickMultiImage(
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
+      imageQuality: imageQuality ?? 80,
+    );
+
+    if (images.isNotEmpty) {
+      // Limit the number of images
+      final limitedImages = images.take(maxImages).toList();
+      return limitedImages.map((image) => File(image.path)).toList();
+    }
+    return [];
+  } catch (e) {
+    throw Exception('Failed to pick multiple images: $e');
   }
+}
+
+
+
 
   /// Show image picker dialog
   Future<File?> showImagePickerDialog({
