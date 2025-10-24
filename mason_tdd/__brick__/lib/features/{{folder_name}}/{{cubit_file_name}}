@@ -22,7 +22,7 @@ Future<void> {{folder_name_camelCase}}() async {
     emit(state.copyWith(response: ApiResponse.loading()));
     final {{folder_name_camelCase}} = await networkRepository.get<Map<String, dynamic>>(url: AppUrl.{{folder_name_camelCase}});
     {{folder_name_camelCase}}.fold(
-      (l) => emit(state.copyWith(response: ApiResponse.error(l.error))),
+      (l) => emit(state.copyWith(response: ApiResponse.error(l))),
       ((r) =>emit(state.copyWith(response: ApiResponse.completed({{class_name}}Model.fromJson(r))))));
   }  
 }

@@ -5,6 +5,7 @@ import '/config/response/api_response.dart';
 import '/config/response/status.dart';
 import '/core/utils/extensions.dart';
 import '/core/widgets/app_button.dart';
+import '/domain/failures/network/network_failure.dart';
 
 /// Configuration class for customizing StatusSwitcher appearance and behavior
 class StatusSwitcherConfig {
@@ -71,7 +72,7 @@ class StatusSwitcherConfig {
 class StatusSwitcher<T> extends StatelessWidget {
   final ApiResponse<T> response;
   final Widget Function(BuildContext context)? onLoading;
-  final Widget Function(BuildContext context, String message)? onError;
+  final Widget Function(BuildContext context, NetworkFailure error)? onError;
   final Widget Function(BuildContext context, T data) onCompleted;
   final VoidCallback? onRetry;
   final StatusSwitcherConfig config;
@@ -107,9 +108,9 @@ class StatusSwitcher<T> extends StatelessWidget {
       case Status.LOADING:
         return onLoading?.call(context) ?? _DefaultLoadingWidget();
       case Status.ERROR:
-        return onError?.call(context, response.message) ??
+        return onError?.call(context, response.error) ??
             _DefaultErrorWidget(
-              message: response.message,
+              message: response.error.error,
               onRetry: onRetry,
               config: config,
               customTitle: customErrorTitle,
@@ -383,7 +384,7 @@ extension StatusSwitcherExtension<T> on ApiResponse<T> {
   Widget toWidget({
     required Widget Function(BuildContext context, T data) onCompleted,
     Widget Function(BuildContext context)? onLoading,
-    Widget Function(BuildContext context, String message)? onError,
+    Widget Function(BuildContext context, NetworkFailure error)? onError,
     VoidCallback? onRetry,
     StatusSwitcherConfig config = const StatusSwitcherConfig(),
     String? customErrorTitle,
