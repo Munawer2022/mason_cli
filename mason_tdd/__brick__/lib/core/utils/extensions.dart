@@ -180,35 +180,6 @@ extension DateTimeExtension on DateTime {
   DateTime get endOfDay => DateTime(year, month, day, 23, 59, 59, 999);
 }
 
-// ==================== LIST EXTENSIONS ====================
-
-extension ListExtension<T> on List<T> {
-  // Safety checks
-  bool get isNullOrEmpty => isEmpty;
-  T? get firstOrNull => isEmpty ? null : first;
-  T? get lastOrNull => isEmpty ? null : last;
-
-  T? elementAtOrNull(int index) {
-    if (index < 0 || index >= length) return null;
-    return this[index];
-  }
-
-  // Utility methods
-  void addIfNotExists(T element) {
-    if (!contains(element)) add(element);
-  }
-
-  List<T> get unique => toSet().toList();
-
-  List<List<T>> chunk(int chunkSize) {
-    final chunks = <List<T>>[];
-    for (int i = 0; i < length; i += chunkSize) {
-      chunks.add(sublist(i, (i + chunkSize < length) ? i + chunkSize : length));
-    }
-    return chunks;
-  }
-}
-
 // ==================== DURATION EXTENSIONS ====================
 
 extension DurationExtension on Duration {
@@ -240,17 +211,6 @@ extension DurationExtension on Duration {
 
   bool get isZero => inMilliseconds == 0;
   bool get isPositive => inMilliseconds > 0;
-}
-
-// ==================== MAP EXTENSIONS ====================
-
-extension MapExtension<K, V> on Map<K, V> {
-  bool get isNullOrEmpty => isEmpty;
-  V? getOrNull(K key) => this[key];
-  V getOrDefault(K key, V defaultValue) => this[key] ?? defaultValue;
-
-  List<K> get keysList => keys.toList();
-  List<V> get valuesList => values.toList();
 }
 
 // ==================== LOGGING EXTENSIONS ====================
