@@ -10,7 +10,16 @@ import '/config/response/status.dart';
 /// class MyCubit extends Cubit<MyState> with PaginationMixin {
 ///   Future<void> loadMore() async {
 ///     await loadMoreData<MyDataModel>(
-///       fetchData: (page, limit) => _fetchData(page, limit),
+///       fetchData: (page, limit) async {
+///         final response = await networkRepository.get<Map<String, dynamic>>(
+///           url: AppUrl.test,
+///           queryParams: {'limit': limit.toString(), 'skip': page.toString()},
+///         );
+///         return response.fold(
+///           (l) => ApiResponse.error(l),
+///           (r) => ApiResponse.completed(TestModel.fromJson(r)),
+///         );
+///       },
 ///       mergeData: (current, new) => current.copyWith(items: [...current.items, ...new.items]),
 ///       getCurrentCount: (data) => data.items.length,
 ///       getTotalCount: (data) => data.total,
@@ -60,21 +69,3 @@ mixin PaginationMixin<S> on Cubit<S> {
     }
   }
 }
-/*
-Future<void> loadMore() async => await loadMoreData<TestModel>(
-    fetchData: (page, limit) async {
-      final response = await networkRepository.get<Map<String, dynamic>>(
-        url: AppUrl.test,
-        queryParams: {'limit': limit.toString(), 'skip': page.toString()},
-      );
-      return response.fold(
-        (l) => ApiResponse.error(l.error),
-        (r) => ApiResponse.completed(TestModel.fromJson(r)),
-      );
-    },
-    mergeData: (current, newData) =>
-        current.copyWith(products: [...current.products, ...newData.products]),
-    getCurrentCount: (data) => data.products.length,
-    getTotalCount: (data) => data.total,
-  );
-*/
