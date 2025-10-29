@@ -21,7 +21,7 @@ mason add mason_tdd_folder --source path --path ./mason_tdd_folder
 #### Option B: Add from Git Repository
 ```bash
 # Add from GitHub repository
-mason add --global mason_tdd --git-url https://github.com/Munawer2022/mason_cli.git --git-path mason_tdd --git-ref removeRepo
+mason add --global mason_tdd --git-url https://github.com/munawerdev/mason_cli.git --git-path mason_tdd --git-ref removeRepo
 ```
 
 ## 📦 Available Bricks
@@ -83,7 +83,7 @@ mason upgrade --global
 
 ## 🤝 Contributing
 
-1. Fork the repository (`https://github.com/Munawer2022/mason_cli`)
+1. Fork the repository (`https://github.com/munawerdev/mason_cli`)
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
