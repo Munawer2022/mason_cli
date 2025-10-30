@@ -13,14 +13,14 @@ class CheckForExistingUserUseCase {
     this._localStorageRepository,
   );
 
-  Future<Either<ExistingUserFailure, LocalUserInfoStoreModel>> execute() {
+  Future<Either<ExistingUserFailure, UserInfoStoreModel>> execute() {
     return _localStorageRepository.getUserData().then(
       (value) => value.fold((l) => left(ExistingUserFailure(error: l.error)), (
         localUserInfoStoreModel,
       ) {
         if (localUserInfoStoreModel.accessToken.isNotEmpty) {
           _loginDataSources.setLoginDataSources(
-            localUserInfoStoreModel: localUserInfoStoreModel,
+            userInfoStoreModel: localUserInfoStoreModel,
           );
           return right(localUserInfoStoreModel);
         }

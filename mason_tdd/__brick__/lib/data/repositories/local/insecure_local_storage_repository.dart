@@ -14,11 +14,12 @@ import '/domain/failures/local/set_local_storage_failure.dart';
 class InsecureLocalStorageRepository implements LocalStorageRepository {
   {{#auth}}
   @override
-  Future<Either<SetLocalStorageFailure, bool>> setUserData(
-      {required LocalUserInfoStoreModel localUserInfoStoreModel}) async {
+  Future<Either<SetLocalStorageFailure, bool>> setUserData({
+    required UserInfoStoreModel userInfoStoreModel,
+  }) async {
     try {
       final SharedPreferences sp = await SharedPreferences.getInstance();
-      String userJson = jsonEncode(localUserInfoStoreModel.toJson());
+      String userJson = jsonEncode(userInfoStoreModel.toJson());
       await sp.setString('user_info', userJson);
       // await prefs.setString("token", mockLoginSuccessModel.token);
       return right(true);
@@ -28,17 +29,17 @@ class InsecureLocalStorageRepository implements LocalStorageRepository {
   }
 
   @override
-  Future<Either<GetLocalStorageFailure, LocalUserInfoStoreModel>>
-      getUserData() async {
+  Future<Either<GetLocalStorageFailure, UserInfoStoreModel>>
+  getUserData() async {
     try {
       final SharedPreferences sp = await SharedPreferences.getInstance();
       String? userJson = sp.getString('user_info');
       if (userJson == null) {
-        return right(LocalUserInfoStoreModel.empty().copyWith());
+        return right(UserInfoStoreModel.empty().copyWith());
       }
 
       Map<String, dynamic> userMap = jsonDecode(userJson);
-      return right(LocalUserInfoStoreModel.fromJson(userMap));
+      return right(UserInfoStoreModel.fromJson(userMap));
       // return right(MockLoginSuccessModel.empty()
       //     .copyWith(token: prefs.getString("token")));
     } catch (ex) {

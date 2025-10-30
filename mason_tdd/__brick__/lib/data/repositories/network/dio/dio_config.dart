@@ -110,17 +110,18 @@ Future<Response<dynamic>?> _handleUnauthorized(
     if (refreshResponse.statusCode == 200) {
       final Map<String, dynamic> newTokensJson = refreshResponse.data;
 
-      final LocalUserInfoStoreModel newUserData =
-          LocalUserInfoStoreModel.fromJson(newTokensJson);
+      final UserInfoStoreModel newUserData = UserInfoStoreModel.fromJson(
+        newTokensJson,
+      );
 
       // Update local storage
       await localStorageRepository
-          .setUserData(localUserInfoStoreModel: newUserData)
+          .setUserData(userInfoStoreModel: newUserData)
           .then(
             (value) => value.fold(
               (l) => log('Failed to save user data: $l'),
               (r) => loginDataSources.setLoginDataSources(
-                localUserInfoStoreModel: newUserData,
+                userInfoStoreModel: newUserData,
               ),
             ),
           );

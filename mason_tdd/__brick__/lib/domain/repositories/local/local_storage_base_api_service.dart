@@ -9,9 +9,9 @@ import '/domain/failures/local/set_local_storage_failure.dart';
 abstract class LocalStorageRepository {
   {{#auth}}
   Future<Either<SetLocalStorageFailure, bool>> setUserData(
-      {required LocalUserInfoStoreModel localUserInfoStoreModel});
+      {required UserInfoStoreModel userInfoStoreModel});
 
-  Future<Either<GetLocalStorageFailure, LocalUserInfoStoreModel>> getUserData();
+  Future<Either<GetLocalStorageFailure, UserInfoStoreModel>> getUserData();
   Future<Either<RemoveLocalStorageFailure, bool>> removeUserData();
   {{/auth}}
 
