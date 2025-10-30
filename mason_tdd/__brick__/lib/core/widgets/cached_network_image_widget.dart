@@ -2,8 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '/config/theme/theme_data.dart';
-
 /// Configuration class for AppCachedNetworkImage styling and behavior
 class AppImageConfig {
   // Size and layout
@@ -196,14 +194,10 @@ class AppImageConfig {
   }
 }
 
-/// Enum for different image types and presets
-enum AppImageType { standard, avatar, thumbnail, hero, card, background }
-
 /// Main AppCachedNetworkImage widget with improved architecture
 class AppCachedNetworkImage extends StatelessWidget {
   // Core properties
   final String? imageUrl;
-  final AppImageType type;
   final AppImageConfig? config;
 
   // Fallback and user info
@@ -223,7 +217,6 @@ class AppCachedNetworkImage extends StatelessWidget {
   const AppCachedNetworkImage({
     super.key,
     this.imageUrl,
-    this.type = AppImageType.standard,
     this.config,
     this.userName,
     this.fallbackAsset,
@@ -237,8 +230,7 @@ class AppCachedNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveConfig = config ?? _getDefaultConfig(context, type);
-
+    final effectiveConfig = config ?? _getBaseDefaultConfig(context);
     Widget imageWidget = _buildImageWidget(context, effectiveConfig);
 
     // Add tap functionality if provided
@@ -258,54 +250,14 @@ class AppCachedNetworkImage extends StatelessWidget {
     return imageWidget;
   }
 
-  AppImageConfig _getDefaultConfig(BuildContext context, AppImageType type) {
+  AppImageConfig _getBaseDefaultConfig(BuildContext context) {
     final theme = Theme.of(context);
-
-    switch (type) {
-      case AppImageType.avatar:
-        return AppImageConfig(
-          width: 40.0,
-          height: 40.0,
-          fit: BoxFit.cover,
-          borderRadius: BorderRadius.circular(20.0),
-          enableUserInitials: true,
-          initialsBackgroundColor: theme.colorScheme.primary.withOpacity(0.1),
-          initialsTextColor: theme.colorScheme.primary,
-          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
-        );
-      case AppImageType.thumbnail:
-        return AppImageConfig(
-          width: 80.0,
-          height: 80.0,
-          fit: BoxFit.cover,
-          borderRadius: BorderRadius.circular(8.0),
-          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
-        );
-      case AppImageType.hero:
-        return AppImageConfig(
-          width: double.infinity,
-          height: 200.0,
-          fit: BoxFit.cover,
-          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
-          fadeInDuration: const Duration(milliseconds: 500),
-        );
-      case AppImageType.card:
-        return AppImageConfig(
-          fit: BoxFit.cover,
-          borderRadius: BorderRadius.circular(12.0),
-          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
-        );
-      case AppImageType.background:
-        return AppImageConfig(
-          fit: BoxFit.cover,
-          loadingBackgroundColor: theme.colorScheme.surface,
-          showLoadingIndicator: false,
-        );
-      default:
-        return AppImageConfig(
-          loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
-        );
-    }
+    return AppImageConfig(
+      loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
+      loadingIndicatorColor: theme.colorScheme.primary,
+      errorBackgroundColor: theme.colorScheme.errorContainer,
+      errorIconColor: theme.colorScheme.onErrorContainer,
+    );
   }
 
   Widget _buildImageWidget(BuildContext context, AppImageConfig config) {
@@ -519,148 +471,4 @@ class AppCachedNetworkImage extends StatelessWidget {
       return trimmedName.substring(0, 1).toUpperCase();
     }
   }
-}
-
-/// Specialized image widgets for common use cases
-class AppAvatarImage extends StatelessWidget {
-  final String? imageUrl;
-  final String? userName;
-  final double size;
-  final AppImageConfig? config;
-  final VoidCallback? onTap;
-
-  const AppAvatarImage({
-    super.key,
-    this.imageUrl,
-    this.userName,
-    this.size = 40.0,
-    this.config,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AppCachedNetworkImage(
-      imageUrl: imageUrl,
-      userName: userName,
-      type: AppImageType.avatar,
-      config: (config ?? AppImageConfig()).copyWith(
-        width: size,
-        height: size,
-        borderRadius: BorderRadius.circular(size / 2),
-        enableUserInitials: true,
-      ),
-      onTap: onTap,
-      semanticLabel: 'Avatar for ${userName ?? "user"}',
-    );
-  }
-}
-
-class AppThumbnailImage extends StatelessWidget {
-  final String imageUrl;
-  final double? width;
-  final double? height;
-  final AppImageConfig? config;
-  final VoidCallback? onTap;
-
-  const AppThumbnailImage({
-    super.key,
-    required this.imageUrl,
-    this.width,
-    this.height,
-    this.config,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AppCachedNetworkImage(
-      imageUrl: imageUrl,
-      type: AppImageType.thumbnail,
-      config: (config ?? AppImageConfig()).copyWith(
-        width: width ?? 80.0,
-        height: height ?? 80.0,
-      ),
-      onTap: onTap,
-      semanticLabel: 'Thumbnail image',
-    );
-  }
-}
-
-class AppHeroImage extends StatelessWidget {
-  final String imageUrl;
-  final double? height;
-  final AppImageConfig? config;
-  final VoidCallback? onTap;
-  final String? heroTag;
-
-  const AppHeroImage({
-    super.key,
-    required this.imageUrl,
-    this.height,
-    this.config,
-    this.onTap,
-    this.heroTag,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    Widget image = AppCachedNetworkImage(
-      imageUrl: imageUrl,
-      type: AppImageType.hero,
-      config: (config ?? AppImageConfig()).copyWith(
-        height: height ?? 200.0,
-        width: double.infinity,
-      ),
-      onTap: onTap,
-      semanticLabel: 'Hero image',
-    );
-
-    if (heroTag != null) {
-      image = Hero(tag: heroTag!, child: image);
-    }
-
-    return image;
-  }
-}
-
-class AppCardImage extends StatelessWidget {
-  final String imageUrl;
-  final double? width;
-  final double? height;
-  final AppImageConfig? config;
-  final VoidCallback? onTap;
-
-  const AppCardImage({
-    super.key,
-    required this.imageUrl,
-    this.width,
-    this.height,
-    this.config,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AppCachedNetworkImage(
-      imageUrl: imageUrl,
-      type: AppImageType.card,
-      config: (config ?? AppImageConfig()).copyWith(
-        width: width,
-        height: height,
-      ),
-      onTap: onTap,
-      semanticLabel: 'Card image',
-    );
-  }
-}
-
-/// Extension for easier usage
-extension AppImageExtensions on BuildContext {
-  AppImageConfig get defaultImageConfig => AppImageConfig(
-    loadingBackgroundColor: theme.colorScheme.surfaceContainerHighest,
-    loadingIndicatorColor: theme.colorScheme.primary,
-    errorBackgroundColor: theme.colorScheme.errorContainer,
-    errorIconColor: theme.colorScheme.onErrorContainer,
-  );
 }
