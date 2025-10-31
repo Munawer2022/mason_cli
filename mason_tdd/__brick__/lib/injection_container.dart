@@ -21,7 +21,7 @@ import 'features/splash/splash_navigator.dart';
 /*
  ************************ login ************************
 */
-import 'data/datasources/auth/login_data_sources.dart';
+import 'data/datasources/auth/user_data_sources.dart';
 import 'domain/usecases/auth/login/login_use_cases.dart';
 import 'features/auth/login/login_navigator.dart';
 import 'features/auth/login/login_cubit.dart';
@@ -41,7 +41,7 @@ final getIt = GetIt.instance;
 Future<void> init() async {
   getIt.registerSingleton<AppNavigator>(AppNavigator());
   {{#auth}}
-  getIt.registerSingleton<LoginDataSources>(LoginDataSources());
+  getIt.registerSingleton<UserDataSources>(UserDataSources());
   {{/auth}}
     getIt.registerSingleton<LocalStorageRepository>(
       InsecureLocalStorageRepository());

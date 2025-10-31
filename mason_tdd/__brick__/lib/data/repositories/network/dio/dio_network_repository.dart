@@ -3,20 +3,20 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
-import '/data/datasources/auth/login_data_sources.dart';
+import '/data/datasources/auth/user_data_sources.dart';
 import '/domain/failures/network/network_failure.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
 import '/domain/repositories/network/network_base_api_service.dart';
 import 'dio_config.dart';
 
 class DioNetworkRepository implements NetworkBaseApiService {
-  final LoginDataSources _loginDataSources;
+  final UserDataSources _userDataSources;
   final LocalStorageRepository _localStorageRepository;
   late final Dio _dio;
 
-  DioNetworkRepository(this._loginDataSources, this._localStorageRepository) {
+  DioNetworkRepository(this._userDataSources, this._localStorageRepository) {
     _dio = DioConfig.createDio(
-      loginDataSources: _loginDataSources,
+      userDataSources: _userDataSources,
       localStorageRepository: _localStorageRepository,
     );
   }

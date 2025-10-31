@@ -1,15 +1,15 @@
 import 'package:fpdart/fpdart.dart';
 
-import '/data/datasources/auth/login_data_sources.dart';
-import '/data/models/local/local_user_info_store_model.dart';
+import '/data/datasources/auth/user_data_sources.dart';
+import '/data/models/user/user_info_store_model.dart';
 import '/domain/failures/local/existing_user_failure.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
 
 class CheckForExistingUserUseCase {
-  final LoginDataSources _loginDataSources;
+  final UserDataSources _userDataSources;
   final LocalStorageRepository _localStorageRepository;
   CheckForExistingUserUseCase(
-    this._loginDataSources,
+    this._userDataSources,
     this._localStorageRepository,
   );
 
@@ -19,7 +19,7 @@ class CheckForExistingUserUseCase {
         localUserInfoStoreModel,
       ) {
         if (localUserInfoStoreModel.accessToken.isNotEmpty) {
-          _loginDataSources.setLoginDataSources(
+          _userDataSources.setUserDataSources(
             userInfoStoreModel: localUserInfoStoreModel,
           );
           return right(localUserInfoStoreModel);

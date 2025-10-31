@@ -4,13 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 import '/core/utils/app_url.dart';
-import '/data/datasources/auth/login_data_sources.dart';
-import '/data/models/local/local_user_info_store_model.dart';
+import '/data/datasources/auth/user_data_sources.dart';
+import '/data/models/user/user_info_store_model.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
 
 class DioConfig {
   static Dio createDio({
-    required LoginDataSources loginDataSources,
+    required UserDataSources userDataSources,
     required LocalStorageRepository localStorageRepository,
   }) {
     final dio = Dio();
@@ -26,7 +26,7 @@ class DioConfig {
 
     // Add interceptors in order
     dio.interceptors.addAll([
-      InterceptorsWrapper(loginDataSources, localStorageRepository),
+      InterceptorsWrapper(userDataSources, localStorageRepository),
       TalkerDioLogger(
         settings: TalkerDioLoggerSettings(
           printRequestHeaders: true,
@@ -43,14 +43,14 @@ class DioConfig {
 
 // Enhanced Authentication Interceptor
 class InterceptorsWrapper extends Interceptor {
-  final LoginDataSources _loginDataSources;
+  final UserDataSources _userDataSources;
   final LocalStorageRepository _localStorageRepository;
 
-  InterceptorsWrapper(this._loginDataSources, this._localStorageRepository);
+  InterceptorsWrapper(this._userDataSources, this._localStorageRepository);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    final token = _loginDataSources.state.accessToken;
+    final token = _userDataSources.state.accessToken;
     if (token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
     }
@@ -70,7 +70,7 @@ class InterceptorsWrapper extends Interceptor {
     if (err.response?.statusCode == 401) {
       try {
         final retriedResponse = await _handleUnauthorized(
-          _loginDataSources,
+          _userDataSources,
           _localStorageRepository,
           err.requestOptions,
         );
@@ -88,11 +88,11 @@ class InterceptorsWrapper extends Interceptor {
 }
 
 Future<Response<dynamic>?> _handleUnauthorized(
-  LoginDataSources loginDataSources,
+  UserDataSources userDataSources,
   LocalStorageRepository localStorageRepository,
   RequestOptions requestOptions,
 ) async {
-  final refreshToken = loginDataSources.state.refreshToken;
+  final refreshToken = userDataSources.state.refreshToken;
   if (refreshToken.isEmpty) {
     log('No refresh token available');
     return null;
@@ -120,7 +120,7 @@ Future<Response<dynamic>?> _handleUnauthorized(
           .then(
             (value) => value.fold(
               (l) => log('Failed to save user data: $l'),
-              (r) => loginDataSources.setLoginDataSources(
+              (r) => userDataSources.setUserDataSources(
                 userInfoStoreModel: newUserData,
               ),
             ),

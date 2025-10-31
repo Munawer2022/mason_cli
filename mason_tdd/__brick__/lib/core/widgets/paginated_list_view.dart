@@ -94,11 +94,9 @@ class _PaginatedListViewState<T> extends State<PaginatedListView<T>> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - widget.loadMoreThreshold) {
-      if (!widget.isLoadingMore &&
-          widget.onLoadMore != null &&
-          !_hasTriggeredLoadMore) {
+      if (!widget.isLoadingMore && !_hasTriggeredLoadMore) {
         _hasTriggeredLoadMore = true;
-        widget.onLoadMore!();
+        widget.onLoadMore();
       }
     } else {
       _hasTriggeredLoadMore = false;
@@ -234,11 +232,9 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - widget.loadMoreThreshold) {
-      if (!widget.isLoadingMore &&
-          widget.onLoadMore != null &&
-          !_hasTriggeredLoadMore) {
+      if (!widget.isLoadingMore && !_hasTriggeredLoadMore) {
         _hasTriggeredLoadMore = true;
-        widget.onLoadMore!();
+        widget.onLoadMore();
       }
     } else {
       _hasTriggeredLoadMore = false;
