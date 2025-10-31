@@ -11,7 +11,6 @@ import 'core/show/show/show.dart';
 import 'data/repositories/network/dio/dio_network_repository.dart';
 // import '/data/datasources/internet_connectivity/internet_connectivity_checker_data_sources.dart';
 
-{{#auth}}
 /*
  ************************ Splash ************************
 */
@@ -28,7 +27,6 @@ import 'features/auth/login/login_cubit.dart';
 import 'features/auth/login/login_initial_params.dart';
 import '/domain/usecases/local/check_for_existing_user_use_case.dart';
 
-{{/auth}}
 /*
 ************************ {{class_name}} ************************
 */
@@ -39,18 +37,14 @@ import 'features/{{folder_name}}/{{initial_params_file_name}}';
 final getIt = GetIt.instance;
 
 Future<void> init() async {
-  getIt.registerSingleton<AppNavigator>(AppNavigator());
-  {{#auth}}
+   getIt.registerSingleton<AppNavigator>(AppNavigator());
   getIt.registerSingleton<UserDataSources>(UserDataSources());
-  {{/auth}}
-    getIt.registerSingleton<LocalStorageRepository>(
-      InsecureLocalStorageRepository());
-  getIt.registerSingleton<NetworkBaseApiService>(DioNetworkRepository(
-    {{#auth}}
-    getIt(),
-    getIt()
-    {{/auth}}
-    ));
+  getIt.registerSingleton<LocalStorageRepository>(
+    InsecureLocalStorageRepository(),
+  );
+  getIt.registerSingleton<NetworkBaseApiService>(
+    DioNetworkRepository(getIt(), getIt()),
+  );
 /*
 ************************ Theme ************************
 */
@@ -65,7 +59,6 @@ Future<void> init() async {
 
   // getIt.registerSingleton<InternetConnectivityCheckerDataSources>(
   //     InternetConnectivityCheckerDataSources(getIt(), getIt()));
- {{#auth}}
 /*
 ************************ Splash ************************
 */
@@ -82,7 +75,6 @@ Future<void> init() async {
   getIt.registerSingleton<LoginNavigator>(LoginNavigator(getIt()));
   getIt.registerFactoryParam<LoginCubit, LoginInitialParams, dynamic>(
       (params, _) => LoginCubit(params, getIt(), getIt(), getIt()));
-      {{/auth}}
 /*
 ************************ {{class_name}} ************************
 */

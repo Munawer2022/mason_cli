@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/data/models/{{#auth}}auth{{/auth}}/login_model.dart';
+import '/data/models/auth/login_model.dart';
 import '/features/{{folder_name}}/{{folder_name}}_initial_params.dart';
 import 'login_initial_params.dart';
 import 'login_navigator.dart';
