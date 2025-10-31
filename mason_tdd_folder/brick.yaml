@@ -1,5 +1,6 @@
 name: mason_tdd_folder
-description: A new brick created with the Mason CLI.
+description: Generate feature folders with TDD architecture, Bloc/Cubit state management, and repository pattern.
+repository: https://github.com/munawerdev/mason_cli
 
 # The following defines the version and build number for your brick.
 # A version number is three numbers separated by dots, like 1.2.34
@@ -27,14 +28,14 @@ vars:
     default: Dash
     prompt: What is your name?
 
-  stateManagement:
-    type: enum
-    description: Select the stateManagement you want to include
-    values:
-      - flutter_bloc
-      - Bloc (Coming Soon)
-    prompt: Which stateManagement would you like to include in your application?
-    # defaults: provider
+  # stateManagement:
+  #   type: enum
+  #   description: Select the stateManagement you want to include
+  #   values:
+  #     - flutter_bloc
+  #     - Bloc (Coming Soon)
+  #   prompt: Which stateManagement would you like to include in your application?
+  #   # defaults: provider
   http:
     type: enum
     description: Select the api you want to include

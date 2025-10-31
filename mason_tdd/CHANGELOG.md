@@ -5,31 +5,66 @@ All notable changes to this brick will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0+2] - 2025-10-30
+## [0.1.0+4] - 2025-01-XX
 
 ### Added
-
-- Initial release of mason_tdd brick
-- Clean architecture structure with domain, data, and presentation layers
-- Authentication system with login/logout flow
-- Flutter Bloc state management integration
-- Custom UI components (AppButton, AppTextFormField, AppBar, etc.)
-- Network layer with Dio integration and interceptors
-- Theme system with centralized colors and text styles
-- Core services (Image Picker, Location, Payment)
-- Navigation management with transition support
-- Pagination support with PaginatedListView
-- Responsive design with flutter_screenutil
-- Dependency injection setup with GetIt
-- Flutter Release X configuration for CI/CD
+- Complete Flutter architecture generator with Clean Architecture
+- Automatic Flutter/Dart/Java version detection
+- Auto-installation of dependencies with `flutter pub add`
+- Environment variable setup with `.env` file generation
+- Flutter Release X integration for CI/CD
+- Android and iOS permission auto-configuration
+- Build runner integration for code generation
 
 ### Features
 
-- Comprehensive Flutter TDD brick structure
-- Support for GET and POST API endpoints
-- Secure local storage implementation
-- Socket network support ready
-- Error handling and failure types
-- Logging with TalkerDioLogger
+#### Architecture
+- **Clean Architecture** with Domain, Data, and Presentation layers
+- **State Management** with Flutter Bloc/Cubit
+- **Dependency Injection** with GetIt
+- **Repository Pattern** implementation
+
+#### Authentication
+- Complete login/logout flow
 - Token-based authentication with refresh token support
-- Splash screen with user session validation
+- Secure local storage
+- Automatic session validation
+- Splash screen with auth state checking
+
+#### UI/UX
+- Custom AppButton, AppTextFormField, AppBar widgets
+- CachedNetworkImage for optimized loading
+- PaginatedListView for efficient lists
+- Complete theming system with colors and text styles
+- Responsive design with ScreenUtil
+- Loading animations with Shimmer
+
+#### Network Layer
+- Dio integration with interceptors
+- API response handling and error management
+- WebSocket support ready
+- Automatic retry and logging
+- Environment-based configuration
+
+#### Native Services
+- Image Picker (camera & gallery)
+- Location service with GPS
+- Payment service integration ready
+- Permission handler setup
+
+#### Developer Experience
+- Auto-configured CI/CD pipeline
+- Testing structure setup
+- Logging with TalkerDioLogger
+- Extension helpers
+- Constants and utilities
+
+### Configuration
+- **name**: User name (default: Dash)
+- **http**: API type - get, post, or noThing
+
+### Dependencies
+- Core: flutter_bloc, get_it, dio, fpdart, flutter_screenutil, shared_preferences
+- UI: cached_network_image, shimmer
+- Dev: device_preview, talker_dio_logger, logger, flutter_dotenv
+- Native: image_picker, permission_handler

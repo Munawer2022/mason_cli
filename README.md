@@ -1,90 +1,90 @@
-# Mason CLI - Flutter Code Generation
+# 🧱 Mason CLI - Flutter Code Generation
 
-A collection of Mason bricks for Flutter development with TDD (Test-Driven Development) support.
+[![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
+[![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
+
+A collection of **Mason bricks** for Flutter development with **TDD (Test-Driven Development)** support following Clean Architecture principles.
+
+## 📦 Available Bricks
+
+| Brick | Description | Install |
+|-------|-------------|---------|
+| **[mason_tdd](https://brickhub.dev/bricks/mason_tdd/)** | Complete Flutter architecture with Clean Architecture, Bloc, Dependency Injection, and Authentication | `mason add --global mason_tdd` |
+| **mason_tdd_folder** | Feature folder generator with Cubit/Bloc setup | `mason add --global mason_tdd_folder` |
 
 ## 🚀 Quick Start
 
-### 1. Install Mason CLI
+### Install Mason CLI
+
 ```bash
 dart pub global activate mason_cli
 ```
 
-### 2. Add Bricks to Your Project
+### Add Bricks
 
-#### Option A: Add from Local Path (Recommended)
 ```bash
-# Add bricks locally to your project
+# Add from BrickHub (Recommended)
+mason add --global mason_tdd
+
+# Or from Local Path
 mason add mason_tdd --source path --path ./mason_tdd
 mason add mason_tdd_folder --source path --path ./mason_tdd_folder
+
+# Or from Git Repository
+mason add --global mason_tdd --git-url https://github.com/munawerdev/mason_cli.git --git-path mason_tdd
 ```
 
-#### Option B: Add from Git Repository
+### Generate Code
+
 ```bash
-# Add from GitHub repository
-mason add --global mason_tdd --git-url https://github.com/munawerdev/mason_cli.git --git-path mason_tdd --git-ref removeRepo
+# Complete TDD setup
+mason make mason_tdd
+
+# Generate feature folder
+mason make mason_tdd_folder --name user_profile -o lib/features
 ```
 
-## 📦 Available Bricks
+## ✨ Features
 
-- **mason_tdd**: Complete TDD setup with Flutter architecture
-- **mason_tdd_folder**: Folder structure generator for features
+- ✅ **Clean Architecture** with Domain-Driven Design
+- ✅ **State Management** with Flutter Bloc/Cubit
+- ✅ **Dependency Injection** with GetIt
+- ✅ **Network Layer** with Dio interceptors
+- ✅ **Authentication System** with secure storage
+- ✅ **Theming** and UI components library
+- ✅ **Responsive Design** with flutter_screenutil
+- ✅ **TDD Support** with built-in test structure
 
-## 🛠️ Usage
+## 📚 Documentation
 
-### Generate New Brick with Hooks
-```bash
-mason new <BRICK_NAME> --hooks
-```
-
-### Generate Code from Bricks
-```bash
-# Generate to lib directory
-mason make <BRICK_NAME> -o lib
-
-# Generate with custom name
-mason make <BRICK_NAME> --name hello -o lib
-```
+- **mason_tdd**: [View on BrickHub](https://brickhub.dev/bricks/mason_tdd/)
+- **mason_tdd README**: [Full Documentation](./mason_tdd/README.md)
 
 ## 🔧 Management Commands
 
-### List All Global Bricks
 ```bash
+# List all global bricks
 mason list --global
-```
 
-### Remove a Brick
-```bash
-mason remove -g <BRICK_NAME>
-```
+# Remove a brick
+mason remove -g mason_tdd
 
-### Upgrade All Bricks
-```bash
+# Upgrade all bricks
 mason upgrade --global
-
-- **Clean Architecture**: Follows Flutter best practices
-- **TDD Support**: Built-in test structure
-- **State Management**: Cubit/Bloc support
-- **Navigation**: Custom navigation setup
-- **Theming**: Complete theming system
-- **Services**: Common services (location, payment, image picker)
-- **Widgets**: Reusable UI components
-
-## 📝 Example Usage
-
-1. **Create a new feature:**
-   ```bash
-   mason make mason_tdd_folder --name user_profile -o lib/features
-   ```
-
-2. **Generate complete TDD setup:**
-   ```bash
-   mason make mason_tdd --name auth -o lib
-   ```
+```
 
 ## 🤝 Contributing
 
-1. Fork the repository (`https://github.com/munawerdev/mason_cli`)
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+## 📄 License
+
+MIT License - see [LICENSE](./LICENSE) for details.
+
+---
+
+**Powered by [Mason](https://github.com/felangel/mason) 🧱**
