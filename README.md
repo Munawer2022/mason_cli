@@ -10,7 +10,7 @@ A collection of **Mason bricks** for Flutter development with **TDD (Test-Driven
 | Brick | Description | Install |
 |-------|-------------|---------|
 | **[mason_tdd](https://brickhub.dev/bricks/mason_tdd/)** | Complete Flutter architecture with Clean Architecture, Bloc, Dependency Injection, and Authentication | `mason add --global mason_tdd` |
-| **mason_tdd_folder** | Feature folder generator with Cubit/Bloc setup | `mason add --global mason_tdd_folder` |
+| **[mason_tdd_folder](https://brickhub.dev/bricks/mason_tdd_folder/)** | Feature folder generator with Cubit/Bloc setup | `mason add --global mason_tdd_folder` |
 
 ## 🚀 Quick Start
 
@@ -25,13 +25,15 @@ dart pub global activate mason_cli
 ```bash
 # Add from BrickHub (Recommended)
 mason add --global mason_tdd
+mason add --global mason_tdd_folder
 
-# Or from Local Path
+# Or from Local Path (if you cloned this repository)
 mason add mason_tdd --source path --path ./mason_tdd
 mason add mason_tdd_folder --source path --path ./mason_tdd_folder
 
-# Or from Git Repository
+# Or from Git Repository (this repository)
 mason add --global mason_tdd --git-url https://github.com/munawerdev/mason_cli.git --git-path mason_tdd
+mason add --global mason_tdd_folder --git-url https://github.com/munawerdev/mason_cli.git --git-path mason_tdd_folder
 ```
 
 ### Generate Code
@@ -58,6 +60,7 @@ mason make mason_tdd_folder --name user_profile -o lib/features
 ## 📚 Documentation
 
 - **mason_tdd**: [View on BrickHub](https://brickhub.dev/bricks/mason_tdd/)
+- **mason_tdd_folder**: [View on BrickHub](https://brickhub.dev/bricks/mason_tdd_folder/)
 - **mason_tdd README**: [Full Documentation](./mason_tdd/README.md)
 
 ## 🔧 Management Commands
