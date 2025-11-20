@@ -179,6 +179,7 @@ class AppTextFormField extends StatefulWidget {
   final TextAlign textAlign;
   final TextCapitalization textCapitalization;
   final TextInputAction? textInputAction;
+  final EdgeInsets scrollPadding;
 
   const AppTextFormField({
     super.key,
@@ -210,6 +211,7 @@ class AppTextFormField extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.textCapitalization = TextCapitalization.none,
     this.textInputAction,
+    this.scrollPadding = const EdgeInsets.all(20.0),
   });
 
   @override
@@ -269,6 +271,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       keyboardType: _getKeyboardType(),
       inputFormatters: widget.inputFormatters ?? _getInputFormatters(),
       autofillHints: widget.autofillHints ?? _getAutofillHints(),
+      scrollPadding: widget.scrollPadding,
       validator: _buildValidator(),
       maxLength: widget.maxLength,
       maxLines: _getMaxLines(),
