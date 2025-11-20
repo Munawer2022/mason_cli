@@ -50,40 +50,9 @@ lib/
 
 **Features**: Dio clients, WebSocket support, automatic retry, response caching
 
-## 🌱 Environment Variables
-
-**Automatic setup** with `flutter_dotenv`:
-
-```dart
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-final baseUrl = dotenv.env['BASE_URL'];
-final apiKey = dotenv.env['API_KEY'];
-```
-
-**Auto-generated**: `.env` file, `pubspec.yaml` assets, `main.dart` loading
-
 ## 📦 Packages
 
 **Core**: `flutter_bloc`, `get_it`, `fpdart`, `dio`, `flutter_screenutil`, `shimmer`, `cached_network_image`, `shared_preferences`, `flutter_dotenv`, `logger`, `image_picker`, `permission_handler`
-
-## 🔄 CI/CD
-
-**Flutter Release X** integration:
-
-```bash
-frx build -t android,ios
-frx upload
-```
-
-## 📈 Monitoring
-
-**Logging**:
-```dart
-AppPrint.success('Operation completed successfully');
-AppPrint.error('An error occurred: $error');
-AppPrint.json(jsonData);
-```
 
 ## 🤝 Contributing
 
