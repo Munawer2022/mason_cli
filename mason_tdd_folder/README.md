@@ -31,7 +31,7 @@ mason add --global mason_tdd_folder
 ### Usage
 
 ```bash
-mason make mason_tdd_folder --name user_profile
+mason make mason_tdd_folder --name userProfile
 ```
 
 ### Configuration
