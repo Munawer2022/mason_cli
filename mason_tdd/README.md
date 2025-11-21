@@ -84,7 +84,7 @@ mason make mason_tdd
 | Variable | Type | Description | Default |
 |----------|------|-------------|---------|
 | `name` | string | Your name | Dash |
-| `http` | enum | API type | get, post, noThing |
+| `dio` | enum | API type | get, post, noThing |
 
 ## 📁 Project Structure
 

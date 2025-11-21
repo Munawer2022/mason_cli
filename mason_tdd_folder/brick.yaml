@@ -24,23 +24,15 @@ environment:
 vars:
   name:
     type: string
-    description: Your name
+    description: The name of the feature class
     default: Dash
-    prompt: What is your name?
+    prompt: What is the name of the feature?
 
-  # stateManagement:
-  #   type: enum
-  #   description: Select the stateManagement you want to include
-  #   values:
-  #     - flutter_bloc
-  #     - Bloc (Coming Soon)
-  #   prompt: Which stateManagement would you like to include in your application?
-  #   # defaults: provider
-  http:
+  dio:
     type: enum
-    description: Select the api you want to include
+    description: Select the Api method to generate for the page
     values:
       - get
       - post
       - noThing
-    prompt: Which api would you like to include in your application?
+    prompt: Which Api method would you like to generate for the page?

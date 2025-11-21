@@ -39,7 +39,7 @@ mason make mason_tdd_folder --name user_profile
 | Variable | Type   | Description                              | Default     |
 |----------|--------|------------------------------------------|-------------|
 | `name`   | string | Feature name (converted to PascalCase)   | Dash        |
-| `http`   | enum   | API type                                 | get, post, noThing |
+| `dio`   | enum   | API type                                 | get, post, noThing |
 
 ## 📁 Generated Structure
 
