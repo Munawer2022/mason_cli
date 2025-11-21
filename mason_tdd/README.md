@@ -230,26 +230,6 @@ Auto-detected when generating:
 - **Dart**: Current version
 - **Java**: Current version
 
-## 🔄 CI/CD Support
-
-### Flutter Release X Integration
-
-Automatically configures build, release, and distribution:
-
-```bash
-# Build for Android & iOS
-frx build -t android,ios
-
-# Upload to GitHub/Google Drive/Slack
-frx upload
-```
-
-**Features:**
-- Auto-increment build numbers
-- QR code generation
-- Multi-platform distribution
-- GitHub releases integration
-
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.

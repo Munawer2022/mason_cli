@@ -12,7 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic Flutter/Dart/Java version detection
 - Auto-installation of dependencies with `flutter pub add`
 - Environment variable setup with `.env` file generation
-- Flutter Release X integration for CI/CD
 - Android and iOS permission auto-configuration
 - Build runner integration for code generation
 
@@ -53,7 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Permission handler setup
 
 #### Developer Experience
-- Auto-configured CI/CD pipeline
 - Testing structure setup
 - Logging with TalkerDioLogger
 - Extension helpers
