@@ -8,6 +8,7 @@ import 'domain/usecases/theme/get_theme_use_case.dart';
 import 'domain/usecases/theme/update_theme_use_case.dart';
 // import 'package:connectivity_plus/connectivity_plus.dart';
 import 'core/show/show/show.dart';
+import 'data/repositories/network/errors/api_error_handler.dart';
 import 'data/repositories/network/dio/dio_network_repository.dart';
 // import '/data/datasources/internet_connectivity/internet_connectivity_checker_data_sources.dart';
 
@@ -42,8 +43,9 @@ Future<void> init() async {
   getIt.registerSingleton<LocalStorageRepository>(
     InsecureLocalStorageRepository(),
   );
+  getIt.registerSingleton<ApiErrorHandler>(const ApiErrorHandler());
   getIt.registerSingleton<NetworkBaseApiService>(
-    DioNetworkRepository(getIt(), getIt()),
+    DioNetworkRepository(getIt(), getIt(), getIt()),
   );
 /*
 ************************ Theme ************************

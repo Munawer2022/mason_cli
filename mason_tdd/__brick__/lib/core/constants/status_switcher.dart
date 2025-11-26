@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '/config/response/api_response.dart';
 import '/config/response/status.dart';
+import '/core/utils/error_display_helper.dart';
 import '/core/utils/extensions.dart';
 import '/core/widgets/app_button.dart';
 import '/domain/failures/network/network_failure.dart';
@@ -15,7 +16,6 @@ class StatusSwitcherConfig {
   final String retryButtonText;
   final IconData errorIcon;
   final IconData retryIcon;
-  final String defaultErrorTitle;
   final String defaultNoDataTitle;
   final EdgeInsets containerMargin;
   final double iconSize;
@@ -29,7 +29,6 @@ class StatusSwitcherConfig {
     this.retryButtonText = 'Try Again',
     this.errorIcon = Icons.sentiment_dissatisfied_rounded,
     this.retryIcon = Icons.refresh_rounded,
-    this.defaultErrorTitle = 'Oops! Something went wrong',
     this.defaultNoDataTitle = "There's nothing here",
     this.containerMargin = const EdgeInsets.symmetric(horizontal: 20),
     this.iconSize = 40,
@@ -44,7 +43,6 @@ class StatusSwitcherConfig {
     String? retryButtonText,
     IconData? errorIcon,
     IconData? retryIcon,
-    String? defaultErrorTitle,
     String? defaultNoDataTitle,
     EdgeInsets? containerMargin,
     double? iconSize,
@@ -58,7 +56,6 @@ class StatusSwitcherConfig {
       retryButtonText: retryButtonText ?? this.retryButtonText,
       errorIcon: errorIcon ?? this.errorIcon,
       retryIcon: retryIcon ?? this.retryIcon,
-      defaultErrorTitle: defaultErrorTitle ?? this.defaultErrorTitle,
       defaultNoDataTitle: defaultNoDataTitle ?? this.defaultNoDataTitle,
       containerMargin: containerMargin ?? this.containerMargin,
       iconSize: iconSize ?? this.iconSize,
@@ -110,7 +107,7 @@ class StatusSwitcher<T> extends StatelessWidget {
       case Status.ERROR:
         return onError?.call(context, response.error) ??
             _DefaultErrorWidget(
-              message: response.error.error,
+              message: response.error,
               onRetry: onRetry,
               config: config,
               customTitle: customErrorTitle,
@@ -158,7 +155,7 @@ class _DefaultLoadingWidget extends StatelessWidget {
 
 /// Default error widget component
 class _DefaultErrorWidget extends StatelessWidget {
-  final String message;
+  final NetworkFailure message;
   final VoidCallback? onRetry;
   final StatusSwitcherConfig config;
   final String? customTitle;
@@ -170,22 +167,27 @@ class _DefaultErrorWidget extends StatelessWidget {
     this.customTitle,
   });
 
+  ErrorDisplayProperties get _errorProperties =>
+      ErrorDisplayHelper.getDisplayProperties(message);
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: config.containerMargin.horizontal,
-        ),
+    final shouldShowRetry = config.showRetryButton && onRetry != null;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: config.containerMargin.horizontal,
+        vertical: 24.h,
+      ),
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            _buildErrorIcon(context),
-            32.verticalSpace,
             _buildErrorTitle(context),
-            16.verticalSpace,
+            20.verticalSpace,
             _buildErrorMessage(context),
-            if (config.showRetryButton && onRetry != null) ...[
+            if (shouldShowRetry) ...[
               32.verticalSpace,
               _buildRetryButton(context),
             ],
@@ -195,93 +197,21 @@ class _DefaultErrorWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorIcon(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      duration: config.animationDuration,
-      curve: config.animationCurve,
-      tween: Tween<double>(begin: 0.0, end: 1.0),
-      builder: (context, value, child) {
-        return Transform.scale(
-          scale: value,
-          child: Container(
-            width: 120.w,
-            height: 120.h,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  context.theme.colorScheme.error.withOpacity(0.1),
-                  context.theme.colorScheme.error.withOpacity(0.05),
-                ],
-              ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: context.theme.colorScheme.error.withOpacity(0.2),
-                  blurRadius: 20,
-                  spreadRadius: 5,
-                ),
-              ],
-            ),
-            child: Center(
-              child: Container(
-                width: 80.w,
-                height: 80.h,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      context.theme.colorScheme.error,
-                      context.theme.colorScheme.error.withOpacity(0.8),
-                    ],
-                  ),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: context.theme.colorScheme.error.withOpacity(0.3),
-                      blurRadius: 15,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  config.errorIcon,
-                  color: Colors.white,
-                  size: config.iconSize.sp,
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   Widget _buildErrorTitle(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (bounds) => LinearGradient(
-        colors: [
-          context.theme.colorScheme.error,
-          context.theme.colorScheme.error.withOpacity(0.7),
-        ],
-      ).createShader(bounds),
-      child: Text(
-        customTitle ?? config.defaultErrorTitle,
-        style: context.textTheme.headlineSmall?.copyWith(
-          fontSize: config.titleFontSize.sp,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-        textAlign: TextAlign.center,
+    return Text(
+      customTitle ?? _errorProperties.title,
+      style: context.textTheme.headlineSmall?.copyWith(
+        fontSize: config.titleFontSize.sp,
+        fontWeight: FontWeight.bold,
+        color: context.theme.colorScheme.onSurface,
       ),
+      textAlign: TextAlign.center,
     );
   }
 
   Widget _buildErrorMessage(BuildContext context) {
     return Text(
-      message,
+      message.error,
       style: context.textTheme.bodyLarge?.copyWith(
         fontSize: config.messageFontSize.sp,
         color: context.theme.colorScheme.onSurface.withOpacity(0.8),
@@ -303,13 +233,7 @@ class _DefaultErrorWidget extends StatelessWidget {
             context: context,
             text: config.retryButtonText,
             onPressed: onRetry,
-            backgroundColor: context.theme.colorScheme.error,
-            textColor: Colors.white,
-            radius: 16,
-            height: 50,
-            elevation: 6,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+
             icon: Icon(config.retryIcon, color: Colors.white, size: 20.sp),
           ),
         );
@@ -344,14 +268,6 @@ class _DefaultNoDataWidget extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Uncomment and customize if you have an empty state image
-                    // Image.asset(
-                    //   AppImages.chatEmptyIcon,
-                    //   color: context.isDarkMode ? Colors.white : Colors.black,
-                    //   width: 100.w,
-                    //   height: 100.h,
-                    // ),
-                    // 21.verticalSpace,
                     Text(
                       title ?? config.defaultNoDataTitle,
                       style: context.textTheme.titleMedium?.copyWith(

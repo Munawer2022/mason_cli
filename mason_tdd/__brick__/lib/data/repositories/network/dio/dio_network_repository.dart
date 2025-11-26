@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '/data/datasources/auth/user_data_sources.dart';
+import '/data/repositories/network/errors/api_error_handler.dart';
 import '/domain/failures/network/network_failure.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
 import '/domain/repositories/network/network_base_api_service.dart';
@@ -12,9 +11,14 @@ import 'dio_config.dart';
 class DioNetworkRepository implements NetworkBaseApiService {
   final UserDataSources _userDataSources;
   final LocalStorageRepository _localStorageRepository;
+  final ApiErrorHandler _apiErrorHandler;
   late final Dio _dio;
 
-  DioNetworkRepository(this._userDataSources, this._localStorageRepository) {
+  DioNetworkRepository(
+    this._userDataSources,
+    this._localStorageRepository,
+    this._apiErrorHandler,
+  ) {
     _dio = DioConfig.createDio(
       userDataSources: _userDataSources,
       localStorageRepository: _localStorageRepository,
@@ -179,7 +183,7 @@ class DioNetworkRepository implements NetworkBaseApiService {
       final response = await request();
       return right(response.data);
     } on DioException catch (e) {
-      return left(_handleDioError(e));
+      return left(_apiErrorHandler.handleDioError(e));
     } catch (e) {
       return left(
         NetworkFailure(
@@ -189,186 +193,4 @@ class DioNetworkRepository implements NetworkBaseApiService {
       );
     }
   }
-
-  NetworkFailure _handleDioError(DioException error) {
-    switch (error.type) {
-      case DioExceptionType.connectionTimeout:
-        return NetworkFailure(
-          error: 'Connection timeout. Please check your internet connection.',
-          type: NetworkFailureType.connectionTimeout,
-          statusCode: error.response?.statusCode,
-          additionalData: error.response?.data,
-        );
-
-      case DioExceptionType.sendTimeout:
-        return NetworkFailure(
-          error: 'Send timeout. Request took too long to send.',
-          type: NetworkFailureType.sendTimeout,
-          statusCode: error.response?.statusCode,
-          additionalData: error.response?.data,
-        );
-
-      case DioExceptionType.receiveTimeout:
-        return NetworkFailure(
-          error: 'Receive timeout. Server took too long to respond.',
-          type: NetworkFailureType.receiveTimeout,
-          statusCode: error.response?.statusCode,
-          additionalData: error.response?.data,
-        );
-
-      case DioExceptionType.badResponse:
-        return _handleBadResponse(error);
-
-      case DioExceptionType.cancel:
-        return NetworkFailure(
-          error: 'Request was cancelled',
-          type: NetworkFailureType.cancelled,
-          additionalData: error.response?.data,
-        );
-
-      case DioExceptionType.unknown:
-        return _handleUnknownError(error);
-
-      default:
-        return NetworkFailure(
-          error: 'Network error occurred',
-          type: NetworkFailureType.unknown,
-          additionalData: error.response?.data,
-        );
-    }
-  }
-
-  NetworkFailure _handleBadResponse(DioException error) {
-    final statusCode = error.response?.statusCode;
-    final responseData = error.response?.data;
-
-    // Extract error message from response
-    String errorMessage = 'Request failed';
-    if (responseData is Map<String, dynamic>) {
-      errorMessage =
-          responseData['message'] ??
-          responseData['error'] ??
-          responseData['details'] ??
-          errorMessage;
-    }
-
-    switch (statusCode) {
-      case 400:
-        return NetworkFailure(
-          error: 'Bad request: $errorMessage',
-          type: NetworkFailureType.badRequest,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-      case 401:
-        return NetworkFailure(
-          error: 'Unauthorized access. Please login again.',
-          type: NetworkFailureType.unauthorized,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-      case 403:
-        return NetworkFailure(
-          error: 'Access forbidden. You don\'t have permission.',
-          type: NetworkFailureType.forbidden,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-      case 404:
-        return NetworkFailure(
-          error: 'Resource not found',
-          type: NetworkFailureType.notFound,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-      case 422:
-        return NetworkFailure(
-          error: 'Validation error: $errorMessage',
-          type: NetworkFailureType.validationError,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-      case 429:
-        return NetworkFailure(
-          error: 'Too many requests. Please try again later.',
-          type: NetworkFailureType.tooManyRequests,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-      case 500:
-        return NetworkFailure(
-          error: 'Internal server error. Please try again later.',
-          type: NetworkFailureType.internalServerError,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-      case 502:
-        return NetworkFailure(
-          error: 'Bad gateway. Server is temporarily unavailable.',
-          type: NetworkFailureType.badGateway,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-      case 503:
-        return NetworkFailure(
-          error: 'Service unavailable. Please try again later.',
-          type: NetworkFailureType.serviceUnavailable,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-      default:
-        return NetworkFailure(
-          error: errorMessage,
-          type: NetworkFailureType.badResponse,
-          statusCode: statusCode,
-          additionalData: responseData,
-        );
-    }
-  }
-
-  NetworkFailure _handleUnknownError(DioException error) {
-    if (error.error is SocketException) {
-      return NetworkFailure(
-        error: 'No internet connection. Please check your network.',
-        type: NetworkFailureType.noInternetConnection,
-        additionalData: error.response?.data,
-      );
-    }
-
-    if (error.error is FormatException) {
-      return NetworkFailure(
-        error: 'Invalid response format from server.',
-        type: NetworkFailureType.formatError,
-        additionalData: error.response?.data,
-      );
-    }
-
-    return NetworkFailure(
-      error:
-          'Unknown network error: ${error.error?.toString() ?? error.message}',
-      type: NetworkFailureType.unknown,
-      additionalData: error.response?.data,
-    );
-  }
-}
-
-// Enhanced NetworkFailure class
-enum NetworkFailureType {
-  connectionTimeout,
-  sendTimeout,
-  receiveTimeout,
-  badRequest,
-  unauthorized,
-  forbidden,
-  notFound,
-  validationError,
-  tooManyRequests,
-  internalServerError,
-  badGateway,
-  serviceUnavailable,
-  badResponse,
-  cancelled,
-  noInternetConnection,
-  formatError,
-  unknown,
 }

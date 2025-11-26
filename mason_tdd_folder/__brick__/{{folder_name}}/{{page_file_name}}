@@ -43,7 +43,11 @@ return Scaffold(
           builder: (context, state) {
             state as {{class_name}}State;
             return state.response.toWidget(
-                onCompleted: (context, data) => const SizedBox());
+                onCompleted: (context, data) => const SizedBox()
+                {{#isGet}}
+                ,onRetry: cubit.{{folder_name_camelCase}}
+                {{/isGet}}
+                );
           }
         )
       )

@@ -1,4 +1,22 @@
-import '/data/repositories/network/dio/dio_network_repository.dart';
+enum NetworkFailureType {
+  connectionTimeout,
+  sendTimeout,
+  receiveTimeout,
+  badRequest,
+  unauthorized,
+  forbidden,
+  notFound,
+  validationError,
+  tooManyRequests,
+  internalServerError,
+  badGateway,
+  serviceUnavailable,
+  badResponse,
+  cancelled,
+  noInternetConnection,
+  formatError,
+  unknown,
+}
 
 class NetworkFailure {
   final String error;
