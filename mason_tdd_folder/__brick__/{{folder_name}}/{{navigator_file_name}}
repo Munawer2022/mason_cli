@@ -13,12 +13,11 @@ class {{class_name}}Navigator {
 }
 
 mixin {{class_name}}Route {
-open{{class_name}}({{class_name}}InitialParams initialParams) {
+void open{{class_name}}({{class_name}}InitialParams initialParams) =>
 navigator.push(
 context: context,
         routeName: {{class_name}}Page(cubit: getIt(param1: initialParams))
 );
-}
 
 AppNavigator get navigator;
 

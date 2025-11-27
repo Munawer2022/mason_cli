@@ -21,8 +21,8 @@ import 'features/splash/splash_navigator.dart';
 /*
  ************************ login ************************
 */
-import 'data/datasources/auth/user_data_sources.dart';
-import 'domain/usecases/auth/user/user_use_cases.dart';
+import 'data/datasources/user/user_data_sources.dart';
+import 'domain/usecases/user/user_use_cases.dart';
 import 'features/auth/login/login_navigator.dart';
 import 'features/auth/login/login_cubit.dart';
 import 'features/auth/login/login_initial_params.dart';
@@ -43,6 +43,10 @@ Future<void> init() async {
   getIt.registerSingleton<LocalStorageRepository>(
     InsecureLocalStorageRepository(),
   );
+  getIt.registerSingleton<UserUseCases>(
+      UserUseCases(getIt(), getIt()));
+  getIt.registerSingleton<CheckForExistingUserUseCase>(
+      CheckForExistingUserUseCase(getIt(), getIt()));
   getIt.registerSingleton<ApiErrorHandler>(const ApiErrorHandler());
   getIt.registerSingleton<NetworkBaseApiService>(
     DioNetworkRepository(getIt(), getIt(), getIt()),
@@ -70,10 +74,6 @@ Future<void> init() async {
 /*
 ************************ login ************************
 */
-  getIt.registerSingleton<CheckForExistingUserUseCase>(
-      CheckForExistingUserUseCase(getIt(), getIt()));
-  getIt.registerSingleton<UserUseCases>(
-      UserUseCases(getIt(), getIt()));
   getIt.registerSingleton<LoginNavigator>(LoginNavigator(getIt()));
   getIt.registerFactoryParam<LoginCubit, LoginInitialParams, dynamic>(
       (params, _) => LoginCubit(params, getIt(), getIt(), getIt(), getIt()));

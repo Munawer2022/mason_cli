@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
-import '/data/datasources/auth/user_data_sources.dart';
+import '/data/datasources/user/user_data_sources.dart';
 import '/data/repositories/network/errors/api_error_handler.dart';
 import '/domain/failures/network/network_failure.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';

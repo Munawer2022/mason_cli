@@ -4,7 +4,7 @@ import '/core/show/show/show.dart';
 import '/core/utils/app_url.dart';
 import '/data/models/auth/login_model.dart';
 import '/domain/repositories/network/network_base_api_service.dart';
-import '/domain/usecases/auth/user/user_use_cases.dart';
+import '/domain/usecases/user/user_use_cases.dart';
 import '/features/test/test_initial_params.dart';
 import 'login_initial_params.dart';
 import 'login_navigator.dart';
@@ -36,17 +36,17 @@ class LoginCubit extends Cubit<LoginState> {
         emit(state.copyWith(isLoading: false));
         return show.showErrorSnackBar(l.error);
       },
-      (r) => userUseCases
-          .execute(r: r)
+      (userData) => userUseCases
+          .execute(userData: userData)
           .then(
             (value) => value.fold(
               (l) {
                 emit(state.copyWith(isLoading: false));
                 return show.showErrorSnackBar(l.error);
               },
-              (_) {
+              (r) {
                 emit(state.copyWith(isLoading: false));
-                return navigator.openTest(TestInitialParams());
+                navigator.openTest(TestInitialParams());
               },
             ),
           ),

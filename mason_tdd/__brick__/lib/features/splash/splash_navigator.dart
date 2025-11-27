@@ -16,11 +16,10 @@ class SplashNavigator with {{class_name}}Route, LoginRoute {
 }
 
 mixin SplashRoute {
-  openLogin(SplashInitialParams initialParams) {
+ void openLogin(SplashInitialParams initialParams) =>
     navigator.push(
       context: context,
         routeName: SplashPage(cubit: getIt(param1: initialParams)));
-  }
 
   AppNavigator get navigator;
 

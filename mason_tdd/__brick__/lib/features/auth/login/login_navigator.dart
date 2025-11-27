@@ -16,13 +16,13 @@ class LoginNavigator with {{class_name}}Route{
 }
 
 mixin LoginRoute {
-  openLogin(LoginInitialParams initialParams) {
+ void openLogin(LoginInitialParams initialParams) =>
 navigator.pushAndRemoveUntil(
         context: context,
         routeName: LoginPage(cubit: getIt(param1: initialParams)),
         transitionType: TransitionType.slideFromLeft,
         predicate: (route) => false);
-}
+
 
   AppNavigator get navigator;
 

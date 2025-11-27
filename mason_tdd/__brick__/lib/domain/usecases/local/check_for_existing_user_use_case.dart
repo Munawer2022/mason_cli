@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 
-import '/data/datasources/auth/user_data_sources.dart';
+import '/data/datasources/user/user_data_sources.dart';
 import '/data/models/user/user_info_store_model.dart';
 import '/domain/failures/local/existing_user_failure.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
