@@ -48,7 +48,6 @@ class StatusSwitcher<T> extends StatelessWidget {
   final String? customErrorTitle;
   final String? customNoDataTitle;
   final String? customNoDataSubtitle;
-  final bool Function(T data)? isDataEmpty;
 
   const StatusSwitcher({
     super.key,
@@ -61,7 +60,6 @@ class StatusSwitcher<T> extends StatelessWidget {
     this.customErrorTitle,
     this.customNoDataTitle,
     this.customNoDataSubtitle,
-    this.isDataEmpty,
   });
 
   @override
@@ -94,10 +92,6 @@ class StatusSwitcher<T> extends StatelessWidget {
   }
 
   bool _isDataEmpty(T? data) {
-    if (isDataEmpty != null && data != null) {
-      return isDataEmpty!(data);
-    }
-
     if (data == null) return true;
     if (data is Iterable) return data.isEmpty;
     if (data is String) return data.isEmpty;
@@ -343,7 +337,6 @@ extension StatusSwitcherExtension<T> on ApiResponse<T> {
     String? customErrorTitle,
     String? customNoDataTitle,
     String? customNoDataSubtitle,
-    bool Function(T data)? isDataEmpty,
   }) {
     return StatusSwitcher<T>(
       response: this,
@@ -355,7 +348,6 @@ extension StatusSwitcherExtension<T> on ApiResponse<T> {
       customErrorTitle: customErrorTitle,
       customNoDataTitle: customNoDataTitle,
       customNoDataSubtitle: customNoDataSubtitle,
-      isDataEmpty: isDataEmpty,
     );
   }
 }
