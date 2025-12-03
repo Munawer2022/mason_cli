@@ -104,12 +104,8 @@ class StatusSwitcher<T> extends StatelessWidget {
 /// Default loading widget component
 class _DefaultLoadingWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Center(
-    child: CircularProgressIndicator.adaptive(
-      backgroundColor: context.theme.colorScheme.primary,
-      valueColor: AlwaysStoppedAnimation(context.theme.colorScheme.onPrimary),
-    ),
-  );
+  Widget build(BuildContext context) =>
+      Center(child: CircularProgressIndicator.adaptive());
 }
 
 /// Professional error widget with better UX
@@ -164,7 +160,7 @@ class _DefaultErrorWidgetState extends State<_DefaultErrorWidget>
   }
 
   ErrorDisplayProperties get _errorProperties =>
-      ErrorDisplayHelper.getDisplayProperties(widget.failure);
+      ErrorDisplayHelper.getDisplayProperties(context, widget.failure);
 
   @override
   Widget build(BuildContext context) {
@@ -237,11 +233,7 @@ class _DefaultErrorWidgetState extends State<_DefaultErrorWidget>
         6.horizontalSpace,
         Text(
           'Error ${widget.failure.statusCode}',
-          style: context.textTheme.labelMedium?.copyWith(
-            color: errorColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 12.sp,
-          ),
+          style: context.textTheme.labelMedium,
         ),
       ],
     ),
@@ -249,12 +241,7 @@ class _DefaultErrorWidgetState extends State<_DefaultErrorWidget>
 
   Widget _buildErrorTitle(BuildContext context) => Text(
     widget.customTitle ?? _errorProperties.title,
-    style: context.textTheme.headlineSmall?.copyWith(
-      fontSize: 20.sp,
-      fontWeight: FontWeight.bold,
-      color: context.theme.colorScheme.onSurface,
-      letterSpacing: -0.5,
-    ),
+    style: context.textTheme.headlineSmall,
     textAlign: TextAlign.center,
   );
 
@@ -262,25 +249,17 @@ class _DefaultErrorWidgetState extends State<_DefaultErrorWidget>
       Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
-          color: context.isDarkMode
-              ? Colors.grey.shade900.withValues(alpha: 0.3)
-              : Colors.grey.shade100,
+          color: context.theme.colorScheme.primary.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: context.isDarkMode
-                ? Colors.grey.shade800
-                : Colors.grey.shade300,
+            color: context.theme.colorScheme.primary.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
         child: Text(
           widget.failure.error,
 
-          style: context.textTheme.bodyMedium?.copyWith(
-            fontSize: 13.sp,
-            color: context.theme.colorScheme.onSurface.withValues(alpha: 0.8),
-            height: 1.5,
-          ),
+          style: context.textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
       );
@@ -310,14 +289,14 @@ class _DefaultNoDataWidget extends StatelessWidget {
         children: [
           Text(
             title ?? config.defaultNoDataTitle,
-            style: context.textTheme.titleMedium?.copyWith(fontSize: 18.sp),
+            style: context.textTheme.titleMedium,
           ),
           if (subtitle != null) ...[
             11.verticalSpace,
             Text(
               subtitle!,
               textAlign: TextAlign.center,
-              style: context.textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
+              style: context.textTheme.bodyMedium,
             ),
           ],
         ],

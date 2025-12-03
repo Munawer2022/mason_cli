@@ -91,8 +91,11 @@ mixin ShowSnackBarSuccess {
 
 mixin ShowSnackBarError {
   /// Shows error snackbar with NetworkFailure
-  void showNetworkErrorSnackBar(NetworkFailure failure) {
-    final properties = ErrorDisplayHelper.getDisplayProperties(failure);
+  void showNetworkErrorSnackBar(BuildContext context, NetworkFailure failure) {
+    final properties = ErrorDisplayHelper.getDisplayProperties(
+      context,
+      failure,
+    );
 
     var snackBar = SnackBar(
       content: _ErrorSnackBarContent(

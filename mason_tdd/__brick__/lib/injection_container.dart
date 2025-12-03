@@ -12,6 +12,9 @@ import 'data/repositories/network/errors/api_error_handler.dart';
 import 'data/repositories/network/dio/dio_network_repository.dart';
 // import '/data/datasources/internet_connectivity/internet_connectivity_checker_data_sources.dart';
 
+import 'data/datasources/user/user_data_sources.dart';
+import 'domain/usecases/user/user_use_cases.dart';
+import '/domain/usecases/local/check_for_existing_user_use_case.dart';
 /*
  ************************ Splash ************************
 */
@@ -21,12 +24,16 @@ import 'features/splash/splash_navigator.dart';
 /*
  ************************ login ************************
 */
-import 'data/datasources/user/user_data_sources.dart';
-import 'domain/usecases/user/user_use_cases.dart';
 import 'features/auth/login/login_navigator.dart';
 import 'features/auth/login/login_cubit.dart';
 import 'features/auth/login/login_initial_params.dart';
-import '/domain/usecases/local/check_for_existing_user_use_case.dart';
+/*
+************************ BottomNav ************************
+*/
+import 'features/bottom_nav/bottom_nav_navigator.dart';
+import 'features/bottom_nav/bottom_nav_cubit.dart';
+import 'features/bottom_nav/bottom_nav_initial_params.dart';
+
 
 /*
 ************************ {{class_name}} ************************
@@ -77,6 +84,12 @@ Future<void> init() async {
   getIt.registerSingleton<LoginNavigator>(LoginNavigator(getIt()));
   getIt.registerFactoryParam<LoginCubit, LoginInitialParams, dynamic>(
       (params, _) => LoginCubit(params, getIt(), getIt(), getIt(), getIt()));
+/*
+************************ Bottom Nav ************************
+*/
+  getIt.registerSingleton<BottomNavNavigator>(BottomNavNavigator(getIt()));
+  getIt.registerFactoryParam<BottomNavCubit, BottomNavInitialParams, dynamic>(
+      (params, _) => BottomNavCubit(params, getIt()));
 /*
 ************************ {{class_name}} ************************
 */

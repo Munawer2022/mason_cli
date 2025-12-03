@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:test/core/utils/extensions.dart';
 
 import '/domain/failures/network/network_failure.dart';
 
 /// Helper class for displaying errors in UI with type-specific styling
 class ErrorDisplayHelper {
   /// Gets error-specific UI properties
-  static ErrorDisplayProperties getDisplayProperties(NetworkFailure failure) {
+  static ErrorDisplayProperties getDisplayProperties(
+    BuildContext context,
+    NetworkFailure failure,
+  ) {
     switch (failure.type) {
       case NetworkFailureType.noInternetConnection:
         return ErrorDisplayProperties(
           icon: Icons.wifi_off_rounded,
           title: 'No Internet Connection',
-          color: Colors.orange,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.connectionTimeout:
       case NetworkFailureType.sendTimeout:
@@ -19,37 +23,37 @@ class ErrorDisplayHelper {
         return ErrorDisplayProperties(
           icon: Icons.timer_off_rounded,
           title: 'Connection Timeout',
-          color: Colors.orange,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.unauthorized:
         return ErrorDisplayProperties(
           icon: Icons.lock_outline_rounded,
           title: 'Authentication Required',
-          color: Colors.amber,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.forbidden:
         return ErrorDisplayProperties(
           icon: Icons.block_rounded,
           title: 'Access Denied',
-          color: Colors.red,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.notFound:
         return ErrorDisplayProperties(
           icon: Icons.search_off_rounded,
           title: 'Not Found',
-          color: Colors.blueGrey,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.validationError:
         return ErrorDisplayProperties(
           icon: Icons.error_outline_rounded,
           title: 'Validation Error',
-          color: Colors.amber,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.tooManyRequests:
         return ErrorDisplayProperties(
           icon: Icons.hourglass_empty_rounded,
           title: 'Too Many Requests',
-          color: Colors.orange,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.internalServerError:
       case NetworkFailureType.badGateway:
@@ -57,32 +61,32 @@ class ErrorDisplayHelper {
         return ErrorDisplayProperties(
           icon: Icons.cloud_off_rounded,
           title: 'Server Error',
-          color: Colors.red,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.badRequest:
         return ErrorDisplayProperties(
           icon: Icons.report_problem_rounded,
           title: 'Invalid Request',
-          color: Colors.amber,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.badResponse:
       case NetworkFailureType.formatError:
         return ErrorDisplayProperties(
           icon: Icons.broken_image_rounded,
           title: 'Invalid Response',
-          color: Colors.red,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.cancelled:
         return ErrorDisplayProperties(
           icon: Icons.cancel_outlined,
           title: 'Request Cancelled',
-          color: Colors.grey,
+          color: context.theme.colorScheme.primary,
         );
       case NetworkFailureType.unknown:
         return ErrorDisplayProperties(
           icon: Icons.sentiment_dissatisfied_rounded,
           title: 'Something Went Wrong',
-          color: Colors.red,
+          color: context.theme.colorScheme.primary,
         );
     }
   }
