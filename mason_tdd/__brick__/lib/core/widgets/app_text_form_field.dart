@@ -236,23 +236,65 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
   }
 
   AppTextFieldConfig _getDefaultConfig(BuildContext context) {
+    final theme = Theme.of(context);
+    final inputTheme = theme.inputDecorationTheme;
+
+    // Extract border radius from theme
+    double borderRadius = 8.0;
+    if (inputTheme.border is OutlineInputBorder) {
+      final border = inputTheme.border as OutlineInputBorder;
+      final resolvedBorderRadius = border.borderRadius.resolve(
+        Directionality.of(context),
+      );
+      borderRadius = resolvedBorderRadius.topLeft.x;
+    }
+
+    // Extract border width from theme
+    double borderWidth = 1.0;
+    if (inputTheme.border is OutlineInputBorder) {
+      final border = inputTheme.border as OutlineInputBorder;
+      borderWidth = border.borderSide.width;
+    }
+
+    // Extract content padding from theme
+    EdgeInsets contentPadding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 12,
+    );
+    if (inputTheme.contentPadding != null) {
+      final padding = inputTheme.contentPadding!;
+      if (padding is EdgeInsets) {
+        contentPadding = padding;
+      }
+    }
+
     return AppTextFieldConfig(
-      fillColor: context.theme.canvasColor,
-      borderColor: context.theme.cardColor,
-      focusedBorderColor: context.theme.primaryColor,
-      errorBorderColor: context.theme.colorScheme.error,
-      labelColor: context.theme.hintColor,
-      hintColor: context.theme.hintColor,
-      textColor: context.theme.textTheme.bodyLarge?.color,
-      textStyle: context.textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.w400,
-      ),
-      labelStyle: context.textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.w400,
-      ),
-      hintStyle: context.textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.w400,
-      ),
+      borderRadius: borderRadius,
+      borderWidth: borderWidth,
+      contentPadding: contentPadding,
+      filled: inputTheme.filled,
+      fillColor: inputTheme.fillColor ?? theme.colorScheme.surface,
+      borderColor:
+          (inputTheme.enabledBorder as OutlineInputBorder?)?.borderSide.color ??
+          theme.colorScheme.outline,
+      focusedBorderColor:
+          (inputTheme.focusedBorder as OutlineInputBorder?)?.borderSide.color ??
+          theme.colorScheme.primary,
+      errorBorderColor:
+          (inputTheme.errorBorder as OutlineInputBorder?)?.borderSide.color ??
+          theme.colorScheme.error,
+      labelColor: inputTheme.labelStyle?.color ?? theme.colorScheme.onSurface,
+      hintColor:
+          inputTheme.hintStyle?.color ??
+          theme.colorScheme.onSurface.withOpacity(0.6),
+      textColor:
+          theme.textTheme.bodyLarge?.color ?? theme.colorScheme.onSurface,
+      textStyle: theme.textTheme.bodyLarge,
+      labelStyle: inputTheme.labelStyle ?? theme.textTheme.bodyMedium,
+      hintStyle: inputTheme.hintStyle ?? theme.textTheme.bodyMedium,
+      errorStyle:
+          inputTheme.errorStyle ??
+          theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error),
     );
   }
 
@@ -305,18 +347,55 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       labelStyle: _config.labelStyle?.copyWith(color: _config.labelColor),
       hintStyle: _config.hintStyle?.copyWith(color: _config.hintColor),
       errorStyle: _config.errorStyle,
-      border: _buildBorder(_config.borderColor ?? context.theme.cardColor),
+      border: _buildBorder(
+        _config.borderColor ??
+            (Theme.of(context).inputDecorationTheme.enabledBorder
+                    is OutlineInputBorder
+                ? (Theme.of(context).inputDecorationTheme.enabledBorder
+                          as OutlineInputBorder)
+                      .borderSide
+                      .color
+                : Theme.of(context).colorScheme.outline),
+      ),
       enabledBorder: _buildBorder(
-        _config.borderColor ?? context.theme.cardColor,
+        _config.borderColor ??
+            (Theme.of(context).inputDecorationTheme.enabledBorder
+                    is OutlineInputBorder
+                ? (Theme.of(context).inputDecorationTheme.enabledBorder
+                          as OutlineInputBorder)
+                      .borderSide
+                      .color
+                : Theme.of(context).colorScheme.outline),
       ),
       focusedBorder: _buildBorder(
-        _config.focusedBorderColor ?? context.theme.primaryColor,
+        _config.focusedBorderColor ??
+            (Theme.of(context).inputDecorationTheme.focusedBorder
+                    is OutlineInputBorder
+                ? (Theme.of(context).inputDecorationTheme.focusedBorder
+                          as OutlineInputBorder)
+                      .borderSide
+                      .color
+                : Theme.of(context).colorScheme.primary),
       ),
       errorBorder: _buildBorder(
-        _config.errorBorderColor ?? context.theme.colorScheme.error,
+        _config.errorBorderColor ??
+            (Theme.of(context).inputDecorationTheme.errorBorder
+                    is OutlineInputBorder
+                ? (Theme.of(context).inputDecorationTheme.errorBorder
+                          as OutlineInputBorder)
+                      .borderSide
+                      .color
+                : Theme.of(context).colorScheme.error),
       ),
       focusedErrorBorder: _buildBorder(
-        _config.errorBorderColor ?? context.theme.colorScheme.error,
+        _config.errorBorderColor ??
+            (Theme.of(context).inputDecorationTheme.errorBorder
+                    is OutlineInputBorder
+                ? (Theme.of(context).inputDecorationTheme.errorBorder
+                          as OutlineInputBorder)
+                      .borderSide
+                      .color
+                : Theme.of(context).colorScheme.error),
       ),
     );
   }

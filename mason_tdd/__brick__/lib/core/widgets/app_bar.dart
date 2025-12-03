@@ -4,33 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '/core/utils/extensions.dart';
 
-/// Class for defining quick actions
+/// Lightweight config for quick actions in the custom app bar.
 class AppBarAction {
   final Widget icon;
   final VoidCallback? onPressed;
   final String? tooltip;
-  final Color? backgroundColor;
-  final Color? iconColor;
 
-  const AppBarAction({
-    required this.icon,
-    this.onPressed,
-    this.tooltip,
-    this.backgroundColor,
-    this.iconColor,
-  });
+  const AppBarAction({required this.icon, this.onPressed, this.tooltip});
 }
 
-/// Enhanced abstract class for CustomAppBar with improved functionality
+/// Simple, theme‑aware custom app bar to keep app bars consistent & reusable.
 abstract class CustomAppBar {
-  // Default values
-  static const double _defaultToolbarHeight = kToolbarHeight;
-  static const double _defaultLeadingWidth = 80.0;
-  static const double _defaultLeadingIconSize = 14.0;
-  static const EdgeInsets _defaultLeadingIconPadding = EdgeInsets.all(14.0);
-  static const double _defaultTitleFontSize = 24.0;
-  static const double _defaultLeadingIconBorderRadius = 8.0;
-
   /// Creates an AppBar with enhanced features
   static PreferredSizeWidget getAppBar({
     required BuildContext context,
@@ -38,13 +22,11 @@ abstract class CustomAppBar {
     String? title,
     Widget? titleWidget,
 
-    // Layout
+    // Layout (kept intentionally small – most things come from theme)
     double? toolbarHeight,
     double? leadingWidth,
-    bool centerTitle = true,
+    bool? centerTitle,
     bool automaticallyImplyLeading = false,
-    EdgeInsets? titlePadding,
-    EdgeInsets? actionsPadding,
 
     // Navigation
     bool showLeading = true,
@@ -54,43 +36,35 @@ abstract class CustomAppBar {
     IconData? leadingIcon,
 
     // Actions
-    List<Widget>? actions,
     List<AppBarAction>? quickActions,
+    List<Widget>? actions,
 
     // Styling
     Color? backgroundColor,
     Color? foregroundColor,
     Color? shadowColor,
     Color? surfaceTintColor,
-    double elevation = 0.0,
+    double? elevation,
     double scrolledUnderElevation = 0.0,
     ShapeBorder? shape,
 
     // Typography
     TextStyle? titleTextStyle,
-    double? titleFontSize,
-    FontWeight? titleFontWeight,
 
     // Leading icon styling
     double? leadingIconSize,
     EdgeInsets? leadingIconPadding,
-    Color? leadingIconColor,
-    Color? leadingIconBackgroundColor,
-    double? leadingIconBorderRadius,
 
     // System UI
     SystemUiOverlayStyle? systemOverlayStyle,
     bool forceMaterialTransparency = false,
 
-    // Bottom
+    // Bottom widget (e.g. TabBar)
     PreferredSizeWidget? bottom,
 
     // Accessibility
     String? tooltip,
     String? semanticLabel,
-
-    // Animation
-    Duration? animationDuration,
   }) {
     assert(
       title != null ||
@@ -100,24 +74,34 @@ abstract class CustomAppBar {
       'AppBar must have at least title, titleWidget, or actions',
     );
 
-    final effectiveToolbarHeight = toolbarHeight?.h ?? _defaultToolbarHeight.h;
-    final effectiveLeadingWidth = leadingWidth?.w ?? _defaultLeadingWidth.w;
+    final theme = Theme.of(context);
+    final appBarTheme = theme.appBarTheme;
+
+    final effectiveToolbarHeight =
+        (toolbarHeight ?? appBarTheme.toolbarHeight ?? kToolbarHeight).h;
+    final effectiveLeadingWidth =
+        (leadingWidth ?? appBarTheme.leadingWidth ?? 80.0).w;
 
     Widget appBar = AppBar(
       automaticallyImplyLeading: automaticallyImplyLeading,
-      backgroundColor: backgroundColor ?? _getDefaultBackgroundColor(context),
-      foregroundColor: foregroundColor,
+      backgroundColor:
+          backgroundColor ??
+          appBarTheme.backgroundColor ??
+          _getDefaultBackgroundColor(context),
+      foregroundColor: foregroundColor ?? appBarTheme.foregroundColor,
       shadowColor: shadowColor,
       surfaceTintColor: surfaceTintColor,
-      elevation: elevation,
+      elevation: elevation ?? appBarTheme.elevation ?? 0.0,
       scrolledUnderElevation: scrolledUnderElevation,
       toolbarHeight: effectiveToolbarHeight,
       leadingWidth: effectiveLeadingWidth,
-      centerTitle: centerTitle,
+      centerTitle: centerTitle ?? appBarTheme.centerTitle ?? true,
       titleSpacing: 0,
-      shape: shape,
+      shape: shape ?? appBarTheme.shape,
       systemOverlayStyle:
-          systemOverlayStyle ?? _getDefaultSystemOverlayStyle(context),
+          systemOverlayStyle ??
+          appBarTheme.systemOverlayStyle ??
+          _getDefaultSystemOverlayStyle(context),
       forceMaterialTransparency: forceMaterialTransparency,
       leading: _buildLeading(
         context,
@@ -128,19 +112,14 @@ abstract class CustomAppBar {
         leadingIcon,
         leadingIconSize,
         leadingIconPadding,
-        leadingIconColor,
-        leadingIconBackgroundColor,
-        leadingIconBorderRadius,
       ),
       title: _buildTitle(
         context,
         title,
         titleWidget,
-        titleTextStyle,
-        titleFontSize,
-        titleFontWeight,
+        titleTextStyle ?? appBarTheme.titleTextStyle,
       ),
-      actions: _buildActions(context, actions, quickActions, actionsPadding),
+      actions: _buildActions(context, actions, quickActions),
       bottom: bottom,
     );
 
@@ -164,7 +143,8 @@ abstract class CustomAppBar {
 
   // Helper methods
   static Color _getDefaultBackgroundColor(BuildContext context) {
-    return context.theme.scaffoldBackgroundColor;
+    final theme = context.theme;
+    return theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface;
   }
 
   static SystemUiOverlayStyle _getDefaultSystemOverlayStyle(
@@ -186,31 +166,32 @@ abstract class CustomAppBar {
     IconData? leadingIcon,
     double? leadingIconSize,
     EdgeInsets? leadingIconPadding,
-    Color? leadingIconColor,
-    Color? leadingIconBackgroundColor,
-    double? leadingIconBorderRadius,
   ) {
     if (!showLeading) return null;
     if (leading != null) return leading;
 
+    final theme = Theme.of(context);
+    final appBarTheme = theme.appBarTheme;
     final effectiveLeadingIconSize =
-        leadingIconSize?.sp ?? _defaultLeadingIconSize.sp;
+        leadingIconSize?.sp ?? (appBarTheme.iconTheme?.size ?? 20.0).sp;
     final effectiveLeadingIconPadding =
-        leadingIconPadding ?? _defaultLeadingIconPadding;
-    final effectiveLeadingIconBorderRadius =
-        leadingIconBorderRadius?.r ?? _defaultLeadingIconBorderRadius.r;
+        leadingIconPadding ?? const EdgeInsets.all(14.0);
 
     return Container(
       margin: EdgeInsets.only(left: 16.w),
       child: IconButton(
         padding: effectiveLeadingIconPadding,
         style: IconButton.styleFrom(
-          backgroundColor:
-              leadingIconBackgroundColor ??
-              context.theme.iconButtonTheme.style?.backgroundColor?.resolve({}),
+          backgroundColor: context.theme.iconButtonTheme.style?.backgroundColor
+              ?.resolve({}),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
-              effectiveLeadingIconBorderRadius,
+              appBarTheme.shape is RoundedRectangleBorder
+                  ? (appBarTheme.shape as RoundedRectangleBorder).borderRadius
+                        .resolve(Directionality.of(context))
+                        .topLeft
+                        .x
+                  : 8.0,
             ),
           ),
         ),
@@ -220,7 +201,7 @@ abstract class CustomAppBar {
           leadingIconAsset,
           leadingIcon,
           effectiveLeadingIconSize,
-          leadingIconColor,
+          appBarTheme.iconTheme?.color ?? context.theme.iconTheme.color,
         ),
       ),
     );
@@ -254,23 +235,16 @@ abstract class CustomAppBar {
     String? title,
     Widget? titleWidget,
     TextStyle? titleTextStyle,
-    double? titleFontSize,
-    FontWeight? titleFontWeight,
   ) {
     if (titleWidget != null) return titleWidget;
     if (title == null) return null;
-
-    final effectiveTitleFontSize =
-        titleFontSize?.sp ?? _defaultTitleFontSize.sp;
+    final theme = Theme.of(context);
 
     return Text(
       title,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: (titleTextStyle ?? context.textTheme.bodyLarge)?.copyWith(
-        fontSize: effectiveTitleFontSize,
-        fontWeight: titleFontWeight ?? FontWeight.w600,
-      ),
+      style: titleTextStyle ?? theme.appBarTheme.titleTextStyle,
     );
   }
 
@@ -278,7 +252,6 @@ abstract class CustomAppBar {
     BuildContext context,
     List<Widget>? actions,
     List<AppBarAction>? quickActions,
-    EdgeInsets? actionsPadding,
   ) {
     final allActions = <Widget>[];
 
@@ -309,10 +282,7 @@ abstract class CustomAppBar {
         onPressed: action.onPressed,
         icon: action.icon,
         tooltip: action.tooltip,
-        style: IconButton.styleFrom(
-          backgroundColor: action.backgroundColor,
-          foregroundColor: action.iconColor,
-        ),
+        style: IconButton.styleFrom(),
       ),
     );
   }

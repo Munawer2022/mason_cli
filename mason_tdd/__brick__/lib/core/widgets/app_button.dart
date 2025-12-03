@@ -3,15 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '/core/utils/extensions.dart';
 
-/// Enhanced abstract class for AppButton with improved functionality
+/// Simple, theme‑aware custom button to keep buttons consistent & reusable.
 abstract class AppButton {
-  // Default values
   static const double _defaultHeight = 50.0;
-  static const double _defaultRadius = 100.0;
   static const double _defaultBorderWidth = 1.0;
-  static const EdgeInsets _defaultPadding = EdgeInsets.symmetric(
-    horizontal: 16.0,
-  );
 
   /// Creates an elevated button with enhanced features
   static Widget getButton({
@@ -54,10 +49,50 @@ abstract class AppButton {
       'Either text or child must be provided',
     );
 
+    final theme = Theme.of(context);
+    final buttonTheme = theme.elevatedButtonTheme;
+    final buttonStyle = buttonTheme.style;
+
     final bool isDisabled = disabled || onPressed == null;
     final effectiveHeight = height?.h ?? _defaultHeight.h;
-    final effectiveRadius = radius?.r ?? _defaultRadius.r;
-    final effectivePadding = padding ?? _defaultPadding;
+
+    // Extract radius from theme
+    double effectiveRadius = 8.0;
+    if (radius != null) {
+      effectiveRadius = radius;
+    } else if (buttonStyle?.shape != null) {
+      final shape = buttonStyle!.shape;
+      if (shape is RoundedRectangleBorder) {
+        final roundedShape = shape as RoundedRectangleBorder;
+        final borderRadius = roundedShape.borderRadius.resolve(
+          Directionality.of(context),
+        );
+        effectiveRadius = borderRadius.topLeft.x;
+      }
+    }
+    effectiveRadius = effectiveRadius.r;
+
+    // Extract padding from theme
+    EdgeInsets? effectivePadding = padding;
+    if (effectivePadding == null && buttonStyle?.padding != null) {
+      final paddingProp = buttonStyle!.padding?.resolve({});
+      if (paddingProp is EdgeInsets) {
+        effectivePadding = paddingProp;
+      }
+    }
+    effectivePadding ??= const EdgeInsets.symmetric(
+      horizontal: 24,
+      vertical: 12,
+    );
+
+    // Extract colors from theme
+    final themeBgColor =
+        buttonStyle?.backgroundColor?.resolve({}) ?? theme.colorScheme.primary;
+    final themeFgColor =
+        buttonStyle?.foregroundColor?.resolve({}) ??
+        theme.colorScheme.onPrimary;
+    final themeElevation =
+        elevation ?? buttonStyle?.elevation?.resolve({}) ?? 2.0;
 
     Widget button = Container(
       width: width?.w ?? double.infinity,
@@ -67,35 +102,36 @@ abstract class AppButton {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          elevation: elevation ?? 0,
+          elevation: themeElevation,
           backgroundColor: _getBackgroundColor(
             context,
             backgroundColor,
             disabledBackgroundColor,
             isDisabled,
+            themeBgColor,
           ),
           foregroundColor: _getTextColor(
             context,
             textColor,
             disabledTextColor,
             isDisabled,
+            themeFgColor,
           ),
           disabledBackgroundColor:
               disabledBackgroundColor ??
-              context.theme.colorScheme.onSurface.withOpacity(0.12),
+              theme.colorScheme.onSurface.withOpacity(0.12),
           disabledForegroundColor:
               disabledTextColor ??
-              context.theme.colorScheme.onSurface.withOpacity(0.38),
+              theme.colorScheme.onSurface.withOpacity(0.38),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(effectiveRadius),
           ),
-          padding: EdgeInsets.symmetric(
-            horizontal: effectivePadding.horizontal / 2,
-            vertical: effectivePadding.vertical / 2,
-          ),
+          padding: effectivePadding,
           minimumSize: Size(double.infinity, effectiveHeight),
           animationDuration:
-              animationDuration ?? const Duration(milliseconds: 200),
+              animationDuration ??
+              buttonStyle?.animationDuration ??
+              const Duration(milliseconds: 200),
         ),
         onPressed: loading ? null : onPressed,
         onLongPress: loading ? null : onLongPress,
@@ -113,6 +149,7 @@ abstract class AppButton {
             textColor,
             disabledTextColor,
             isDisabled,
+            themeFgColor,
           ),
           loadingColor: loadingColor,
           loadingSize: loadingSize,
@@ -175,46 +212,87 @@ abstract class AppButton {
       'Either text or child must be provided',
     );
 
+    final theme = Theme.of(context);
+    final buttonTheme = theme.outlinedButtonTheme;
+    final buttonStyle = buttonTheme.style;
+
     final bool isDisabled = disabled || onPressed == null;
     final effectiveHeight = height?.h ?? _defaultHeight.h;
-    final effectiveRadius = radius?.r ?? _defaultRadius.r;
-    final effectivePadding = padding ?? _defaultPadding;
+
+    // Extract radius from theme
+    double effectiveRadius = 8.0;
+    if (radius != null) {
+      effectiveRadius = radius;
+    } else if (buttonStyle?.shape != null) {
+      final shape = buttonStyle!.shape;
+      if (shape is RoundedRectangleBorder) {
+        final roundedShape = shape as RoundedRectangleBorder;
+        final borderRadius = roundedShape.borderRadius.resolve(
+          Directionality.of(context),
+        );
+        effectiveRadius = borderRadius.topLeft.x;
+      }
+    }
+    effectiveRadius = effectiveRadius.r;
+
+    // Extract padding from theme
+    EdgeInsets? effectivePadding = padding;
+    if (effectivePadding == null && buttonStyle?.padding != null) {
+      final paddingProp = buttonStyle!.padding?.resolve({});
+      if (paddingProp is EdgeInsets) {
+        effectivePadding = paddingProp;
+      }
+    }
+    effectivePadding ??= const EdgeInsets.symmetric(
+      horizontal: 24,
+      vertical: 12,
+    );
+
     final effectiveBorderWidth = borderWidth?.w ?? _defaultBorderWidth.w;
+
+    // Extract colors from theme
+    final themeBgColor =
+        buttonStyle?.backgroundColor?.resolve({}) ?? Colors.transparent;
+    final themeFgColor =
+        buttonStyle?.foregroundColor?.resolve({}) ?? theme.colorScheme.primary;
+    final themeBorderColor =
+        buttonStyle?.side?.resolve({})?.color ?? theme.colorScheme.primary;
 
     Widget button = SizedBox(
       width: width?.w ?? double.infinity,
       height: effectiveHeight,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          backgroundColor: backgroundColor ?? Colors.transparent,
+          backgroundColor: backgroundColor ?? themeBgColor,
           foregroundColor: _getTextColor(
             context,
             textColor,
             disabledTextColor,
             isDisabled,
+            themeFgColor,
           ),
           disabledForegroundColor:
               disabledTextColor ??
-              context.theme.colorScheme.onSurface.withOpacity(0.38),
+              theme.colorScheme.onSurface.withOpacity(0.38),
           side: BorderSide(
             color: _getBorderColor(
               context,
               borderColor,
               disabledBorderColor,
               isDisabled,
+              themeBorderColor,
             ),
             width: effectiveBorderWidth,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(effectiveRadius),
           ),
-          padding: EdgeInsets.symmetric(
-            horizontal: effectivePadding.horizontal / 2,
-            vertical: effectivePadding.vertical / 2,
-          ),
+          padding: effectivePadding,
           minimumSize: Size(double.infinity, effectiveHeight),
           animationDuration:
-              animationDuration ?? const Duration(milliseconds: 200),
+              animationDuration ??
+              buttonStyle?.animationDuration ??
+              const Duration(milliseconds: 200),
         ),
         onPressed: loading ? null : onPressed,
         onLongPress: loading ? null : onLongPress,
@@ -232,6 +310,127 @@ abstract class AppButton {
             textColor,
             disabledTextColor,
             isDisabled,
+            themeFgColor,
+          ),
+          loadingColor: loadingColor,
+          loadingSize: loadingSize,
+        ),
+      ),
+    );
+
+    // Add tooltip if provided
+    if (tooltip != null) {
+      button = Tooltip(message: tooltip, child: button);
+    }
+
+    // Add semantic label if provided
+    if (semanticLabel != null) {
+      button = Semantics(label: semanticLabel, child: button);
+    }
+
+    return button;
+  }
+
+  /// Creates a text button with enhanced features
+  static Widget getTextButton({
+    required BuildContext context,
+    String? text,
+    required VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    // Dimensions
+    double? width,
+    double? height,
+    EdgeInsets? padding,
+    // Styling
+    Color? textColor,
+    Color? disabledTextColor,
+    // Typography
+    TextStyle? textStyle,
+    double? fontSize,
+    FontWeight? fontWeight,
+    // State
+    bool loading = false,
+    bool disabled = false,
+    // Content
+    Widget? child,
+    Widget? icon,
+    // Loading customization
+    Color? loadingColor,
+    double? loadingSize,
+    // Accessibility
+    String? tooltip,
+    String? semanticLabel,
+    // Animation
+    Duration? animationDuration,
+  }) {
+    assert(
+      text != null || child != null,
+      'Either text or child must be provided',
+    );
+
+    final theme = Theme.of(context);
+    final buttonTheme = theme.textButtonTheme;
+    final buttonStyle = buttonTheme.style;
+
+    final bool isDisabled = disabled || onPressed == null;
+    final effectiveHeight = height?.h ?? _defaultHeight.h;
+
+    // Extract padding from theme
+    EdgeInsets? effectivePadding = padding;
+    if (effectivePadding == null && buttonStyle?.padding != null) {
+      final paddingProp = buttonStyle!.padding?.resolve({});
+      if (paddingProp is EdgeInsets) {
+        effectivePadding = paddingProp;
+      }
+    }
+    effectivePadding ??= const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 8,
+    );
+
+    // Extract color from theme
+    final themeFgColor =
+        buttonStyle?.foregroundColor?.resolve({}) ?? theme.colorScheme.primary;
+
+    Widget button = SizedBox(
+      width: width?.w,
+      height: effectiveHeight,
+      child: TextButton(
+        style: TextButton.styleFrom(
+          foregroundColor: _getTextColor(
+            context,
+            textColor,
+            disabledTextColor,
+            isDisabled,
+            themeFgColor,
+          ),
+          disabledForegroundColor:
+              disabledTextColor ??
+              theme.colorScheme.onSurface.withOpacity(0.38),
+          padding: effectivePadding,
+          minimumSize: Size(width?.w ?? 0, effectiveHeight),
+          animationDuration:
+              animationDuration ??
+              buttonStyle?.animationDuration ??
+              const Duration(milliseconds: 200),
+        ),
+        onPressed: loading ? null : onPressed,
+        onLongPress: loading ? null : onLongPress,
+        child: _buildButtonContent(
+          context: context,
+          loading: loading,
+          text: text,
+          child: child,
+          icon: icon,
+          textStyle: textStyle,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          textColor: _getTextColor(
+            context,
+            textColor,
+            disabledTextColor,
+            isDisabled,
+            themeFgColor,
           ),
           loadingColor: loadingColor,
           loadingSize: loadingSize,
@@ -348,12 +547,15 @@ abstract class AppButton {
     Color? backgroundColor,
     Color? disabledBackgroundColor,
     bool isDisabled,
+    Color? themeBackgroundColor,
   ) {
     if (isDisabled) {
       return disabledBackgroundColor ??
           context.theme.colorScheme.onSurface.withOpacity(0.12);
     }
-    return backgroundColor ?? context.theme.colorScheme.primary;
+    return backgroundColor ??
+        themeBackgroundColor ??
+        context.theme.colorScheme.primary;
   }
 
   /// Gets the text color based on state
@@ -362,12 +564,13 @@ abstract class AppButton {
     Color? textColor,
     Color? disabledTextColor,
     bool isDisabled,
+    Color? themeTextColor,
   ) {
     if (isDisabled) {
       return disabledTextColor ??
           context.theme.colorScheme.onSurface.withOpacity(0.38);
     }
-    return textColor ?? context.theme.colorScheme.onPrimary;
+    return textColor ?? themeTextColor ?? context.theme.colorScheme.onPrimary;
   }
 
   /// Gets the border color based on state
@@ -376,11 +579,12 @@ abstract class AppButton {
     Color? borderColor,
     Color? disabledBorderColor,
     bool isDisabled,
+    Color? themeBorderColor,
   ) {
     if (isDisabled) {
       return disabledBorderColor ??
           context.theme.colorScheme.onSurface.withOpacity(0.12);
     }
-    return borderColor ?? context.theme.colorScheme.primary;
+    return borderColor ?? themeBorderColor ?? context.theme.colorScheme.primary;
   }
 }
