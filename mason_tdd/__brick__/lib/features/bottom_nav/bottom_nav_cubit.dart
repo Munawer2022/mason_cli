@@ -14,4 +14,8 @@ class BottomNavCubit extends Cubit<BottomNavState> {
 
   void setSelectedIndex(int index) =>
       emit(state.copyWith(selectedIndex: index));
+
+  // List<Widget> get pages => [
+  //   {{class_name}}Page(cubit: getIt(param1: const {{class_name}}InitialParams()))
+  // ];
 }
