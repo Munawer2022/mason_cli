@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test/core/utils/extensions.dart';
 
+import '/core/utils/extensions.dart';
 import '/domain/failures/network/network_failure.dart';
 
 /// Helper class for displaying errors in UI with type-specific styling
