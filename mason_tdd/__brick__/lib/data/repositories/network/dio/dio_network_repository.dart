@@ -10,7 +10,7 @@ import 'dio_config.dart';
 
 class DioNetworkRepository implements NetworkBaseApiService {
   final UserDataSources _userDataSources;
-  final LocalStorageRepository _localStorageRepository;
+  final LocalStorageBaseApiService _localStorageRepository;
   final ApiErrorHandler _apiErrorHandler;
   late final Dio _dio;
 

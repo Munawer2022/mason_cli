@@ -7,7 +7,7 @@ import '/domain/repositories/local/local_storage_base_api_service.dart';
 
 class CheckForExistingUserUseCase {
   final UserDataSources _userDataSources;
-  final LocalStorageRepository _localStorageRepository;
+  final LocalStorageBaseApiService _localStorageRepository;
   CheckForExistingUserUseCase(
     this._userDataSources,
     this._localStorageRepository,

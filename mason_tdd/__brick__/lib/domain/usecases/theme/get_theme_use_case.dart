@@ -5,7 +5,7 @@ import '/domain/repositories/local/local_storage_base_api_service.dart';
 import '/data/datasources/theme/theme_data_source.dart';
 
 class GetThemeUseCase {
-  final LocalStorageRepository _localStorageRepository;
+  final LocalStorageBaseApiService _localStorageRepository;
   final ThemeDataSources _themeStore;
 
   GetThemeUseCase(this._localStorageRepository, this._themeStore);

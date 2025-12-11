@@ -11,7 +11,7 @@ import '/domain/repositories/local/local_storage_base_api_service.dart';
 class DioConfig {
   static Dio createDio({
     required UserDataSources userDataSources,
-    required LocalStorageRepository localStorageRepository,
+    required LocalStorageBaseApiService localStorageRepository,
   }) {
     final dio = Dio();
 
@@ -44,7 +44,7 @@ class DioConfig {
 // Enhanced Authentication Interceptor
 class InterceptorsWrapper extends Interceptor {
   final UserDataSources _userDataSources;
-  final LocalStorageRepository _localStorageRepository;
+  final LocalStorageBaseApiService _localStorageRepository;
 
   InterceptorsWrapper(this._userDataSources, this._localStorageRepository);
 
@@ -89,7 +89,7 @@ class InterceptorsWrapper extends Interceptor {
 
 Future<Response<dynamic>?> _handleUnauthorized(
   UserDataSources userDataSources,
-  LocalStorageRepository localStorageRepository,
+  LocalStorageBaseApiService localStorageRepository,
   RequestOptions requestOptions,
 ) async {
   final refreshToken = userDataSources.state.refreshToken;

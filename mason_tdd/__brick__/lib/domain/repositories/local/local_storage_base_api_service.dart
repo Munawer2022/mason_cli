@@ -5,7 +5,7 @@ import '/domain/failures/local/get_local_storage_failure.dart';
 import '/domain/failures/local/remove_local_storage_failure.dart';
 import '/domain/failures/local/set_local_storage_failure.dart';
 
-abstract class LocalStorageRepository {
+abstract class LocalStorageBaseApiService {
   Future<Either<SetLocalStorageFailure, bool>> setUserData({
     required UserInfoStoreModel userInfoStoreModel,
   });

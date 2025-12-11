@@ -6,7 +6,7 @@ import '/data/datasources/theme/theme_data_source.dart';
 
 class UpdateThemeUseCase {
   final ThemeDataSources _themeStore;
-  final LocalStorageRepository _localStorageRepository;
+  final LocalStorageBaseApiService _localStorageRepository;
 
   UpdateThemeUseCase(this._themeStore, this._localStorageRepository);
 

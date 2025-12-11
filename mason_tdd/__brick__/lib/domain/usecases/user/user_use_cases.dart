@@ -7,7 +7,7 @@ import '/domain/repositories/local/local_storage_base_api_service.dart';
 
 class UserUseCases {
   final UserDataSources _userDataSources;
-  final LocalStorageRepository _localStorageRepository;
+  final LocalStorageBaseApiService _localStorageRepository;
   UserUseCases(this._userDataSources, this._localStorageRepository);
   Future<Either<NetworkFailure, UserInfoStoreModel>> execute({
     required Map<String, dynamic> userData,

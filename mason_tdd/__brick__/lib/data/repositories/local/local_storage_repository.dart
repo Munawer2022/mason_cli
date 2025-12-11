@@ -9,7 +9,7 @@ import '/domain/failures/local/remove_local_storage_failure.dart';
 import '/domain/failures/local/set_local_storage_failure.dart';
 import '/domain/repositories/local/local_storage_base_api_service.dart';
 
-class InsecureLocalStorageRepository implements LocalStorageRepository {
+class LocalStorageRepository implements LocalStorageBaseApiService {
   @override
   Future<Either<SetLocalStorageFailure, bool>> setUserData({
     required UserInfoStoreModel userInfoStoreModel,

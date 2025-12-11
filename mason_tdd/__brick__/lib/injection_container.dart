@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import '/domain/repositories/network/network_base_api_service.dart';
 import 'config/navigation/app_navigator.dart';
 import 'domain/repositories/local/local_storage_base_api_service.dart';
-import 'data/repositories/local/insecure_local_storage_repository.dart';
+import 'data/repositories/local/local_storage_repository.dart';
 import 'data/datasources/theme/theme_data_source.dart';
 import 'domain/usecases/theme/get_theme_use_case.dart';
 import 'domain/usecases/theme/update_theme_use_case.dart';
@@ -47,8 +47,8 @@ final getIt = GetIt.instance;
 Future<void> init() async {
    getIt.registerSingleton<AppNavigator>(AppNavigator());
   getIt.registerSingleton<UserDataSources>(UserDataSources());
-  getIt.registerSingleton<LocalStorageRepository>(
-    InsecureLocalStorageRepository(),
+  getIt.registerSingleton<LocalStorageBaseApiService>(
+    LocalStorageRepository(),
   );
   getIt.registerSingleton<UserUseCases>(
       UserUseCases(getIt(), getIt()));
