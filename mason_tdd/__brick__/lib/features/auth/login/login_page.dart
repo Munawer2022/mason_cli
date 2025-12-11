@@ -19,6 +19,11 @@ class _LoginState extends State<LoginPage> {
     super.initState();
     cubit.navigator.context = context;
   }
+  @override
+  void dispose() {
+    cubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

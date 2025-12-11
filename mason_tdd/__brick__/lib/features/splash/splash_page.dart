@@ -22,6 +22,11 @@ class _SplashState extends State<SplashPage> {
     cubit.navigator.context = context;
     cubit.checkUser();
   }
+  @override
+  void dispose() {
+    cubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
