@@ -246,8 +246,8 @@ import 'features/${originalName.snakeCase}/${originalName.snakeCase}_initial_par
   // Add API URLs if needed
   if (isGet || isPost) {
     String urlContent = '''
-  // ${name} URLs
-  static const String ${originalName.camelCase} = '/${originalName.snakeCase}';
+  // ${originalName.snakeCase}
+  static String get ${originalName.camelCase} => '_baseUrl/${originalName.snakeCase}';
 ''';
     appUrl(urlContent);
   }
