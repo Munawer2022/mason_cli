@@ -28,12 +28,8 @@ mason add --global mason_tdd
 mason add --global mason_tdd_folder
 
 # Or from Local Path (if you cloned this repository)
-mason add mason_tdd --source path --path ./mason_tdd
-mason add mason_tdd_folder --source path --path ./mason_tdd_folder
-
-# Or from Git Repository (this repository)
-mason add --global mason_tdd --git-url https://github.com/munawerdev/mason_cli.git --git-path mason_tdd
-mason add --global mason_tdd_folder --git-url https://github.com/munawerdev/mason_cli.git --git-path mason_tdd_folder
+mason add --global mason_tdd --path ./mason_tdd
+mason add --global mason_tdd_folder --path ./mason_tdd_folder
 ```
 
 ### Generate Code
@@ -43,7 +39,7 @@ mason add --global mason_tdd_folder --git-url https://github.com/munawerdev/maso
 mason make mason_tdd
 
 # Generate feature folder
-mason make mason_tdd_folder --name user_profile -o lib/features
+mason make mason_tdd_folder --name test
 ```
 
 ## ✨ Features

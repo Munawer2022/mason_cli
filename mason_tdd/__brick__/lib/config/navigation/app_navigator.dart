@@ -12,6 +12,19 @@ class AppNavigator with TransitionTypeChecker {
     context,
   ).push(transitionTypeChecker(routeName, transitionType));
 
+  String restorablePush({
+    required BuildContext context,
+    required Widget routeName,
+    TransitionType transitionType = TransitionType.slideFromRight,
+  }) {
+    return Navigator.of(context).restorablePush((
+      BuildContext context,
+      Object? arguments,
+    ) {
+      return transitionTypeChecker(routeName, transitionType);
+    });
+  }
+
   Future<Object?> pushNamed({
     required BuildContext context,
     required String routeName,
