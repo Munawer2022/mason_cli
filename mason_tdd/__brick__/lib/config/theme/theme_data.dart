@@ -4,10 +4,10 @@ import 'app_colors.dart';
 import 'app_text_styles.dart';
 
 // Theme
-ThemeData get theme => ThemeData(
+ThemeData get lightTheme => ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
-  colorScheme: AppColors.colorScheme,
+  colorScheme: AppColors.lightColorScheme,
   textTheme: AppTextStyles.textTheme,
   primaryTextTheme: AppTextStyles.textTheme,
 
@@ -59,4 +59,12 @@ ThemeData get theme => ThemeData(
 
   // Divider Theme
   dividerTheme: DividerThemeData(thickness: 1, space: 1),
+);
+
+ThemeData get darkTheme => ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.dark,
+  colorScheme: AppColors.darkColorScheme,
+  textTheme: AppTextStyles.textTheme,
+  primaryTextTheme: AppTextStyles.textTheme,
 );

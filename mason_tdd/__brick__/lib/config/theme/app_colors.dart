@@ -38,7 +38,7 @@ class AppColors {
   // static const Color inversePrimary = Color(0xFF1976D2);
 
   // Color Scheme
-  static ColorScheme colorScheme = ColorScheme.fromSeed(
+  static ColorScheme lightColorScheme = ColorScheme.fromSeed(
     seedColor: primary,
     brightness: Brightness.light,
     // primary: primary,
@@ -71,5 +71,9 @@ class AppColors {
     // onInverseSurface: onInverseSurface,
     // inversePrimary: inversePrimary,
     // surfaceTint: primary,
+  );
+  static ColorScheme darkColorScheme = ColorScheme.fromSeed(
+    seedColor: primary,
+    brightness: Brightness.dark,
   );
 }
