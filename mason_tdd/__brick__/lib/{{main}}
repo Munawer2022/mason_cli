@@ -14,7 +14,7 @@ import 'package:device_preview/device_preview.dart';
 import '/features/splash/splash_initial_params.dart';
 import '/features/splash/splash_page.dart';
 
-void main() async {
+Future<void> main() async {
 //  setCustomSystemUIOverlayStyle();
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
