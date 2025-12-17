@@ -62,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **http**: API type - get, post, or noThing
 
 ### Dependencies
-- Core: flutter_bloc, get_it, dio, fpdart, flutter_screenutil, shared_preferences
+- Core: flutter_bloc, get_it, dio, fpdart, flutter_screenutil, flutter_secure_storage
 - UI: cached_network_image, shimmer
 - Dev: device_preview, talker_dio_logger, logger, flutter_dotenv
 - Native: image_picker, permission_handler

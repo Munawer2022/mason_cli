@@ -1,0 +1,36 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  # This makes the compiler much stricter about types
+  language:
+    # strict-casts: true
+    # strict-inference: true
+    # strict-raw-types: true
+  
+  errors:
+    # Treat these specific issues as hard errors (red lines)
+    missing_required_param: error
+    missing_return: error
+    unused_import: error
+    unused_local_variable: error
+    avoid_print: error # Now print is a red-line error, not just a warning
+
+linter:
+  rules:
+    # --- The "Must-Haves" for Safety ---
+    unawaited_futures: true           # Prevents bugs where you forget to 'await'
+    avoid_void_async: true            # Ensures async functions return a Future
+    cancel_subscriptions: true        # Prevents memory leaks with Streams
+    close_sinks: true                 # Prevents memory leaks with Controllers
+    
+    # --- Style & Consistency ---
+    prefer_single_quotes: true
+    avoid_print: true
+    annotate_overrides: true          # Ensures you know when you're overriding a method
+    camel_case_types: true            # Keeps naming consistent (ClassNames)
+    non_constant_identifier_names: true # (variableNames)
+    
+    # --- Flutter Performance ---
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    avoid_unnecessary_containers: true

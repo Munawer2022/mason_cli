@@ -52,7 +52,7 @@ lib/
 
 ## 📦 Packages
 
-**Core**: `flutter_bloc`, `get_it`, `fpdart`, `dio`, `flutter_screenutil`, `shimmer`, `cached_network_image`, `shared_preferences`, `flutter_dotenv`, `logger`, `image_picker`, `permission_handler`
+**Core**: `flutter_bloc`, `get_it`, `fpdart`, `dio`, `flutter_screenutil`, `shimmer`, `cached_network_image`, `flutter_secure_storage`, `flutter_dotenv`, `logger`, `image_picker`, `permission_handler`
 
 ## 🤝 Contributing
 

@@ -49,7 +49,7 @@ Future<void> run(HookContext context) async {
     'flutter_screenutil',
     'dio',
     'talker_dio_logger',
-    'shared_preferences',
+    'flutter_secure_storage',
     'fpdart',
     'shimmer',
     'cached_network_image',

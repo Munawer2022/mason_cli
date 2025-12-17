@@ -209,7 +209,7 @@ Container(
 - `dio` - HTTP client
 - `fpdart` - Functional programming
 - `flutter_screenutil` - Responsive design
-- `shared_preferences` - Local storage
+- `flutter_secure_storage` - Local storage
 - `cached_network_image` - Image caching
 
 ### Developer Tools
