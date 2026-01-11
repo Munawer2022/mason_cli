@@ -166,9 +166,6 @@ BASE_URL=https://example.com
       int dictLevel = 0;
 
       for (final line in lines) {
-        newLines.add(line);
-
-        // Track dict level
         if (line.trim().startsWith('<dict>')) {
           dictLevel++;
           if (dictLevel == 1) dictFound = true;
@@ -184,6 +181,7 @@ BASE_URL=https://example.com
             }
           }
         }
+        newLines.add(line);
       }
 
       iosInfoPlist.writeAsStringSync(newLines.join('\n'));
