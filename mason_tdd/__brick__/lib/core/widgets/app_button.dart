@@ -5,7 +5,7 @@ import '/core/utils/extensions.dart';
 
 /// Simple, theme‑aware custom button to keep buttons consistent & reusable.
 abstract class AppButton {
-  static const double _defaultHeight = 50.0;
+  static const double _defaultHeight = 48.0;
   static const double _defaultBorderWidth = 1.0;
 
   /// Creates an elevated button with enhanced features
@@ -61,10 +61,9 @@ abstract class AppButton {
     if (radius != null) {
       effectiveRadius = radius;
     } else if (buttonStyle?.shape != null) {
-      final shape = buttonStyle!.shape;
+      final shape = buttonStyle!.shape?.resolve({});
       if (shape is RoundedRectangleBorder) {
-        final roundedShape = shape as RoundedRectangleBorder;
-        final borderRadius = roundedShape.borderRadius.resolve(
+        final borderRadius = shape.borderRadius.resolve(
           Directionality.of(context),
         );
         effectiveRadius = borderRadius.topLeft.x;
@@ -142,6 +141,7 @@ abstract class AppButton {
           child: child,
           icon: icon,
           textStyle: textStyle,
+          defaultTextStyle: buttonStyle?.textStyle?.resolve({}),
           fontSize: fontSize,
           fontWeight: fontWeight,
           textColor: _getTextColor(
@@ -224,10 +224,9 @@ abstract class AppButton {
     if (radius != null) {
       effectiveRadius = radius;
     } else if (buttonStyle?.shape != null) {
-      final shape = buttonStyle!.shape;
+      final shape = buttonStyle!.shape?.resolve({});
       if (shape is RoundedRectangleBorder) {
-        final roundedShape = shape as RoundedRectangleBorder;
-        final borderRadius = roundedShape.borderRadius.resolve(
+        final borderRadius = shape.borderRadius.resolve(
           Directionality.of(context),
         );
         effectiveRadius = borderRadius.topLeft.x;
@@ -303,6 +302,7 @@ abstract class AppButton {
           child: child,
           icon: icon,
           textStyle: textStyle,
+          defaultTextStyle: buttonStyle?.textStyle?.resolve({}),
           fontSize: fontSize,
           fontWeight: fontWeight,
           textColor: _getTextColor(
@@ -404,6 +404,7 @@ abstract class AppButton {
             isDisabled,
             themeFgColor,
           ),
+          textStyle: buttonStyle?.textStyle?.resolve({}),
           disabledForegroundColor:
               disabledTextColor ??
               theme.colorScheme.onSurface.withOpacity(0.38),
@@ -423,6 +424,7 @@ abstract class AppButton {
           child: child,
           icon: icon,
           textStyle: textStyle,
+          defaultTextStyle: buttonStyle?.textStyle?.resolve({}),
           fontSize: fontSize,
           fontWeight: fontWeight,
           textColor: _getTextColor(
@@ -459,6 +461,7 @@ abstract class AppButton {
     Widget? child,
     Widget? icon,
     TextStyle? textStyle,
+    TextStyle? defaultTextStyle,
     double? fontSize,
     FontWeight? fontWeight,
     Color? textColor,
@@ -498,6 +501,7 @@ abstract class AppButton {
           style: _buildTextStyle(
             context,
             textStyle,
+            defaultTextStyle,
             fontSize,
             fontWeight,
             textColor,
@@ -523,11 +527,13 @@ abstract class AppButton {
   static TextStyle _buildTextStyle(
     BuildContext context,
     TextStyle? textStyle,
+    TextStyle? defaultTextStyle,
     double? fontSize,
     FontWeight? fontWeight,
     Color? textColor,
   ) {
-    final baseStyle = textStyle ?? context.textTheme.titleSmall;
+    final baseStyle =
+        textStyle ?? defaultTextStyle ?? context.textTheme.titleSmall;
 
     return baseStyle?.copyWith(
           fontSize: fontSize?.sp,

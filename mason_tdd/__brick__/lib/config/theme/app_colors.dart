@@ -41,7 +41,7 @@ class AppColors {
   static ColorScheme lightColorScheme = ColorScheme.fromSeed(
     seedColor: primary,
     brightness: Brightness.light,
-    // primary: primary,
+    primary: primary,
     // onPrimary: onPrimary,
     // primaryContainer: primaryVariant,
     // onPrimaryContainer: onPrimary,
@@ -73,6 +73,7 @@ class AppColors {
     // surfaceTint: primary,
   );
   static ColorScheme darkColorScheme = ColorScheme.fromSeed(
+    primary: primary,
     seedColor: primary,
     brightness: Brightness.dark,
   );
