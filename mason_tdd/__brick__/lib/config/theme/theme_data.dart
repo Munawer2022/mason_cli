@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'app_colors.dart';
@@ -13,71 +14,166 @@ ThemeData get lightTheme => ThemeData(
   primaryTextTheme: AppTextStyles.textTheme,
 
   // App Bar Theme
-  appBarTheme: const AppBarTheme(elevation: 0, centerTitle: true),
+  appBarTheme: AppBarTheme(
+    elevation: 0,
+    scrolledUnderElevation: 0,
+    centerTitle: true,
+    backgroundColor: AppColors.lightColorScheme.surface,
+    foregroundColor: AppColors.lightColorScheme.onSurface,
+    surfaceTintColor: Colors.transparent,
+    shadowColor: AppColors.lightColorScheme.shadow,
+    toolbarHeight: 56.h,
+    leadingWidth: 80.w,
+    titleSpacing: 0,
+    titleTextStyle: AppTextStyles.titleLarge.copyWith(
+      fontWeight: FontWeight.w600,
+      color: AppColors.lightColorScheme.onSurface,
+    ),
+    iconTheme: IconThemeData(
+      color: AppColors.lightColorScheme.onSurface,
+      size: 24.r,
+    ),
+    actionsIconTheme: IconThemeData(
+      color: AppColors.lightColorScheme.onSurface,
+      size: 24.r,
+    ),
+    systemOverlayStyle: const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+    ),
+  ),
 
   // Elevated Button Theme
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      // foregroundColor: Colors.white,
       elevation: 0,
+      backgroundColor: AppColors.lightColorScheme.primary,
+      foregroundColor: AppColors.lightColorScheme.onPrimary,
+      disabledBackgroundColor: AppColors.lightColorScheme.onSurface.withValues(
+        alpha: 0.12,
+      ),
+      disabledForegroundColor: AppColors.lightColorScheme.onSurface.withValues(
+        alpha: 0.38,
+      ),
       minimumSize: Size(double.infinity.w, 48.h),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-      //   textStyle: AppTextStyles.textTheme.titleMedium?.copyWith(
-      //   fontWeight: FontWeight.w600,
-      // ),
+      textStyle: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
+      animationDuration: const Duration(milliseconds: 200),
     ),
   ),
 
   // Outlined Button Theme
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      // foregroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
+      foregroundColor: AppColors.lightColorScheme.primary,
+      disabledForegroundColor: AppColors.lightColorScheme.onSurface.withValues(
+        alpha: 0.38,
+      ),
+      side: BorderSide(color: AppColors.lightColorScheme.primary, width: 1.w),
+      disabledBackgroundColor: Colors.transparent,
       minimumSize: Size(double.infinity.w, 48.h),
-      // side: const BorderSide(color: Colors.grey),
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-      // textStyle: AppTextStyles.textTheme.titleMedium?.copyWith(
-      //   fontWeight: FontWeight.w600,
-      // ),
+      textStyle: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
+      animationDuration: const Duration(milliseconds: 200),
     ),
   ),
 
   // Text Button Theme
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
-      // foregroundColor: Colors.white,
+      foregroundColor: AppColors.lightColorScheme.primary,
+      disabledForegroundColor: AppColors.lightColorScheme.onSurface.withValues(
+        alpha: 0.38,
+      ),
       padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 8.h),
+      minimumSize: Size(0, 48.h),
+      textStyle: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
+      animationDuration: const Duration(milliseconds: 200),
     ),
   ),
 
   // Input Decoration Theme
   inputDecorationTheme: InputDecorationTheme(
-    // filled: true,
+    filled: true,
+    fillColor: AppColors.lightColorScheme.surface,
+    isDense: true,
+    contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+
+    // Border styles
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: Colors.grey.shade400),
+      borderSide: BorderSide(
+        color: AppColors.lightColorScheme.outline,
+        width: 1.w,
+      ),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: Colors.grey.shade400),
+      borderSide: BorderSide(
+        color: AppColors.lightColorScheme.outline,
+        width: 1.w,
+      ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.r),
-      borderSide: BorderSide(width: 2.w),
+      borderSide: BorderSide(
+        color: AppColors.lightColorScheme.primary,
+        width: 2.w,
+      ),
     ),
-    errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r)),
-    contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.r),
+      borderSide: BorderSide(
+        color: AppColors.lightColorScheme.error,
+        width: 1.w,
+      ),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.r),
+      borderSide: BorderSide(
+        color: AppColors.lightColorScheme.error,
+        width: 2.w,
+      ),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.r),
+      borderSide: BorderSide(
+        color: AppColors.lightColorScheme.outline.withValues(alpha: 0.38),
+        width: 1.w,
+      ),
+    ),
+
+    // Typography
+    labelStyle: AppTextStyles.bodyMedium.copyWith(
+      color: AppColors.lightColorScheme.onSurfaceVariant,
+    ),
+    hintStyle: AppTextStyles.bodyMedium.copyWith(
+      color: AppColors.lightColorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+    ),
+    errorStyle: AppTextStyles.bodySmall.copyWith(
+      color: AppColors.lightColorScheme.error,
+    ),
+    helperStyle: AppTextStyles.bodySmall.copyWith(
+      color: AppColors.lightColorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+    ),
+
+    // Behavior
+    floatingLabelBehavior: FloatingLabelBehavior.auto,
+    alignLabelWithHint: true,
   ),
 
   // Bottom Navigation Bar Theme
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
     elevation: 8,
   ),
 
   // Divider Theme
-  dividerTheme: const DividerThemeData(thickness: 1, space: 1),
+  dividerTheme: DividerThemeData(thickness: 1.w, space: 1.h),
 );
 
 ThemeData get darkTheme => ThemeData(
