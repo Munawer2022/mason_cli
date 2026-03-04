@@ -8,11 +8,6 @@ void run(HookContext context) {
   final dartVersion = _getDartVersion();
   final javaVersion = _getJavaVersion();
 
-  final stateManagement = context.vars['stateManagement'];
-  context.vars['isBloc'] = stateManagement == 'Bloc';
-  context.vars['isFlutterBloc'] = stateManagement == 'flutter_bloc';
-  context.vars['isNoThing'] = stateManagement == 'flutter_bloc';
-
   final dio = context.vars['dio'];
   context.vars['isGet'] = dio == 'get';
   context.vars['isPost'] = dio == 'post';

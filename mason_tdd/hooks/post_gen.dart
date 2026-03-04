@@ -28,21 +28,6 @@ Future<void> run(HookContext context) async {
     return lines.any((line) => line.contains(package));
   }
 
-  // Function to add package with feedback
-  Future<void> addPackage(String package, {bool isDev = false}) async {
-    if (!isPackageInPubspec(package)) {
-      final result = await Process.runSync('flutter',
-          isDev ? ['pub', 'add', package, '--dev'] : ['pub', 'add', package],
-          runInShell: true);
-
-      if (result.exitCode != 0) {
-        context.logger.warn('⚠️  Failed to add $package: ${result.stderr}');
-      }
-    }
-  }
-
-  // Install dependencies
-  context.logger.info('🔧 Installing dependencies...');
   final dependencies = [
     'flutter_bloc',
     'get_it',
@@ -63,26 +48,61 @@ Future<void> run(HookContext context) async {
     'device_preview',
   ];
 
-  for (var package in dependencies) {
-    await addPackage(package);
+  final missingDeps = dependencies.where((p) => !isPackageInPubspec(p)).toList();
+  final missingDevDeps =
+      devDependencies.where((p) => !isPackageInPubspec(p)).toList();
+
+  context.logger.info('🔧 Adding dependencies...');
+
+  if (missingDeps.isNotEmpty) {
+    final result = await Process.run(
+      'flutter',
+      ['pub', 'add', ...missingDeps],
+      runInShell: true,
+    );
+    if (result.exitCode != 0) {
+      context.logger.warn(
+        '⚠️ Failed to add some packages: ${result.stderr}',
+      );
+    }
   }
 
-  for (var package in devDependencies) {
-    await addPackage(package, isDev: true);
+  if (missingDevDeps.isNotEmpty) {
+    final result = await Process.run(
+      'flutter',
+      ['pub', 'add', '--dev', ...missingDevDeps],
+      runInShell: true,
+    );
+    if (result.exitCode != 0) {
+      context.logger.warn(
+        '⚠️ Failed to add some dev packages: ${result.stderr}',
+      );
+    }
   }
 
-  // Run flutter pub get
-  final getResult =
-      await Process.runSync('flutter', ['pub', 'get'], runInShell: true);
-
+  // Run flutter pub get once after all dependencies are added
+  final getResult = await Process.run(
+    'flutter',
+    ['pub', 'get'],
+    runInShell: true,
+  );
   if (getResult.exitCode != 0) {
     context.logger.err('❌ Failed to install dependencies: ${getResult.stderr}');
   }
 
-  // Generate build runner files if needed
-  await Process.runSync(
-      'flutter', ['packages', 'pub', 'run', 'build_runner', 'build'],
-      runInShell: true);
+  // Run build_runner only if the project uses it
+  if (isPackageInPubspec('build_runner')) {
+    final buildResult = await Process.run(
+      'dart',
+      ['run', 'build_runner', 'build', '--delete-conflicting-outputs'],
+      runInShell: true,
+    );
+    if (buildResult.exitCode != 0) {
+      context.logger.warn(
+        '⚠️ build_runner failed (optional): ${buildResult.stderr}',
+      );
+    }
+  }
 
   // Create a default .env file if it doesn't exist
   final envFile = File('.env');
