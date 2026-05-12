@@ -265,11 +265,7 @@ class _DefaultErrorWidgetState extends State<_DefaultErrorWidget>
       );
 
   Widget _buildRetryButton(BuildContext context, Color errorColor) =>
-      AppButton.getButton(
-        context: context,
-        onPressed: widget.onRetry,
-        text: widget.config.retryButtonText,
-      );
+      AppButton(onPressed: widget.onRetry, text: widget.config.retryButtonText);
 }
 
 /// Default no data widget component
