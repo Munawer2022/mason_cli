@@ -48,12 +48,6 @@ lib/
 └── {{main}}                     # Main application entry point
 ```
 
-**Features**: Dio clients, WebSocket support, automatic retry, response caching
-
-## 📦 Packages
-
-**Core**: `flutter_bloc`, `get_it`, `fpdart`, `dio`, `flutter_screenutil`, `shimmer`, `cached_network_image`, `flutter_secure_storage`, `flutter_dotenv`, `logger`, `image_picker`, `permission_handler`
-
 ## 🤝 Contributing
 
 1. Fork the repository (`https://github.com/munawerdev/mason_cli`)

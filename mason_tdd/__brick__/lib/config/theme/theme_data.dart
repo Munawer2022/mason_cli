@@ -39,8 +39,11 @@ ThemeData get lightTheme => ThemeData(
     ),
     systemOverlayStyle: const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark, // For iOS
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Colors.transparent,
     ),
   ),
 
@@ -93,6 +96,16 @@ ThemeData get lightTheme => ThemeData(
       minimumSize: Size(0, 48.h),
       textStyle: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w600),
       animationDuration: const Duration(milliseconds: 200),
+    ),
+  ),
+
+  iconButtonTheme: IconButtonThemeData(
+    style: IconButton.styleFrom(
+      backgroundColor: AppColors.lightColorScheme.surface,
+      padding: EdgeInsets.zero,
+      minimumSize: Size(40.w, 40.h),
+      shape: const CircleBorder(),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
     ),
   ),
 
