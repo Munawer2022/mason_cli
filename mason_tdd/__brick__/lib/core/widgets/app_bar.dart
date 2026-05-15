@@ -11,67 +11,90 @@ class AppBarAction {
   const AppBarAction({required this.icon, this.onPressed, this.tooltip});
 }
 
-/// Simple, theme-aware custom app bar widget
-abstract class CustomAppBar {
-  /// Creates an AppBar with enhanced features
-  static PreferredSizeWidget getAppBar({
-    required BuildContext context,
-    // Core properties
-    String? title,
-    Widget? titleWidget,
+/// Theme-aware custom app bar — use like any PreferredSizeWidget
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({
+    super.key,
+    this.title,
+    this.titleWidget,
+    this.toolbarHeight,
+    this.leadingWidth,
+    this.centerTitle,
+    this.automaticallyImplyLeading = false,
+    this.showLeading = true,
+    this.leading,
+    this.onLeadingPressed,
+    this.leadingIconAsset,
+    this.leadingIcon,
+    this.leadingIconSize,
+    this.leadingIconPadding,
+    this.quickActions,
+    this.actions,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.shadowColor,
+    this.surfaceTintColor,
+    this.elevation,
+    this.scrolledUnderElevation,
+    this.shape,
+    this.titleTextStyle,
+    this.systemOverlayStyle,
+    this.forceMaterialTransparency = false,
+    this.bottom,
+    this.semanticLabel,
+  });
 
-    // Layout
-    double? toolbarHeight,
-    double? leadingWidth,
-    bool? centerTitle,
-    bool automaticallyImplyLeading = false,
+  // Core
+  final String? title;
+  final Widget? titleWidget;
 
-    // Navigation
-    bool showLeading = true,
-    Widget? leading,
-    VoidCallback? onLeadingPressed,
-    String? leadingIconAsset,
-    IconData? leadingIcon,
+  // Layout
+  final double? toolbarHeight;
+  final double? leadingWidth;
+  final bool? centerTitle;
+  final bool automaticallyImplyLeading;
 
-    // Actions
-    List<AppBarAction>? quickActions,
-    List<Widget>? actions,
+  // Navigation
+  final bool showLeading;
+  final Widget? leading;
+  final VoidCallback? onLeadingPressed;
+  final String? leadingIconAsset;
+  final IconData? leadingIcon;
+  final double? leadingIconSize;
+  final EdgeInsets? leadingIconPadding;
 
-    // Styling overrides
-    Color? backgroundColor,
-    Color? foregroundColor,
-    Color? shadowColor,
-    Color? surfaceTintColor,
-    double? elevation,
-    double? scrolledUnderElevation,
-    ShapeBorder? shape,
+  // Actions
+  final List<AppBarAction>? quickActions;
+  final List<Widget>? actions;
 
-    // Typography
-    TextStyle? titleTextStyle,
+  // Styling
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final Color? shadowColor;
+  final Color? surfaceTintColor;
+  final double? elevation;
+  final double? scrolledUnderElevation;
+  final ShapeBorder? shape;
+  final TextStyle? titleTextStyle;
+  final SystemUiOverlayStyle? systemOverlayStyle;
+  final bool forceMaterialTransparency;
 
-    // Leading icon styling
-    double? leadingIconSize,
-    EdgeInsets? leadingIconPadding,
+  // Bottom
+  final PreferredSizeWidget? bottom;
 
-    // System UI
-    SystemUiOverlayStyle? systemOverlayStyle,
-    bool forceMaterialTransparency = false,
+  // Accessibility
+  final String? semanticLabel;
 
-    // Bottom widget (e.g. TabBar)
-    PreferredSizeWidget? bottom,
+  @override
+  Size get preferredSize => Size.fromHeight(
+    (toolbarHeight?.h ?? _kToolbarHeight) + (bottom?.preferredSize.height ?? 0),
+  );
 
-    // Accessibility
-    String? tooltip,
-    String? semanticLabel,
-  }) {
-    assert(
-      title != null ||
-          titleWidget != null ||
-          actions != null ||
-          quickActions != null,
-      'AppBar must have at least title, titleWidget, or actions',
-    );
+  // Matches Flutter's internal default, avoids depending on theme at build time
+  static const double _kToolbarHeight = 56.0;
 
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final appBarTheme = theme.appBarTheme;
 
@@ -91,153 +114,86 @@ abstract class CustomAppBar {
       shape: shape ?? appBarTheme.shape,
       systemOverlayStyle: systemOverlayStyle ?? appBarTheme.systemOverlayStyle,
       forceMaterialTransparency: forceMaterialTransparency,
-      leading: _buildLeading(
-        context,
-        showLeading,
-        leading,
-        onLeadingPressed,
-        leadingIconAsset,
-        leadingIcon,
-        leadingIconSize,
-        leadingIconPadding,
-      ),
-      title: _buildTitle(
-        context,
-        title,
-        titleWidget,
-        titleTextStyle ?? appBarTheme.titleTextStyle,
-      ),
-      actions: _buildActions(context, actions, quickActions),
+      leading: _buildLeading(context, theme),
+      title: _buildTitle(appBarTheme),
+      actions: _buildActions(),
       bottom: bottom,
     );
-
-    if (tooltip != null) {
-      appBar = Tooltip(message: tooltip, child: appBar);
-    }
 
     if (semanticLabel != null) {
       appBar = Semantics(label: semanticLabel, child: appBar);
     }
 
-    final effectiveToolbarHeight =
-        toolbarHeight?.h ?? appBarTheme.toolbarHeight?.h ?? 56.0.h;
-
-    return PreferredSize(
-      preferredSize: Size.fromHeight(
-        effectiveToolbarHeight + (bottom?.preferredSize.height ?? 0),
-      ),
-      child: appBar,
-    );
+    return appBar;
   }
 
-  static Widget? _buildLeading(
-    BuildContext context,
-    bool showLeading,
-    Widget? leading,
-    VoidCallback? onLeadingPressed,
-    String? leadingIconAsset,
-    IconData? leadingIcon,
-    double? leadingIconSize,
-    EdgeInsets? leadingIconPadding,
-  ) {
+  Widget? _buildLeading(BuildContext context, ThemeData theme) {
     if (!showLeading) return null;
     if (leading != null) return leading;
 
-    final theme = Theme.of(context);
     final appBarTheme = theme.appBarTheme;
     final iconTheme = appBarTheme.iconTheme ?? theme.iconTheme;
+    final iconSize = leadingIconSize?.sp ?? iconTheme.size?.sp ?? 24.0.sp;
+    final iconPadding = leadingIconPadding ?? EdgeInsets.all(14.0.w);
 
-    final effectiveLeadingIconSize =
-        leadingIconSize?.sp ?? iconTheme.size?.sp ?? 24.0.sp;
-    final effectiveLeadingIconPadding =
-        leadingIconPadding ?? const EdgeInsets.all(14.0);
-
-    return Container(
-      margin: EdgeInsets.only(left: 16.w),
+    return Padding(
+      padding: EdgeInsets.only(left: 16.w),
       child: IconButton(
-        padding: effectiveLeadingIconPadding,
-        icon: _buildLeadingIcon(
-          context,
-          leadingIconAsset,
-          leadingIcon,
-          effectiveLeadingIconSize,
-          iconTheme.color,
-        ),
+        padding: iconPadding,
+        icon: _buildLeadingIcon(iconSize, iconTheme.color),
         onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
       ),
     );
   }
 
-  static Widget _buildLeadingIcon(
-    BuildContext context,
-    String? leadingIconAsset,
-    IconData? leadingIcon,
-    double leadingIconSize,
-    Color? leadingIconColor,
-  ) {
+  Widget _buildLeadingIcon(double size, Color? color) {
     if (leadingIconAsset != null) {
       return Image.asset(
-        leadingIconAsset,
-        color: leadingIconColor,
-        height: leadingIconSize,
-        width: leadingIconSize,
+        leadingIconAsset!,
+        color: color,
+        height: size,
+        width: size,
       );
     }
 
     return Icon(
       leadingIcon ?? Icons.arrow_back_ios_new_rounded,
-      color: leadingIconColor,
-      size: leadingIconSize,
+      color: color,
+      size: size,
     );
   }
 
-  static Widget? _buildTitle(
-    BuildContext context,
-    String? title,
-    Widget? titleWidget,
-    TextStyle? titleTextStyle,
-  ) {
+  Widget? _buildTitle(AppBarThemeData appBarTheme) {
     if (titleWidget != null) return titleWidget;
     if (title == null) return null;
 
     return Text(
-      title,
+      title!,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: titleTextStyle,
+      style: titleTextStyle ?? appBarTheme.titleTextStyle,
     );
   }
 
-  static List<Widget>? _buildActions(
-    BuildContext context,
-    List<Widget>? actions,
-    List<AppBarAction>? quickActions,
-  ) {
-    final allActions = <Widget>[];
-
-    if (quickActions != null) {
-      allActions.addAll(
-        quickActions.map((action) => _buildQuickAction(context, action)),
-      );
-    }
-
-    if (actions != null) {
-      allActions.addAll(actions);
-    }
+  List<Widget>? _buildActions() {
+    final allActions = <Widget>[
+      if (quickActions != null)
+        ...quickActions!.map(
+          (action) => Padding(
+            padding: EdgeInsets.only(right: 8.w),
+            child: IconButton(
+              onPressed: action.onPressed,
+              icon: action.icon,
+              tooltip: action.tooltip,
+            ),
+          ),
+        ),
+      if (actions != null) ...actions!,
+    ];
 
     if (allActions.isEmpty) return null;
 
-    return [...allActions, SizedBox(width: 16.w)];
-  }
-
-  static Widget _buildQuickAction(BuildContext context, AppBarAction action) {
-    return Container(
-      margin: EdgeInsets.only(right: 8.w),
-      child: IconButton(
-        onPressed: action.onPressed,
-        icon: action.icon,
-        tooltip: action.tooltip,
-      ),
-    );
+    // Trailing padding done via a SizedBox action — cleaner than hacking margins
+    return [...allActions, SizedBox(width: 8.w)];
   }
 }
