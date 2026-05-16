@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '/core/constants/global.dart';
 
 class CheckerNavigatorObserver extends NavigatorObserver {
@@ -29,19 +30,6 @@ class CheckerNavigatorObserver extends NavigatorObserver {
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    hideCurrentMessages();
-  }
-
-  @override
-  void didStartUserGesture(
-      Route<dynamic> route, Route<dynamic>? previousRoute) {
-    super.didStartUserGesture(route, previousRoute);
-    hideCurrentMessages();
-  }
-
-  @override
-  void didStopUserGesture() {
-    super.didStopUserGesture();
     hideCurrentMessages();
   }
 }

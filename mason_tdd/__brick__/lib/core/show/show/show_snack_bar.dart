@@ -64,28 +64,35 @@ class _AnimatedSnackBarContentState extends State<AnimatedSnackBarContent>
   }
 }
 
+void _showAppSnackBar(SnackBar snackBar) {
+  final messenger = GlobalConstants.scaffoldMessengerKey.currentState;
+  if (messenger == null) return;
+
+  messenger.clearSnackBars();
+  messenger.showSnackBar(snackBar);
+}
+
 mixin ShowSnackBarSuccess {
   void showSuccessSnackBar(String message) {
-    var snackBar = SnackBar(
-      content: AnimatedSnackBarContent(message: message),
-      backgroundColor: Colors.grey.shade800,
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0.r),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 40.0.w, vertical: 20.0.h),
-      duration: const Duration(seconds: 3),
-      action: SnackBarAction(
-        label: 'DISMISS',
-        textColor: Colors.white,
-        onPressed: () => GlobalConstants.scaffoldMessengerKey.currentState!
-            .hideCurrentSnackBar(),
+    _showAppSnackBar(
+      SnackBar(
+        content: AnimatedSnackBarContent(message: message),
+        backgroundColor: Colors.grey.shade800,
+        behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.down,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0.r),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 20.0.h),
+        duration: const Duration(seconds: 3),
+        persist: false,
+        action: SnackBarAction(
+          label: 'DISMISS',
+          textColor: Colors.white,
+          onPressed: () {},
+        ),
       ),
     );
-
-    GlobalConstants.scaffoldMessengerKey.currentState!
-      ..hideCurrentSnackBar()
-      ..showSnackBar(snackBar);
   }
 }
 
@@ -97,56 +104,57 @@ mixin ShowSnackBarError {
       failure,
     );
 
-    var snackBar = SnackBar(
-      content: _ErrorSnackBarContent(
-        message: properties.title,
-        icon: properties.icon,
-        color: properties.color,
-      ),
-      // backgroundColor: properties.backgroundColor,
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0.r),
-        side: BorderSide(color: properties.color.withOpacity(0.3), width: 1.5),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 20.0.h),
-      duration: const Duration(seconds: 3),
-      action: SnackBarAction(
-        label: 'DISMISS',
-        textColor: properties.color,
-        onPressed: () => GlobalConstants.scaffoldMessengerKey.currentState!
-            .hideCurrentSnackBar(),
+    _showAppSnackBar(
+      SnackBar(
+        content: _ErrorSnackBarContent(
+          message: properties.title,
+          icon: properties.icon,
+          color: properties.color,
+        ),
+        // backgroundColor: properties.backgroundColor,
+        behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.down,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0.r),
+          side: BorderSide(
+            color: properties.color.withOpacity(0.3),
+            width: 1.5,
+          ),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 20.0.h),
+        duration: const Duration(seconds: 3),
+        persist: false,
+        action: SnackBarAction(
+          label: 'DISMISS',
+          textColor: properties.color,
+          onPressed: () {},
+        ),
       ),
     );
-
-    GlobalConstants.scaffoldMessengerKey.currentState!
-      ..hideCurrentSnackBar()
-      ..showSnackBar(snackBar);
   }
 
   /// Shows error snackbar with simple string message (backward compatibility)
   void showErrorSnackBar(String message) {
-    var snackBar = SnackBar(
-      content: AnimatedSnackBarContent(message: message),
-      backgroundColor: Colors.red.shade700,
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0.r),
-        side: BorderSide(color: Colors.red.withOpacity(0.3), width: 1.5),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 20.0.h),
-      duration: const Duration(seconds: 3),
-      action: SnackBarAction(
-        label: 'DISMISS',
-        textColor: Colors.white,
-        onPressed: () => GlobalConstants.scaffoldMessengerKey.currentState!
-            .hideCurrentSnackBar(),
+    _showAppSnackBar(
+      SnackBar(
+        content: AnimatedSnackBarContent(message: message),
+        backgroundColor: Colors.red.shade700,
+        behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.down,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0.r),
+          side: BorderSide(color: Colors.red.withOpacity(0.3), width: 1.5),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 20.0.h),
+        duration: const Duration(seconds: 3),
+        persist: false,
+        action: SnackBarAction(
+          label: 'DISMISS',
+          textColor: Colors.white,
+          onPressed: () {},
+        ),
       ),
     );
-
-    GlobalConstants.scaffoldMessengerKey.currentState!
-      ..hideCurrentSnackBar()
-      ..showSnackBar(snackBar);
   }
 }
 
