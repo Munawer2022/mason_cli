@@ -19,4 +19,10 @@ abstract class LocalStorageBaseApiService {
   });
 
   Future<Either<GetLocalStorageFailure, bool>> getBool({required String key});
+
+  Future<Either<RemoveLocalStorageFailure, bool>> deleteAll();
+
+  Future<Either<GetLocalStorageFailure, bool>> containsKey({
+    required String key,
+  });
 }

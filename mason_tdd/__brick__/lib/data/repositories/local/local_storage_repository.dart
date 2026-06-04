@@ -77,4 +77,26 @@ class LocalStorageRepository implements LocalStorageBaseApiService {
       return left(SetLocalStorageFailure(error: ex.toString()));
     }
   }
+
+  @override
+  Future<Either<RemoveLocalStorageFailure, bool>> deleteAll() async {
+    try {
+      await _storage.deleteAll();
+      return right(true);
+    } catch (ex) {
+      return left(RemoveLocalStorageFailure(error: ex.toString()));
+    }
+  }
+
+  @override
+  Future<Either<GetLocalStorageFailure, bool>> containsKey({
+    required String key,
+  }) async {
+    try {
+      bool contains = await _storage.containsKey(key: key);
+      return right(contains);
+    } catch (ex) {
+      return left(GetLocalStorageFailure(error: ex.toString()));
+    }
+  }
 }
