@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   inserted at the top of the list.
 - The post-gen hook now reports failure (`progress.fail`) when `flutter pub get`
   fails, instead of always reporting success.
+- Corrected the README usage examples (`AppButton`, `AppTextFormField`,
+  `NetworkBaseApiService`) and theming tokens (`AppColors`, Material 3
+  `AppTextStyles`) to match the generated code.
 
 ### Removed
 - Dropped 9 unused computed file-name variables from `pre_gen.dart`

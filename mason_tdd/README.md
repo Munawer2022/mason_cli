@@ -81,10 +81,10 @@ mason make mason_tdd
 
 ### Configuration
 
-| Variable | Type | Description | Default |
-|----------|------|-------------|---------|
-| `name` | string | Your name | Dash |
-| `dio` | enum | API type | get, post, noThing |
+| Variable | Type | Description | Values / Default |
+|----------|------|-------------|------------------|
+| `name` | string | Feature name used to generate the page, cubit, model, etc. | `Dash` |
+| `dio` | enum | API method to generate for the page | `get`, `post`, `none` |
 
 ## 📁 Project Structure
 
@@ -133,9 +133,8 @@ This will generate a complete feature module with:
 ### Using Core Widgets
 
 ```dart
-// Custom Button
-AppButton.getButton(
-  context: context,
+// Custom Button (elevated by default; also AppButton.outlined / AppButton.text)
+AppButton(
   text: 'Login',
   onPressed: () => _handleLogin(),
   loading: isLoading,
@@ -146,20 +145,31 @@ AppButton.getButton(
 AppTextFormField(
   controller: _emailController,
   hintText: 'Enter your email',
-  validator: (value) => EmailValidator.validate(value),
+  required: true,
+  validator: (value) =>
+      (value != null && value.contains('@')) ? null : 'Invalid email',
 )
 ```
 
 ### Network Requests
 
+`NetworkBaseApiService` methods take named parameters and return an
+`Either<NetworkFailure, T>` (from `fpdart`):
+
 ```dart
 // GET Request
-final response = await networkRepository.get('/api/users');
+final result = await networkRepository.get<Map<String, dynamic>>(
+  url: AppUrl.users,
+);
+result.fold(
+  (failure) => handleError(failure),
+  (data) => handleSuccess(data),
+);
 
 // POST Request
-final response = await networkRepository.post(
-  '/api/login',
-  data: {'email': email, 'password': password},
+final result = await networkRepository.post<Map<String, dynamic>>(
+  url: AppUrl.login,
+  body: {'email': email, 'password': password},
 );
 ```
 
@@ -168,16 +178,16 @@ final response = await networkRepository.post(
 The brick includes a comprehensive theming system:
 
 ```dart
-// App Colors
+// App Colors — `primary` is provided; additional tokens
+// (secondary, error, surface, …) are scaffolded as commented
+// placeholders in app_colors.dart for you to enable.
 AppColors.primary          // Primary brand color
-AppColors.secondary        // Secondary brand color
-AppColors.error           // Error states
-AppColors.surface         // Surface colors
 
-// Text Styles
-AppTextStyles.headline1   // Large headings
-AppTextStyles.body1       // Body text
-AppTextStyles.caption     // Small text
+// Text Styles — Material 3 type scale
+AppTextStyles.displayLarge   // Largest display text
+AppTextStyles.headlineLarge  // Large headings
+AppTextStyles.titleMedium    // Titles
+AppTextStyles.bodyLarge      // Body text
 ```
 
 ## 🔐 Authentication Flow
