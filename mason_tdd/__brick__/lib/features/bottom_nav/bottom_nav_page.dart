@@ -20,6 +20,7 @@ class _BottomNavState extends State<BottomNavPage> {
     super.initState();
     cubit.navigator.context = context;
   }
+
   @override
   void dispose() {
     cubit.close();
@@ -49,7 +50,7 @@ class _BottomNavState extends State<BottomNavPage> {
 
         // If user confirmed exit, close the app
         if (shouldExit == true) {
-          SystemNavigator.pop();
+          await SystemNavigator.pop();
         }
       },
       child: Scaffold(),

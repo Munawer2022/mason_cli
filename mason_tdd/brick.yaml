@@ -26,7 +26,7 @@ environment:
 vars:
   name:
     type: string
-    description: The name of the feature class
+    description: The name of the feature (used to generate the page, cubit, model, etc.)
     default: Dash
     prompt: What is the name of the feature?
 
@@ -36,5 +36,5 @@ vars:
     values:
       - get
       - post
-      - noThing
+      - none
     prompt: Which Api method would you like to generate for the page?

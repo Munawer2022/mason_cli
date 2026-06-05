@@ -52,56 +52,40 @@ Future<void> run(HookContext context) async {
   final missingDevDeps =
       devDependencies.where((p) => !isPackageInPubspec(p)).toList();
 
+  // Runs an external command, returning whether it succeeded.
+  Future<bool> run(String exe, List<String> args, {String? onError}) async {
+    final result = await Process.run(exe, args, runInShell: true);
+    if (result.exitCode != 0 && onError != null) {
+      context.logger.warn('$onError: ${result.stderr}');
+    }
+    return result.exitCode == 0;
+  }
+
   context.logger.info('🔧 Adding dependencies...');
 
   if (missingDeps.isNotEmpty) {
-    final result = await Process.run(
-      'flutter',
-      ['pub', 'add', ...missingDeps],
-      runInShell: true,
-    );
-    if (result.exitCode != 0) {
-      context.logger.warn(
-        '⚠️ Failed to add some packages: ${result.stderr}',
-      );
-    }
+    await run('flutter', ['pub', 'add', ...missingDeps],
+        onError: '⚠️ Failed to add some packages');
   }
 
   if (missingDevDeps.isNotEmpty) {
-    final result = await Process.run(
-      'flutter',
-      ['pub', 'add', '--dev', ...missingDevDeps],
-      runInShell: true,
-    );
-    if (result.exitCode != 0) {
-      context.logger.warn(
-        '⚠️ Failed to add some dev packages: ${result.stderr}',
-      );
-    }
+    await run('flutter', ['pub', 'add', '--dev', ...missingDevDeps],
+        onError: '⚠️ Failed to add some dev packages');
   }
 
   // Run flutter pub get once after all dependencies are added
-  final getResult = await Process.run(
-    'flutter',
-    ['pub', 'get'],
-    runInShell: true,
-  );
-  if (getResult.exitCode != 0) {
-    context.logger.err('❌ Failed to install dependencies: ${getResult.stderr}');
+  if (!await run('flutter', ['pub', 'get'])) {
+    progress.fail('❌ Failed to install dependencies');
+    return;
   }
 
   // Run build_runner only if the project uses it
   if (isPackageInPubspec('build_runner')) {
-    final buildResult = await Process.run(
+    await run(
       'dart',
       ['run', 'build_runner', 'build', '--delete-conflicting-outputs'],
-      runInShell: true,
+      onError: '⚠️ build_runner failed (optional)',
     );
-    if (buildResult.exitCode != 0) {
-      context.logger.warn(
-        '⚠️ build_runner failed (optional): ${buildResult.stderr}',
-      );
-    }
   }
 
   // Create a default .env file if it doesn't exist
@@ -215,7 +199,6 @@ BASE_URL=https://example.com
   bool hasEnvAsset = false;
   int flutterIndex = -1;
   int assetsIndex = -1;
-  int insertIndex = -1;
 
   for (int i = 0; i < pubspecLines.length; i++) {
     final line = pubspecLines[i];
@@ -235,17 +218,15 @@ BASE_URL=https://example.com
   if (!hasEnvAsset) {
     List<String> newLines = List.from(pubspecLines);
     if (hasFlutterSection) {
-      // Find where to insert assets
       if (hasAssetsSection) {
-        // Insert under assets if not present
-        // Find the last asset entry
-        insertIndex = assetsIndex + 1;
+        // Insert after the last existing asset entry so order is preserved.
+        int insertIndex = assetsIndex + 1;
         while (insertIndex < newLines.length &&
             (newLines[insertIndex].trim().startsWith('- ') ||
                 newLines[insertIndex].trim().isEmpty)) {
           insertIndex++;
         }
-        newLines.insert(assetsIndex + 1, '    - .env');
+        newLines.insert(insertIndex, '    - .env');
       } else {
         // Insert assets section under flutter
         newLines.insert(flutterIndex + 1, '  assets:\n    - .env');

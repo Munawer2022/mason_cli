@@ -64,7 +64,7 @@ Future<void> {{folder_name_camelCase}}(
 }
   {{/isPost}}
 
-{{#isNoThing}}
+{{#isNone}}
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '{{initial_params_file_name}}';
 import '{{navigator_file_name}}';
@@ -79,4 +79,4 @@ class {{class_name}}Cubit extends Cubit<{{class_name}}State> {
    : super({{class_name}}State.initial(initialParams:initialParams));
 
 }
-{{/isNoThing}}
+{{/isNone}}

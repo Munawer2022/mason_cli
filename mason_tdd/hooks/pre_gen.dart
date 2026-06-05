@@ -11,7 +11,7 @@ void run(HookContext context) {
   final dio = context.vars['dio'];
   context.vars['isGet'] = dio == 'get';
   context.vars['isPost'] = dio == 'post';
-  context.vars['isNoThing'] = dio == 'noThing';
+  context.vars['isNone'] = dio == 'none';
 
   // UserDetails
   var stem = (context.vars["name"] as String? ?? "").trim().pascalCase;
@@ -21,20 +21,10 @@ void run(HookContext context) {
   final cubitFileName = "${stem.snakeCase}_cubit.dart";
   final stateFileName = "${stem.snakeCase}_state.dart";
   final initialParamsFileName = "${stem.snakeCase}_initial_params.dart";
-  //
-  final widgetFileName = "${stem.snakeCase}_widget.dart";
-  final mockRepoFileName = "Mock_${stem.snakeCase}_repository.dart";
-  final repoFileName = "${stem.snakeCase}_repository.dart";
-  final baseApiServiceFileName = "${stem.snakeCase}_base_api_service.dart";
-  final mockModelFileName = "mock_${stem.snakeCase}_model.dart";
   final modelFileName = "${stem.snakeCase}_model.dart";
   final folderName = "${stem.snakeCase}";
   final folderNameCamelCase = "${stem.camelCase}";
-  final failureName = "${stem.snakeCase}_failure.dart";
-  final useCasesName = "${stem.snakeCase}_use_cases.dart";
-  final dataSourcesName = "${stem.snakeCase}_data_sources.dart";
   final main = "main.dart";
-  final useCasesfailureName = "${stem.snakeCase}_use_cases_failure.dart";
 
   context.vars = {
     ...context.vars,
@@ -47,19 +37,10 @@ void run(HookContext context) {
     "initial_params_file_name": initialParamsFileName,
     "state_file_name": stateFileName,
     "cubit_file_name": cubitFileName,
-    "widget_file_name": widgetFileName,
-    "mock_repo_file_name": mockRepoFileName,
-    "repo_file_name": repoFileName,
-    "base_api_service_file_name": baseApiServiceFileName,
-    "mock_model_file_name": mockModelFileName,
     "model_file_name": modelFileName,
     "folder_name": folderName,
     "folder_name_camelCase": folderNameCamelCase,
-    "failure_name": failureName,
-    "use_cases_name": useCasesName,
-    "data_sources_name": dataSourcesName,
     "main": main,
-    "use_cases_failure": useCasesfailureName,
   };
 }
 
