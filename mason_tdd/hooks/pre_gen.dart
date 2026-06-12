@@ -69,8 +69,11 @@ String _getDartVersion() {
   try {
     final result = Process.runSync('dart', ['--version'], runInShell: true);
     if (result.exitCode == 0) {
-      final output = result.stdout.toString();
-      final match = RegExp(r'Dart\s+(\d+\.\d+\.\d+)').firstMatch(output);
+      // Older Dart SDKs print the version to stderr, newer ones to stdout.
+      final output = '${result.stdout}${result.stderr}';
+      final match =
+          RegExp(r'Dart(?:\s+SDK)?(?:\s+version:?)?\s+(\d+\.\d+\.\d+)')
+              .firstMatch(output);
       if (match != null) {
         return match.group(1) ?? 'Unknown';
       }

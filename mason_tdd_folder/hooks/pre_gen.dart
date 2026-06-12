@@ -8,15 +8,10 @@ void run(HookContext context) {
   final dartVersion = _getDartVersion();
   final javaVersion = _getJavaVersion();
 
-  final stateManagement = context.vars['stateManagement'];
-  context.vars['isBloc'] = stateManagement == 'Bloc';
-  context.vars['isFlutterBloc'] = stateManagement == 'flutter_bloc';
-  context.vars['isNoThing'] = stateManagement == 'flutter_bloc';
-
   final dio = context.vars['dio'];
   context.vars['isGet'] = dio == 'get';
   context.vars['isPost'] = dio == 'post';
-  context.vars['isNoThing'] = dio == 'noThing';
+  context.vars['isNone'] = dio == 'none';
   // UserDetails
   var originalName = (context.vars["name"] as String? ?? "").trim();
   var stem = originalName.pascalCase;
@@ -90,8 +85,11 @@ String _getDartVersion() {
   try {
     final result = Process.runSync('dart', ['--version'], runInShell: true);
     if (result.exitCode == 0) {
-      final output = result.stdout.toString();
-      final match = RegExp(r'Dart\s+(\d+\.\d+\.\d+)').firstMatch(output);
+      // Older Dart SDKs print the version to stderr, newer ones to stdout.
+      final output = '${result.stdout}${result.stderr}';
+      final match =
+          RegExp(r'Dart(?:\s+SDK)?(?:\s+version:?)?\s+(\d+\.\d+\.\d+)')
+              .firstMatch(output);
       if (match != null) {
         return match.group(1) ?? 'Unknown';
       }

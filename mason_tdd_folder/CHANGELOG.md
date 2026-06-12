@@ -23,7 +23,7 @@ All notable changes to this brick will be documented in this file.
 #### Configuration
 - **name**: Feature name (default: Dash)
 - **stateManagement**: flutter_bloc (Bloc coming soon)
-- **dio**: API type - get, post, or noThing
+- **dio**: API type - get, post, or none
 
 #### Architecture
 - Follows Clean Architecture principles

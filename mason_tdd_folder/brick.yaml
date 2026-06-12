@@ -34,5 +34,5 @@ vars:
     values:
       - get
       - post
-      - noThing
+      - none
     prompt: Which Api method would you like to generate for the page?

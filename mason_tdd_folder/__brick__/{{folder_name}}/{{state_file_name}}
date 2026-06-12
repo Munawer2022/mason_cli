@@ -32,7 +32,7 @@ class {{class_name}}State {
           isLoading: isLoading ?? this.isLoading);
 }
 {{/isPost}}
- {{#isNoThing}}
+ {{#isNone}}
 import '{{folder_name}}_initial_params.dart';
 
 class {{class_name}}State {
@@ -43,4 +43,4 @@ class {{class_name}}State {
   {{class_name}}State copyWith() =>
       {{class_name}}State();
 }
-{{/isNoThing}}
+{{/isNone}}

@@ -42,6 +42,10 @@ Future<void> run(HookContext context) async {
     'logger',
     'image_picker',
     'permission_handler',
+    'package_info_plus',
+    'in_app_update',
+    'in_app_review',
+    'url_launcher',
   ];
 
   final devDependencies = [
