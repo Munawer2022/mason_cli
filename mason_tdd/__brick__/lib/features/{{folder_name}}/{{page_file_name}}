@@ -45,7 +45,7 @@ return Scaffold(
             return state.response.toWidget(
                 onCompleted: (context, data) => const SizedBox()
                 {{#isGet}}
-                ,onRetry: cubit.{{folder_name_camelCase}}
+                ,onRetry: () => cubit.{{folder_name_camelCase}}(showLoading: true)
                 {{/isGet}}
                 );
           }
