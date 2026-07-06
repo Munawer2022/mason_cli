@@ -23,9 +23,36 @@ Future<void> run(HookContext context) async {
 
   final lines = pubspec.readAsLinesSync();
 
-  // Function to check if a package is already in pubspec.yaml
+  // Runs an external command, returning whether it succeeded.
+  Future<bool> _runCommand(
+    String exe,
+    List<String> args, {
+    String? onError,
+  }) async {
+    final result = await Process.run(exe, args, runInShell: true);
+    if (result.exitCode != 0 && onError != null) {
+      context.logger.warn('$onError: ${result.stderr}');
+    }
+    return result.exitCode == 0;
+  }
+
+  // Adds a batch of missing packages (prod or dev).
+  Future<void> _addPackages(
+    List<String> packages, {
+    bool dev = false,
+  }) async {
+    if (packages.isEmpty) return;
+    final args = ['pub', 'add', if (dev) '--dev', ...packages];
+    await _runCommand(
+      'flutter',
+      args,
+      onError: '⚠️ Failed to add ${dev ? 'dev ' : ''}packages',
+    );
+  }
+
+  // Function to check if a package is already declared in pubspec.yaml
   bool isPackageInPubspec(String package) {
-    return lines.any((line) => line.contains(package));
+    return lines.any((line) => line.trim().startsWith('$package:'));
   }
 
   final dependencies = [
@@ -52,40 +79,25 @@ Future<void> run(HookContext context) async {
     'device_preview',
   ];
 
-  final missingDeps = dependencies.where((p) => !isPackageInPubspec(p)).toList();
+  final missingDeps =
+      dependencies.where((p) => !isPackageInPubspec(p)).toList();
   final missingDevDeps =
       devDependencies.where((p) => !isPackageInPubspec(p)).toList();
 
-  // Runs an external command, returning whether it succeeded.
-  Future<bool> run(String exe, List<String> args, {String? onError}) async {
-    final result = await Process.run(exe, args, runInShell: true);
-    if (result.exitCode != 0 && onError != null) {
-      context.logger.warn('$onError: ${result.stderr}');
-    }
-    return result.exitCode == 0;
-  }
-
   context.logger.info('🔧 Adding dependencies...');
 
-  if (missingDeps.isNotEmpty) {
-    await run('flutter', ['pub', 'add', ...missingDeps],
-        onError: '⚠️ Failed to add some packages');
-  }
-
-  if (missingDevDeps.isNotEmpty) {
-    await run('flutter', ['pub', 'add', '--dev', ...missingDevDeps],
-        onError: '⚠️ Failed to add some dev packages');
-  }
+  await _addPackages(missingDeps);
+  await _addPackages(missingDevDeps, dev: true);
 
   // Run flutter pub get once after all dependencies are added
-  if (!await run('flutter', ['pub', 'get'])) {
+  if (!await _runCommand('flutter', ['pub', 'get'])) {
     progress.fail('❌ Failed to install dependencies');
     return;
   }
 
   // Run build_runner only if the project uses it
   if (isPackageInPubspec('build_runner')) {
-    await run(
+    await _runCommand(
       'dart',
       ['run', 'build_runner', 'build', '--delete-conflicting-outputs'],
       onError: '⚠️ build_runner failed (optional)',

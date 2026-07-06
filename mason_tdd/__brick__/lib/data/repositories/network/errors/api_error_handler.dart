@@ -24,6 +24,7 @@ class ApiErrorHandler {
           additionalData: _extractAdditionalData(error),
         );
       case DioExceptionType.receiveTimeout:
+      case DioExceptionType.transformTimeout:
         return NetworkFailure(
           error: 'Receive timeout. Server took too long to respond.',
           type: NetworkFailureType.receiveTimeout,
