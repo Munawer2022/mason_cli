@@ -117,7 +117,7 @@ mixin ShowSnackBarError {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0.r),
           side: BorderSide(
-            color: properties.color.withOpacity(0.3),
+            color: properties.color.withValues(alpha: 0.3),
             width: 1.5,
           ),
         ),

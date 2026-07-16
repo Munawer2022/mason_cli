@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -17,16 +18,34 @@ class DioConfig {
 
     // Base configuration
     dio.options = BaseOptions(
-      // connectTimeout: const Duration(seconds: 30),
-      // receiveTimeout: const Duration(seconds: 30),
-      // sendTimeout: const Duration(seconds: 30),
+      // baseUrl: AppConfig.baseUrl,
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      sendTimeout: const Duration(seconds: 30),
       headers: {'Content-Type': 'application/json'},
-      // validateStatus: (status) => status != null && status < 500,
     );
+
+    // Separate dio for refresh token calls. It shares the same base options
+    // and logger but does NOT include the AuthInterceptor to avoid recursion.
+    final refreshDio = Dio()
+      ..options = dio.options
+      ..interceptors.add(
+        TalkerDioLogger(
+          settings: TalkerDioLoggerSettings(
+            printRequestHeaders: true,
+            printErrorHeaders: false,
+            printErrorMessage: false,
+          ),
+        ),
+      );
 
     // Add interceptors in order
     dio.interceptors.addAll([
-      InterceptorsWrapper(userDataSources, localStorageRepository),
+      AuthInterceptor(
+        userDataSources: userDataSources,
+        localStorageRepository: localStorageRepository,
+        refreshDio: refreshDio,
+      ),
       TalkerDioLogger(
         settings: TalkerDioLoggerSettings(
           printRequestHeaders: true,
@@ -34,19 +53,31 @@ class DioConfig {
           printErrorMessage: false,
         ),
       ),
-      // LoggingInterceptor(),
     ]);
 
     return dio;
   }
 }
 
-// Enhanced Authentication Interceptor
-class InterceptorsWrapper extends Interceptor {
+/// Attaches the access token to every request and retries once on 401.
+///
+/// Uses a lock so that concurrent 401 responses only trigger a single
+/// refresh-token request.
+class AuthInterceptor extends Interceptor {
   final UserDataSources _userDataSources;
   final LocalStorageBaseApiService _localStorageRepository;
+  final Dio _refreshDio;
 
-  InterceptorsWrapper(this._userDataSources, this._localStorageRepository);
+  bool _isRefreshing = false;
+  final List<Completer<String?>> _pendingTokenRefresh = [];
+
+  AuthInterceptor({
+    required UserDataSources userDataSources,
+    required LocalStorageBaseApiService localStorageRepository,
+    required Dio refreshDio,
+  }) : _userDataSources = userDataSources,
+       _localStorageRepository = localStorageRepository,
+       _refreshDio = refreshDio;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -58,123 +89,105 @@ class InterceptorsWrapper extends Interceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    return handler.next(response);
-  }
-
-  @override
   Future<void> onError(
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    if (err.response?.statusCode == 401) {
-      try {
-        final retriedResponse = await _handleUnauthorized(
-          _userDataSources,
-          _localStorageRepository,
-          err.requestOptions,
-        );
-        if (retriedResponse != null) {
-          return handler.resolve(retriedResponse);
-        }
-      } catch (e) {
-        log('Token refresh failed: $e');
-        // Clear user data on refresh failure
-        // _localStorageRepository.removeUserData();
-      }
+    if (err.response?.statusCode != 401) {
+      return handler.next(err);
     }
-    return handler.next(err);
+
+    final token = await _refreshTokenWithLock();
+    if (token == null || token.isEmpty) {
+      return handler.next(err);
+    }
+
+    final requestOptions = err.requestOptions;
+    requestOptions.headers['Authorization'] = 'Bearer $token';
+
+    try {
+      final response = await _retry(requestOptions);
+      return handler.resolve(response);
+    } catch (e) {
+      log('Retry after token refresh failed: $e');
+      return handler.next(err);
+    }
   }
-}
 
-Future<Response<dynamic>?> _handleUnauthorized(
-  UserDataSources userDataSources,
-  LocalStorageBaseApiService localStorageRepository,
-  RequestOptions requestOptions,
-) async {
-  final refreshToken = userDataSources.state.refreshToken;
-  if (refreshToken.isEmpty) {
-    log('No refresh token available');
-    return null;
+  Future<String?> _refreshTokenWithLock() async {
+    if (!_isRefreshing) {
+      _isRefreshing = true;
+      final token = await _refreshToken();
+      _isRefreshing = false;
+
+      // Complete all pending requests waiting for the new token
+      for (final completer in _pendingTokenRefresh) {
+        completer.complete(token);
+      }
+      _pendingTokenRefresh.clear();
+      return token;
+    }
+
+    // Another request is already refreshing the token. Wait for it.
+    final completer = Completer<String?>();
+    _pendingTokenRefresh.add(completer);
+    return completer.future;
   }
 
-  try {
-    final refreshResponse = await Dio().post(
-      AppUrl.refreshToken,
-      data: {'refreshToken': refreshToken},
-      options: Options(headers: {'Content-Type': 'application/json'}),
-    );
+  Future<String?> _refreshToken() async {
+    final refreshToken = _userDataSources.state.refreshToken;
+    if (refreshToken.isEmpty) {
+      log('No refresh token available');
+      return null;
+    }
 
-    log('Refresh Token Response: ${refreshResponse.data}');
-
-    if (refreshResponse.statusCode == 200) {
-      final Map<String, dynamic> newTokensJson = refreshResponse.data;
-
-      final UserInfoStoreModel newUserData = UserInfoStoreModel.fromJson(
-        newTokensJson,
+    try {
+      final refreshResponse = await _refreshDio.post(
+        AppUrl.refreshToken,
+        data: {'refreshToken': refreshToken},
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
-      // Update local storage
-      await localStorageRepository
-          .setUserData(userInfoStoreModel: newUserData)
-          .then(
-            (value) => value.fold(
-              (l) => log('Failed to save user data: $l'),
-              (r) => userDataSources.setUserDataSources(
-                userInfoStoreModel: newUserData,
-              ),
-            ),
-          );
+      log('Refresh Token Response: ${refreshResponse.data}');
 
-      final newAccessToken = newUserData.accessToken;
-      if (newAccessToken.isNotEmpty) {
-        // Update the original request with new token
-        requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
-
-        // Retry the original request with the new token
-        final dio = Dio();
-        final retriedResponse = await dio.fetch(requestOptions);
-        log('Retried Response: ${retriedResponse.data}');
-        return retriedResponse;
+      if (refreshResponse.statusCode != 200) {
+        log('Failed to refresh token: ${refreshResponse.data}');
+        return null;
       }
-    } else {
-      log('Failed to refresh token: ${refreshResponse.data}');
+
+      final newTokensJson = refreshResponse.data as Map<String, dynamic>;
+      final newUserData = UserInfoStoreModel.fromJson(newTokensJson);
+      final newAccessToken = newUserData.accessToken;
+
+      if (newAccessToken.isEmpty) {
+        log('Refresh token response did not contain an access token');
+        return null;
+      }
+
+      // Persist and update in-memory session
+      final result = await _localStorageRepository.setUserData(
+        userInfoStoreModel: newUserData,
+      );
+      result.fold(
+        (l) => log('Failed to save user data: $l'),
+        (r) => _userDataSources.setUserDataSources(
+          userInfoStoreModel: newUserData,
+        ),
+      );
+
+      return newAccessToken;
+    } catch (e) {
+      log('Token refresh failed: $e');
+      return null;
     }
-  } catch (e) {
-    log('Token refresh error: $e');
   }
 
-  return null;
+  Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
+    // Use a clean Dio instance to retry the original request. This avoids
+    // re-running the auth interceptor on the retry.
+    final retryDio = Dio()..options = _refreshDio.options;
+    final retriedResponse = await retryDio.fetch(requestOptions);
+    log('Retried Response: ${retriedResponse.data}');
+    return retriedResponse;
+  }
 }
-// // Logging Interceptor (for debugging)
-// class LoggingInterceptor extends Interceptor {
-//   @override
-//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-//     AppPrint.success('🌐 REQUEST[${options.method}] => PATH: ${options.uri}');
-//     AppPrint.info('📤 Headers: ${options.headers}');
-//     if (options.data != null) {
-//       AppPrint.success('📦 Body: ${options.data}');
-//     }
-//     handler.next(options);
-//   }
-
-//   @override
-//   void onResponse(Response response, ResponseInterceptorHandler handler) {
-//     AppPrint.success(
-//       '✅ RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.uri}',
-//     );
-//     AppPrint.json('📥 Data: ${response.data}');
-//     handler.next(response);
-//   }
-
-//   @override
-//   void onError(DioException err, ErrorInterceptorHandler handler) {
-//     AppPrint.error(
-//       '❌ ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.uri}',
-//     );
-//     AppPrint.error('💥 Message: ${err.message}');
-//     if (err.response != null) {
-//       AppPrint.error('📛 Response: ${err.response?.data}');
-//     }
-//     handler.next(err);
-//   }
